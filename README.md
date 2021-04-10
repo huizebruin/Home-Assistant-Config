@@ -6,3 +6,4 @@ https://github.com/huizebruin/Home-Assistant-Config/blob/main/ambee-nl.yaml
 
 Het thema welke ik gebruik voor Home assistant
 /themes/Huizebruin/Huizebruin (Dark).yaml
+![huizebruin-home assistant](https://user-images.githubusercontent.com/62996429/114280723-ef63ae00-9a3a-11eb-9b42-49173f5d1e15.jpg)
