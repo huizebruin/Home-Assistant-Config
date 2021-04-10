@@ -10,6 +10,7 @@ Het thema welke ik gebruik voor Home assistant
 
 En dan maak je een automation 
 Set theme at startup
+![afbeelding](https://user-images.githubusercontent.com/62996429/114281085-9d238c80-9a3c-11eb-8c01-1eec0106d6f6.png)
 
 alias: Set theme at startup
 trigger:
