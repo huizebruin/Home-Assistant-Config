@@ -1,0 +1,55 @@
+#sensor 
+#===============================================================
+sensor: # deze uitzetten als er al meer sensoren tussen de lijst staan van je configuration.yaml staan.
+### Ambee Pollen vertaald door huizebruin.nl
+# https://api-dashboard.getambee.com/#/signup account aanmaken voor een 100 api calls per dag..
+# replace LAT, LONG and API-KEY with your values
+  - platform: rest
+    scan_interval: 3600
+    resource: https://api.ambeedata.com/latest/pollen/by-lat-lng?lat=XX.XXXXXXXX&lng=X.XXXXXX
+    name: "Ambee Pollen"
+    headers:
+      content-type: "application/json"
+      x-api-key: !secret ambee-api # tussen aanhalingstekens "xxxxxx"
+    json_attributes_path: "$.data.['Risk']"
+    json_attributes:
+      - tree_pollen
+      - grass_pollen
+      - weed_pollen
+
+  - platform: template
+    sensors:
+      ambee_pollen_tree:
+        icon_template: "mdi:tree-outline"
+        friendly_name: "Bomen"
+        value_template: >-
+          {% set state = state_attr('sensor.ambee_pollen', 'tree_pollen') %}
+          {% if state == "Low" %}Weinig
+          {% elif state == "Moderate"%}Middel
+          {% elif state == "High"%}Hoog
+          {% elif state == "Very High"%}zeer hoog
+          {% else %}Unbekannt{% endif %}
+  - platform: template
+    sensors:
+      ambee_pollen_weed:
+        icon_template: "mdi:nature"
+        friendly_name: "Onkruid"
+        value_template: >-
+          {% set state = state_attr('sensor.ambee_pollen', 'weed_pollen') %}
+          {% if state == "Low" %}Weinig
+          {% elif state == "Moderate"%}Middel
+          {% elif state == "High"%}Hoog
+          {% elif state == "Very High"%}zeer hoog
+          {% else %}Unbekannt{% endif %}
+  - platform: template
+    sensors:
+      ambee_pollen_grass:
+        icon_template: "mdi:grass"
+        friendly_name: "Gras"
+        value_template: >-
+          {% set state = state_attr('sensor.ambee_pollen', 'grass_pollen') %}
+          {% if state == "Low" %}Weinig
+          {% elif state == "Moderate"%}Middel
+          {% elif state == "High"%}Hoog
+          {% elif state == "Very High"%}zeer hoog
+          {% else %}Unbekannt{% endif %}
