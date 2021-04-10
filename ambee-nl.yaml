@@ -1,9 +1,10 @@
 #sensor 
 #===============================================================
 sensor: # deze uitzetten als er al meer sensoren tussen de lijst staan van je configuration.yaml staan.
-### Ambee Pollen vertaald door huizebruin.nl
+# Ambee Pollen vertaald door huizebruin.nl
 # https://api-dashboard.getambee.com/#/signup account aanmaken voor een 100 api calls per dag..
 # vervang LAT, LONG en API-KEY door uw waarden  XX.XXXXXXXX X.XXXXXX
+# Bron https://gist.github.com/michilehr/7ce7431f97e82523336a120b50d0ebe2
   - platform: rest
     scan_interval: 3600
     resource: https://api.ambeedata.com/latest/pollen/by-lat-lng?lat=XX.XXXXXXXX&lng=X.XXXXXX
