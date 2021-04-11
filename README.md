@@ -2,7 +2,6 @@
 
 Nederlandstalige pollen informatie voor je Home assistent.
 https://github.com/huizebruin/Home-Assistant-Config/blob/main/ambee-nl.yaml
-![ambee-hooikoort-homeassistant](https://user-images.githubusercontent.com/62996429/114265510-72f8ad00-99f1-11eb-9dee-e4cb5fe23148.jpg)
 ![ambee-hooikoort-homeassistant](https://user-images.githubusercontent.com/62996429/114306196-63559300-9adb-11eb-8627-eba67729126e.jpg)
 
 Het thema welke ik gebruik voor Home assistant
