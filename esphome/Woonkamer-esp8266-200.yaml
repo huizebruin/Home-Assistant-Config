@@ -1,0 +1,56 @@
+esphome:
+  name: woonkamer-esp8266-200
+  platform: ESP8266
+  board: nodemcu
+
+wifi:
+  ssid: !secret ssid
+  password: !secret password
+  manual_ip:
+    # Set this to the IP of the ESP
+    static_ip: 192.168.178.200
+    # Set this to the IP address of the router. Often ends with .1
+    gateway: 192.168.178.1 
+    # The subnet of the network. 255.255.255.0 works for most home networks.
+    subnet: 255.255.255.0 
+  # Enable fallback hotspot (captive portal) in case wifi connection fails
+
+  # Enable fallback hotspot (captive portal) in case wifi connection fails
+  ap:
+    ssid: "Woonkamer-Esp8266-200"
+    password: "FdkQPSYjgCx4"
+
+captive_portal:
+
+# Enable logging
+logger:
+# Enable Home Assistant API
+api:
+ota:
+i2c:
+  sda: GPIO04
+  scl: GPIO05
+  scan: True
+  
+sensor:
+  - platform: htu21d
+    temperature:
+      name: "Living Room Temperature-htu21d"
+    humidity:
+      name: "Living Room Humidity-htu21d"
+    update_interval: 60s
+    address: 0x40
+    
+  - platform: bmp085
+    temperature:
+      name: "Living Room Temperature-bmp180"
+    pressure:
+      name: "Living Room Pressure-bmp180"
+    update_interval: 60s
+    address: 0x77
+  
+  - platform: bh1750
+    name: "BH1750 Illuminance"
+    
+    measurement_time: 69
+    update_interval: 60s
