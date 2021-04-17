@@ -1,0 +1,66 @@
+esphome:
+  name: pulsmeters-190
+  platform: ESP8266
+  board: d1_mini
+
+wifi:
+  ssid: !secret ssid
+  password: !secret password
+  manual_ip:
+    # Set this to the IP of the ESP
+    static_ip: 192.168.178.190
+    # Set this to the IP address of the router. Often ends with .1
+    gateway: 192.168.178.1 
+    # The subnet of the network. 255.255.255.0 works for most home networks.
+    subnet: 255.255.255.0  
+
+  # Enable fallback hotspot (captive portal) in case wifi connection fails
+  ap:
+    ssid: "S0-Meter Fallback Hotspot"
+    password: "k5nkOYH6MhHN"
+
+captive_portal:
+
+# Enable logging
+logger:
+
+# Enable Home Assistant API
+api:
+
+ota:
+
+# Enable time component to reset energy at midnight
+time:
+  - platform: sntp
+    id: my_time  
+
+sensor:
+  - platform: pulse_counter
+    pin: D5
+    name: "opbrengst_zonnepanelen_in_W"
+    id: W_opbrengst
+    update_interval: 5s
+    accuracy_decimals: 0
+    unit_of_measurement: 'W'
+    filters:
+      - multiply: 28
+      
+    total:
+      unit_of_measurement: 'kWh'
+      name: 'zonnepanelen_kwh'
+      accuracy_decimals: 2
+      filters:
+        - multiply: 0.000565
+  
+  - platform: pulse_counter
+    pin: D2
+    name: "Waterverbruik_in_liters"
+    id: water_usage
+    update_interval: 5s
+    unit_of_measurement: 'L'
+    accuracy_decimals: 2
+    filters:
+      - multiply: 0.0456666667
+    
+    
+ 
