@@ -1,0 +1,49 @@
+esphome:
+  name: sonof-sv-202
+  platform: ESP8266
+  board: esp01_1m
+
+wifi:
+  ssid: !secret ssid2
+  password: !secret password
+  manual_ip:
+    # Set this to the IP of the ESP
+    static_ip: 192.168.178.202
+    # Set this to the IP address of the router. Often ends with .1
+    gateway: 192.168.178.1 
+    # The subnet of the network. 255.255.255.0 works for most home networks.
+    subnet: 255.255.255.0 
+  # Enable fallback hotspot (captive portal) in case wifi connection fails
+  ap:
+    ssid: "Sonof-Sv Fallback Hotspot"
+    password: "rLeU3XrZPo4V"
+
+captive_portal:
+
+# Enable logging
+logger:
+
+# Enable Home Assistant API
+api:
+
+ota:
+
+binary_sensor:
+  - platform: gpio
+    pin:
+      number: GPIO14
+      mode: INPUT_PULLUP
+      inverted: True
+    name: "24 Voeding"
+    device_class: garage_door
+    
+switch:
+  - platform: gpio
+    pin: GPIO12
+    id: relay
+  - platform: template
+    name: "24v voeding"
+    turn_on_action:
+    - switch.turn_on: relay
+    - delay: 500ms
+    - switch.turn_off: relay
