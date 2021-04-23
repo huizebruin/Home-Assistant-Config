@@ -1,3 +1,4 @@
+# Bron van deze file https://github.com/huizebruin/Home-Assistant-Config/
 esphome:
   name: pulsmeters-190
   platform: ESP8266
