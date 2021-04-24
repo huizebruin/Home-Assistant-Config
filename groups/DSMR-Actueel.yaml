@@ -1,0 +1,39 @@
+###group: ###
+###VIEWS###
+
+Energie:
+  name: Energie
+  entities:
+    - group.Energie_Verbruik
+    - group.Energie_Teruglevering
+    - group.DSMR_Last_Update
+    - group.Energy_Graph1
+    - group.LastUpdate
+
+###CARDS###
+DSMR_Last_Update:
+  name: DSMR Last Update
+  entities:
+    - sensor.DSMR_Last_Update
+
+Energie_Verbruik:
+  name: Energie Verbruik (actueel)
+  entities:
+    - sensor.Energy_Delivered_T1
+    - sensor.Energy_Delivered_T2
+    - sensor.Power_Delivered
+    - sensor.Power_Delivered_l1
+    - sensor.Gas_Delivered
+
+Energie_Teruglevering:
+  name: Energie Teruglevering (actueel)
+  entities:
+    - sensor.Energy_Returned_T1
+    - sensor.Energy_Returned_T2
+    - sensor.Power_Returned
+    - sensor.Power_Returned_l1
+
+Energy_Graph1:
+  name: Energy Graph 1
+  entities:
+    - history.energyGraph1
