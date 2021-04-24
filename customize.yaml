@@ -1,0 +1,79 @@
+light.newkaku_029bb400_2:
+  friendly_name: Bol verlichting voor
+light.newkaku_029bb400_5:
+  friendly_name: Afzuiging Douche
+light.tristate_8568aa_1:
+  friendly_name: Verlichting woonkamer achter
+light.newkaku_029bb400_3:
+  friendly_name: woonkamer midden
+light.tristate_856a2a_1:
+  friendly_name: Woonkamer voor
+switch.light_newkaku_029bb400_2:
+  friendly_name: Bol verlichting voor
+switch.light_newkaku_029bb400_3:
+  friendly_name: woonkamer midden
+light.tristate_856a8a_1:
+  friendly_name: Midden woonkamer
+light.tristate_856aa8_1:
+  friendly_name: Voordeur verlichting
+switch.tasmota_wcd_action_208_gang_2:
+  icon: hass:track-light
+switch.sonoff_4ch_pro2_gang_verlichting:
+  icon: hass:track-light
+sensor.zonnepanelen_kwartier:
+  icon: hass:solar-power
+sensor.zonnepanelen_per_dag:
+  icon: hass:solar-power
+sensor.zonnepanelen_per_jaar:
+  icon: hass:solar-power
+sensor.zonnepanelen_per_kwartaal:
+  icon: hass:solar-power
+sensor.zonnepanelen_per_maand:
+  icon: hass:solar-power
+sensor.zonnepanelen_per_uur:
+  icon: hass:solar-power
+sensor.zonnepanelen_per_week:
+  icon: hass:solar-power
+sensor.waterverbruik_kwartier:
+  icon: hass:water-pump
+  unit_of_measurement: l
+sensor.waterverbruik_per_dag:
+  icon: hass:water-pump
+  unit_of_measurement: l
+sensor.waterverbruik_per_jaar:
+  icon: hass:water-pump
+  unit_of_measurement: l
+sensor.waterverbruik_per_kwartaal:
+  icon: hass:water-pump
+  unit_of_measurement: l
+sensor.waterverbruik_per_maand:
+  icon: hass:water-pump
+  unit_of_measurement: l
+sensor.waterverbruik_per_uur:
+  icon: hass:water-pump
+  unit_of_measurement: l
+sensor.waterverbruik_per_week:
+  icon: hass:water-pump
+  unit_of_measurement: l
+switch.tz3000_kdi2o9m6_ts011f_044584fe_on_off:
+  icon: hass:power-socket-eu
+switch.tz3000_kdi2o9m6_ts011f_73c801fe_on_off:
+  icon: hass:power-socket-eu
+switch.tz3000_kdi2o9m6_ts011f_b73e50fe_on_off:
+  icon: hass:power-socket-eu
+switch.tz3000_kdi2o9m6_ts011f_on_off:
+  icon: hass:power-socket-eu
+switch.tz3000_kdi2o9m6_ts011f_8d5efdfe_on_off:
+  icon: hass:power-socket-eu
+switch.tz3000_kdi2o9m6_ts011f_d1d761fe_on_off:
+  icon: hass:power-socket-eu
+switch.tz3000_kdi2o9m6_ts011f_509fdffe_on_off:
+  icon: hass:power-socket-eu
+switch.tz3000_kdi2o9m6_ts011f_be09cdfe_on_off:
+  icon: hass:outdoor-lamp
+sensor.pollen_grass_count:
+  unit_of_measurement: ' /m³'
+sensor.pollen_tree_count:
+  unit_of_measurement: ' /m³'
+sensor.pollen_weed_count:
+  unit_of_measurement: ' /m³'
