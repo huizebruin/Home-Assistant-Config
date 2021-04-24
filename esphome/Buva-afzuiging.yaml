@@ -1,0 +1,45 @@
+esphome:
+  name: buva-afzuiging-zolder
+  platform: ESP8266
+  board: d1_mini
+
+wifi:
+  ssid: !secret ssid
+  password: !secret password
+  manual_ip:
+    # Set this to the IP of the ESP
+    static_ip: 192.168.178.194
+    # Set this to the IP address of the router. Often ends with .1
+    gateway: 192.168.178.1 
+    # The subnet of the network. 255.255.255.0 works for most home networks.
+    subnet: 255.255.255.0  
+
+  # Enable fallback hotspot (captive portal) in case wifi connection fails
+  ap:
+    ssid: "Buva-Afzuiging Fallback Hotspot"
+    password: "sKGWChMpZwzi"
+
+captive_portal:
+
+# Enable logging
+logger:
+
+# Enable Home Assistant API
+api:
+
+ota:
+
+output:
+  platform: esp8266_pwm
+  pin: D5
+  frequency: 2000 Hz
+  id: pwm_output
+
+fan:
+  platform: speed
+  output: pwm_output
+  name: "Ventilation"
+  speed:
+    low: 0.1
+    medium: 0.5
+    high: 1
