@@ -1,0 +1,20 @@
+- platform: tod
+  name: "Ochtend"
+  after: "07:00"
+  before: "12:00"
+
+- platform: tod
+  name: 'Middag'
+  after: "12:00"
+  before: "18:00"
+
+- platform: tod
+  name: "Avond"
+  after: "18:00"
+  before: "22:00"
+
+- platform: tod
+  name: 'Nacht'
+  after: "22:00"
+  before: "07:00"
+# endregion
