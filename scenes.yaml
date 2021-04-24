@@ -1,0 +1,86 @@
+- id: '1609196057052'
+  name: slapen
+  entities:
+    switch.sonoff_4ch_pro2_ledstrip:
+      friendly_name: Sonoff-4ch-pro2-ledstrip
+      state: 'off'
+    switch.sonoff_4ch_pro2_lamp_boven_tafel:
+      friendly_name: Sonoff-4ch-pro2-lamp boven tafel
+      icon: hass:fan
+      state: 'off'
+    switch.sonoff_4ch_pro2_kerst_verlichting:
+      friendly_name: Sonoff-4ch-pro2-kerst verlichting
+      icon: hass:string-lights
+      state: 'off'
+    switch.sonoff_4ch_pro2_gang_verlichting:
+      friendly_name: Sonoff-4ch-pro2-gang verlichting
+      icon: hass:track-light
+      state: 'off'
+    switch.tasmota_wcd_action_208_gang_2:
+      friendly_name: Tasmota-wcd-action-208-gang
+      icon: hass:track-light
+      state: 'off'
+    switch.tint_smart_switch:
+      linkquality: 68
+      state: 'off'
+      friendly_name: tint Smart Switch
+    switch.buiten_verlichting_voor:
+      linkquality: 126
+      state: 'off'
+      friendly_name: Buiten-verlichting-voor
+    switch.voordeur_verlichting:
+      linkquality: 149
+      state: 'off'
+      friendly_name: Voordeur verlichting
+    switch.woonkamer_achter:
+      linkquality: 34
+      state: 'off'
+      friendly_name: woonkamer achter
+    switch.woonkamer_achter_2:
+      linkquality: 57
+      state: 'off'
+      friendly_name: Woonkamer achter 2
+    switch.woonkamer_midden:
+      linkquality: 52
+      state: 'off'
+      friendly_name: woonkamer-midden
+    switch.woonkamer_voor:
+      linkquality: 68
+      state: 'off'
+      friendly_name: woonkamer-voor
+    switch.woonkamer_voor_bol:
+      linkquality: 84
+      state: 'off'
+      friendly_name: woonkamer-voor- bol
+    switch.woonkamer_voor_bollen:
+      linkquality: 49
+      state: 'off'
+      friendly_name: woonkamer-voor- bollen
+    light.led_e27_kleuren:
+      min_mireds: 150
+      max_mireds: 500
+      effect_list:
+      - blink
+      - breathe
+      - okay
+      - channel_change
+      - finish_effect
+      - stop_effect
+      supported_color_modes:
+      - color_temp
+      - hs
+      brightness: 229
+      color:
+        x: 0.34146341463414637
+        y: 0.17073170731707318
+      color_mode: xy
+      color_temp: 82
+      linkquality: 70
+      state: 'off'
+      friendly_name: led E27 kleuren
+      supported_features: 63
+    switch.midden_staande_lamp:
+      linkquality: 70
+      state: 'off'
+      friendly_name: Midden- staande lamp
+  icon: hass:sleep

@@ -1,0 +1,212 @@
+# Theme for Home Assistant 
+#
+Huizebruin (Dark):
+    # Card mod theming
+    card-mod-theme: Huizebruin (Dark)
+    # Font
+    paper-font-common-base_-_font-family: Segoe UI, sans-serif
+    paper-font-common-base_-_-webkit-font-smoothing: subpixel-antialiased
+    paper-font-common-code_-_font-family: Lucida Console, Consolas, monospace
+    paper-font-common-code_-_-webkit-font-smoothing: subpixel-antialiased
+    paper-font-common-expensive-kerning_-_text-rendering: optimizeLegibility
+    # Main Interface Colors
+    primary-color: rgb(3, 131, 135)
+    light-primary-color: rgb(10, 143, 147)
+    primary-background-color: darkgreen
+    secondary-background-color: rgb(21, 21, 21)
+    divider-color: rgb(102, 102, 102)
+    accent-color: var(--primary-color)
+    # Header:
+    app-header-background-color: var(--primary-color)
+    app-header-text-color: rgb(255, 255, 255)
+    paper-tabs-selection-bar-color: rgb(255, 255, 255)
+    # UI
+    ha-card-header-color: var(--primary-color) # Title in settings
+    # Text
+    primary-text-color: rgb(255, 255, 255)
+    secondary-text-color: rgb(180, 180, 180)
+    text-primary-color: rgb(255, 255, 255)
+    disabled-text-color: rgb(110, 110, 110)
+    # Sidebar Menu
+    sidebar-icon-color: var(--secondary-text-color)
+    sidebar-text-color: var(--primary-text-color)
+    sidebar-background-color: var(--secondary-background-color)
+    sidebar-selected-background-color: var(--secondary-background-color)
+    sidebar-selected-icon-color: var(--light-primary-color)
+    sidebar-selected-text-color: var(--sidebar-selected-icon-color)
+    # Buttons
+    paper-item-icon-color: var(--primary-text-color)
+    paper-item-icon-active-color: var(--primary-color)
+    # States and Badges
+    state-icon-color: var(--primary-text-color)
+    state-icon-active-color: var(--primary-color)
+    state-icon-unavailable-color: var(--disabled-text-color)
+    # Sliders
+    paper-slider-knob-color: var(--primary-color)
+    paper-slider-knob-start-color: var(--paper-slider-knob-color)
+    paper-slider-pin-color: var(--primary-color)
+    paper-slider-active-color: var(--primary-color)
+    paper-slider-secondary-color: var(--disabled-text-color)
+    # Labels
+    label-badge-background-color: var(--primary-background-color)
+    label-badge-text-color: var(--primary-text-color)
+    label-badge-red: rgb(232, 17, 35)
+    label-badge-green: rgb(73, 130, 5)
+    label-badge-blue: rgb(0, 99, 177)
+    label-badge-yellow: rgb(255, 185, 0)
+    label-badge-gray: rgb(118, 118, 118)
+    # Cards
+    card-background-color: var(--secondary-background-color)
+    ha-card-border-radius: "0px"
+    ha-card-box-shadow: none
+    paper-dialog-background-color: var(--card-background-color)
+    paper-listbox-background-color: var(--background-color)
+    paper-card-background-color: var(--card-background-color)
+    # Switches
+    switch-checked-button-color: var(--primary-color)
+    switch-checked-track-color:  var(--primary-color)
+    switch-unchecked-button-color: var(--disabled-text-color)
+    switch-unchecked-track-color: var(--disabled-text-color)
+    # Toggles
+    paper-toggle-button-checked-button-color: var(--switch-checked-button-color)
+    paper-toggle-button-checked-bar-color: var(--switch-checked-track-color)
+    paper-toggle-button-unchecked-button-color: var(--switch-unchecked-button-color)
+    paper-toggle-button-unchecked-bar-color: var(--switch-unchecked-track-color)
+    # Table
+    table-row-background-color: var(--primary-background-color)
+    table-row-alternative-background-color: var(--secondary-background-color)
+    data-table-background-color: var(--primary-background-color)
+    # Dropdowns
+    material-background-color: var(--primary-background-color)
+    material-secondary-background-color: var(--secondary-background-color)
+    mdc-theme-surface: var(--primary-background-color)
+    # Pre/Code
+    markdown-code-background-color: var(--secondary-background-color)
+    # Time Picker Card
+    time-picker-elements-background-color: var(--primary-background-color)
+    time-picker-text-color: var(--primary-text-color)
+    time-picker-icon-color: var(--primary-color)
+    # Bar Card
+    bar-card-color: var(--light-primary-color)
+    bar-card-border-radius: 0px
+    bar-card-disabled-color: var(--disabled-text-color)
+    # HACS
+    hacs-badge-color: var(--light-primary-color)
+    hacs-status-installed: var(--label-badge-green)
+    hacs-status-pending-restart: var(--label-badge-red)
+    hacs-status-pending-update: var(--label-badge-yellow)
+    hacs-status-not-loaded: var(--disabled-text-color)
+    hacs-new-color: var(--primary-color)
+    link-text-color: var(--primary-color)
+    # card mod
+    # Badges aligned left
+    card-mod-view-yaml: |
+      "*:first-child$": |
+        #badges {
+        display: flex !important;
+        justify-content: flex-start;
+        margin: 0px !important;
+        }
+    # Badge
+    card-mod-badge-yaml: |
+      .: |
+        :host {
+          background-color: var(--secondary-background-color);
+          border-radius: 0px;
+          border: 0px;
+          padding: 0px;
+          margin: 4px;
+          box-shadow: none;
+        }
+      ha-state-label-badge:
+        $:
+          ha-label-badge:
+            $:
+              .: |
+                .badge-container .label-badge {
+                  height: 3.5em;
+                  color: var(--primary-color);
+                  border-radius: 0px;
+                  background: none;
+                  border: 0px;
+                  border-bottom: solid 1px;
+                }
+                .badge-container .label-badge .label {
+                  position: static;
+                }
+                .badge-container .label-badge .label span {
+                  border-radius: 0px;
+                  width: 100%;
+                  background: none;
+                  color: var(--primary-color);
+                }
+                .badge-container .title {
+                  height: 100%;
+                  vertical-align: bottom;
+                  margin-top: 5% !important;
+                  margin-bottom: 5% !important;
+                  position: static;
+                }
+    # More info popup
+    card-mod-more-info-yaml: |
+      $: |
+        .mdc-dialog .mdc-dialog__container .mdc-dialog__surface {
+          box-shadow: none;
+          border-radius: 0px;
+        }
+      ha-header-bar:
+        $: |
+          .mdc-top-app-bar {
+            background: var(--primary-color) !important;
+            color: var(--primary-background-color) !important;
+          }   
+    # Misc cards
+    card-mod-card: |
+      /* Custom vacuum card */
+      ha-card.type-custom-vacuum-card {
+        border-radius: 0px;
+      }
+      ha-card.type-custom-vacuum-card .preview {
+        background: none;
+      }
+      ha-card.type-custom-vacuum-card .header {
+        color: var(--primary-text-color)
+      }
+      ha-card.type-custom-vacuum-card .status-text {
+        color: var(--primary-text-color)
+      }
+      ha-card.type-custom-vacuum-card ha-icon {
+        color: var(--primary-text-color)
+      }
+      ha-card.type-custom-vacuum-card .stats {
+        color: var(--primary-text-color)
+      }
+      ha-card.type-custom-vacuum-card .vacuum-name {
+        color: var(--primary-text-color)
+      }
+      ha-card.type-custom-vacuum-card .not-available {
+        color: var(--disabled-text-color)
+      }
+      ha-card.type-custom-vacuum-card .source {
+        color: var(--primary-color)
+      }
+      ha-card.type-custom-vacuum-card .source ha-icon {
+        color: var(--primary-color)
+      }
+      /* Custom mini graph card*/
+      ha-card.type-custom-mini-graph-card .graph__labels > span {
+        box-shadow: none !important;
+        border-radius: 0 !important;
+        padding: 0.05em 0.5em !important;
+        background-color: var(--primary-color) !important;
+        color: var(--primary-background-color) !important;
+      }
+      ha-card.type-custom-mini-graph-card .name .ellipsis {
+        opacity: 1 !important;
+        font-weight: normal !important;
+      }
+      /* Custom ZHA Network Card */
+      ha-card.type-custom-zha-network-card th {
+        background-color: var(--primary-color);
+        color: var(--primary-background-color);
+      }
