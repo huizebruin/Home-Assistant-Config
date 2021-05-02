@@ -2,7 +2,7 @@
 
 Nederlandstalige pollen informatie voor je Home assistent.
 
-https://github.com/huizebruin/Home-Assistant-Config/blob/main/ambee-nl.yaml  deze code plaats je in je configuration.yaml
+https://github.com/huizebruin/Home-Assistant-Config/sensors/ambee-nl.yaml  deze code plaats je in je configuration.yaml
 ![ambee-hooikoort-homeassistant](https://user-images.githubusercontent.com/62996429/114306196-63559300-9adb-11eb-8627-eba67729126e.jpg)
 En deze code vul je bij het toevoegen van een nieuwe kaart ( kies je de onderste opitie) om yaml code toe te voegen
 ![afbeelding](https://user-images.githubusercontent.com/62996429/114317312-c2c99800-9b07-11eb-8cd4-81bfc91f1788.png)
