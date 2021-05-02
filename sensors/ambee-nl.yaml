@@ -1,7 +1,7 @@
 #sensor 
 #===============================================================
-sensor: # deze uitzetten als er al meer sensoren tussen de lijst staan van je configuration.yaml staan.
 # Ambee Pollen vertaald door huizebruin.nl
+# versie 02-05-2021-huizebruin
 # Bron van deze file https://github.com/huizebruin/Home-Assistant-Config/
 # https://api-dashboard.getambee.com/#/signup account aanmaken voor een 100 api calls per dag..
 # vervang LAT, LONG en API-KEY door uw waarden  XX.XXXXXXXX X.XXXXXX
