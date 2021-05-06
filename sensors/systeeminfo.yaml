@@ -1,0 +1,120 @@
+#==================================================================================================================================
+  #=== Geïnstalleerde hass.io versie
+  #==============================
+  - platform: version
+    name: Geïnstalleerde versie
+    source: local
+
+  #================================
+  #=== Laatste beschikbare versie
+  #================================
+  - platform: version
+    name: Laatste beschikbare versie
+    beta: false
+    image: intel-nuc
+    source: hassio
+  #=============================================
+  #=== Laatste opstarttijd, schijf-, geheugen- en CPU-gebruik
+  #=============================================
+  - platform: systemmonitor
+    resources:
+      - type: last_boot
+      - type: disk_use_percent
+        arg: /
+      - type: memory_use_percent
+      - type: processor_use
+
+  
+  #====================
+  #=== CPU Temperatuur
+  #====================
+  - platform: command_line
+    name: CPU Temp
+    command: "cat /sys/class/thermal/thermal_zone0/temp"
+    unit_of_measurement: "°C"
+    value_template: '{{ value | multiply(0.001) | round(0) }}'
+
+
+  #===================
+  #=== System Up Time
+  #===================
+  - platform: uptime
+  - platform: template
+    sensors:
+      #==========================
+      #=== Home Assistant uptime
+      #==========================
+      ha_uptime:
+        friendly_name: HA Uptime
+        value_template: >
+          {% if states('sensor.uptime') == '0.0' %} 
+             Net opnieuw opgestart...
+          {% else %}
+            {% macro phrase(value, name) %}
+            {%- set value = value | int %}
+            {%- set end = 's' if value > 1 else '' %}
+            {{- '{} {}{}'.format(value, name, end) if value | int > 0 else '' }}
+            {%- endmacro %}
+            
+            {% set weeks = (states('sensor.uptime') | int / 7) | int %}
+            {% set days = (states('sensor.uptime') | int) - (weeks * 7) %}
+            {% set hours = (states('sensor.uptime') | float - states('sensor.uptime') | int) * 24 %}
+            {% set minutes = (hours - hours | int) * 60 %}
+
+            {{ [ phrase(weeks, 'week'), phrase(days, 'day'), phrase(hours, 'hr'), phrase(minutes, 'min') ] | select('!=','') | list | join(', ') }}
+          {% endif %}
+
+
+      #=========================================
+      #===  laatste opstartdatum en -tijd
+      #=========================================
+      last_boot_date_time:
+        friendly_name: Laatste keer opstarten
+        value_template: >
+          {% set date = as_timestamp(states('sensor.last_boot')) | timestamp_custom('%d') %}
+          {% set date = '{:01}'.format(date | int) %}
+          {% if date in ('1', '21', '31') %}
+            {% set date = date ~ 'st' %}
+          {% elif date in ('2', '22') %}
+            {% set date = date ~ 'nd' %}
+          {% elif date in ('3', '23') %}
+            {% set date = date ~ 'rd' %}
+          {% else %}
+            {% set date = date ~ 'th' %}
+          {% endif %}
+
+          {{ as_timestamp(states('sensor.last_boot')) | timestamp_custom('%H:%M on %a') }} {{ date }} {{ as_timestamp(states('sensor.last_boot')) | timestamp_custom('%b %Y') }}
+
+
+      #=========================
+      #=== Uptime van het systeem
+      #=========================
+      uptime:
+        friendly_name: Uptime van wyse dx0d
+        entity_id: sensor.time
+        value_template: >
+          {% set up_time = as_timestamp(now()) - as_timestamp(states('sensor.last_boot')) %}
+
+          {% set minutes = (up_time // 60) | int %}
+          {% set hours = (minutes // 60) %}
+          {% set days = (hours // 24) %}
+          {% set weeks = (days // 7) %}
+
+          {% set minutes = (minutes % 60) %}
+          {% set hours =  (hours % 24) %}
+          {% set days = (days % 7) %}
+
+          {% macro phrase(value, name) %}
+                    {%- set value = value %}
+                    {%- set end = 's' if value > 1 else '' %}
+                    {{- '{} {}{}'.format(value, name, end) if value | int > 0 else '' }}
+          {%- endmacro %}
+                    
+          {% set text = [ phrase(weeks, 'week'), phrase(days, 'day'), phrase(hours, 'hr'), phrase(minutes, 'min') ] | select('!=','') | list | join(', ') %}
+          {% set last_comma = text.rfind(',') %}
+          {% if last_comma != -1 %}
+            {% set text = text[:last_comma] + ' and' + text[last_comma + 1:] %}
+          {% endif %}
+          
+          {{ text }}        
+#===============================================================
