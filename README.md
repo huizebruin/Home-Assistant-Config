@@ -1,6 +1,6 @@
 # Home-Assistant-Config
 
-Update met meer gedetailleerde informatie over de pollen:
+07/05/2021 : Update met meer gedetailleerde informatie over de pollen:
 
 ![image](https://user-images.githubusercontent.com/65857422/117507134-fb358800-af86-11eb-95fc-da9fbf3180f9.png)
 
