@@ -1,5 +1,10 @@
 # Home-Assistant-Config
 
+Update met meer gedetailleerde informatie over de pollen:
+
+![image](https://user-images.githubusercontent.com/65857422/117507134-fb358800-af86-11eb-95fc-da9fbf3180f9.png)
+
+
 Nederlandstalige pollen informatie voor je Home assistent.
 
 https://github.com/huizebruin/Home-Assistant-Config/blob/main/sensors/ambee-nl.yaml  deze code plaats je in je configuration.yaml
