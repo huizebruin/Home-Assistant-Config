@@ -1,0 +1,21 @@
+  waterverbruik_kwartier:
+    source: sensor.waterverbruik_in_liters
+    cycle: quarter-hourly
+  waterverbruik_per_uur:
+    source: sensor.waterverbruik_in_liters
+    cycle: hourly
+  waterverbruik_per_dag:
+    source: sensor.waterverbruik_in_liters
+    cycle: daily    
+  waterverbruik_per_week:
+    source: sensor.waterverbruik_in_liters
+    cycle: weekly
+  waterverbruik_per_maand:
+    source: sensor.waterverbruik_in_liters
+    cycle: monthly
+  waterverbruik_per_kwartaal:
+    source: sensor.waterverbruik_in_liters
+    cycle: quarterly
+  waterverbruik_per_jaar:
+    source: sensor.waterverbruik_in_liters
+    cycle: yearly   

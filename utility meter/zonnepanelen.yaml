@@ -1,0 +1,21 @@
+  zonnepanelen_kwartier:
+    source: sensor.zonnepanelen_kwh
+    cycle: quarter-hourly
+  zonnepanelen_per_uur:
+    source: sensor.zonnepanelen_kwh
+    cycle: hourly
+  zonnepanelen_per_dag:
+    source: sensor.zonnepanelen_kwh
+    cycle: daily
+  zonnepanelen_per_week:
+    source: sensor.zonnepanelen_kwh
+    cycle: weekly
+  zonnepanelen_per_maand:
+    source: sensor.opbrengst_zonnepanelen_in_KWH
+    cycle: monthly 
+  zonnepanelen_per_kwartaal:
+    source: sensor.opbrengst_zonnepanelen_in_KWH
+    cycle: quarterly
+  zonnepanelen_per_jaar:
+    source: sensor.opbrengst_zonnepanelen_in_KWH
+    cycle: yearly  

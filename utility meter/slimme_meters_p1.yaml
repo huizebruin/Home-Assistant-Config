@@ -1,0 +1,48 @@
+#slimmme meter P1  
+  daily_energy_offpeak:
+    source: sensor.energy_consumption_tarif_1
+    cycle: daily
+  daily_energy_peak:
+    source: sensor.energy_consumption_tarif_2
+    cycle: daily
+  daily_energy_production_laag:
+    source: sensor.energy_production_tarif_1
+    cycle: daily
+  daily_energy_production_hoog:
+    source: sensor.energy_production_tarif_2
+    cycle: daily
+  daily_gas:
+    source: sensor.gas_consumption
+    cycle: daily
+
+  weekly_energy_offpeak:
+    source: sensor.energy_consumption_tarif_1
+    cycle: weekly
+  weekly_energy_peak:
+    source: sensor.energy_consumption_tarif_2
+    cycle: weekly
+  weekly_energy_production_laag:
+    source: sensor.energy_production_tarif_1
+    cycle: weekly
+  weekly_energy_production_hoog:
+    source: sensor.energy_production_tarif_2
+    cycle: weekly
+  weekly_gas:
+    source: sensor.gas_consumption
+    cycle: weekly
+
+  monthly_energy_offpeak:
+    source: sensor.energy_consumption_tarif_1
+    cycle: monthly
+  monthly_energy_peak:
+    source: sensor.energy_consumption_tarif_2
+    cycle: monthly
+  monthly_energy_production_laag:
+    source: sensor.energy_production_tarif_1
+    cycle: monthly
+  monthly_energy_production_hoog:
+    source: sensor.energy_production_tarif_2
+    cycle: monthly
+  monthly_gas:
+    source: sensor.gas_consumption
+    cycle: monthly
