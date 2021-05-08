@@ -3,6 +3,7 @@
 - toevoeging van ambee-weer.yaml
 
 ![image](https://user-images.githubusercontent.com/65857422/117537520-c4508800-b001-11eb-9d55-828b6d358f6c.png)
+![image](https://user-images.githubusercontent.com/65857422/117546799-96346d80-b02c-11eb-8dac-3d72fe27d8cb.png)
 
 
 
