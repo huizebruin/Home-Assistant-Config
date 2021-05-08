@@ -11,7 +11,7 @@
 # Bron : https://gist.github.com/michilehr/7ce7431f97e82523336a120b50d0ebe2
 
   - platform: rest
-    scan_interval: 3600
+    scan_interval: 7200
     resource: !secret ambee-pollen-resource
     name: "pollen"
     value_template: >
@@ -110,7 +110,7 @@
         value_template: "{{ state_attr('sensor.pollen', 'Species').Tree.Pine }}"
 
       pollen_plataan_count:
-        icon_template: "mdi:nature"
+        icon_template: "mdi:tree-outline"
         friendly_name: "Plataan"
         unit_of_measurement: " /m³"
         value_template: "{{ state_attr('sensor.pollen', 'Species').Tree.Plane }}"
@@ -122,7 +122,7 @@
         value_template: "{{ state_attr('sensor.pollen', 'Species')['Tree']['Poplar / Cottonwood'] }}"
 
       pollen_weed_count:
-        icon_template: "mdi:grass"
+        icon_template: "mdi:nature"
         friendly_name: "Onkruid"
         unit_of_measurement: " /m³"
         value_template: "{{ state_attr('sensor.pollen', 'Count')['weed_pollen'] }}"
@@ -134,31 +134,31 @@
         value_template: "{{ state_attr('sensor.pollen', 'Count')['grass_pollen'] }}"
 
       pollen_overige_count:
-        icon_template: "mdi:grass"
+        icon_template: "mdi:nature"
         friendly_name: "Overige"
         unit_of_measurement: " /m³"
         value_template: "{{ state_attr('sensor.pollen', 'Species').Others }}"
 
       pollen_amaranten_count:
-        icon_template: "mdi:grass"
+        icon_template: "mdi:nature"
         friendly_name: "Amaranten/Ganzenvoet"
         unit_of_measurement: " /m³"
         value_template: "{{ state_attr('sensor.pollen', 'Species').Weed.Chenopod }}"
 
       pollen_bijvoet_count:
-        icon_template: "mdi:grass"
+        icon_template: "mdi:nature"
         friendly_name: "Bijvoet"
         unit_of_measurement: " /m³"
         value_template: "{{ state_attr('sensor.pollen', 'Species').Weed.Mugwort }}"
 
       pollen_brandnetel_count:
-        icon_template: "mdi:grass"
+        icon_template: "mdi:nature"
         friendly_name: "Brandnetel"
         unit_of_measurement: " /m³"
         value_template: "{{ state_attr('sensor.pollen', 'Species').Weed.Nettle }}"
 
       pollen_ambrosia_count:
-        icon_template: "mdi:grass"
+        icon_template: "mdi:nature"
         friendly_name: "Ambrosia"
         unit_of_measurement: " /m³"
         value_template: "{{ state_attr('sensor.pollen', 'Species').Weed.Ragweed }}"
