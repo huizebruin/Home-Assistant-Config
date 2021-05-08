@@ -1,0 +1,77 @@
+#sensor 
+#===============================================================
+#Overige sensoren
+#===============================================================
+# Pollen
+  - platform: waqi
+    token: !secret waqi-api
+    locations:
+      - Europaweg, Groningen
+      - Hooge Zuidwal, Kollumerwaard
+
+#p2000 installeren via hacs
+#===============================================================
+  - platform: p2000
+    regios: 2
+    disciplines: 1,2,3
+    scan_interval: 60
+    capcodes: !secret capcodes 
+    icon: mdi:fire-truck
+
+  - platform: p2000
+    name: 112 meldingen
+    regios: 2
+    disciplines: 1,2,3
+    radius: 10000
+    scan_interval: 60
+    latitude: !secret latitude
+    longitude: !secret longitude
+#===============================================================
+
+
+ 
+
+
+# template sensoren 
+##########
+# postbak & Brievenbus sensor         
+##########
+  - platform: template
+    sensors:
+      mailbox_last_triggered_formatted:
+        friendly_name: Postbak geopend
+        value_template: >-
+          {% if (
+              (( as_timestamp(now()) | timestamp_custom("%m%d")) | int) - ((as_timestamp(states("input_datetime.postbak_open")) | timestamp_custom("%m%d")) | int)
+              ) == 0 %}
+            {{ as_timestamp(states("input_datetime.postbak_open")) | timestamp_custom("%H:%M") }}
+          {% else %}
+            none
+          {% endif %}
+
+      brievenbus_last_triggered_formatted:
+        friendly_name: Brievenbus geopend
+        value_template: >-
+          {% if (
+              (( as_timestamp(now()) | timestamp_custom("%m%d")) | int) - ((as_timestamp(states("input_datetime.brievenbus_laatst_geopend")) | timestamp_custom("%m%d")) | int)
+              ) == 0 %}
+            {{ as_timestamp(states("input_datetime.brievenbus_laatst_geopend")) | timestamp_custom("%H:%M") }}
+          {% else %}
+            none
+          {% endif %}  
+#===============================================================================
+# zon op en ondergang
+      nextsunrise:
+        entity_id: sun.sun
+        friendly_name: 'zon opkomst'
+        value_template: >
+          {{ as_timestamp(states.sun.sun.attributes.next_rising) | timestamp_custom(' %H:%M ') | replace(" 0", "") }}
+        icon_template: mdi:weather-sunset-up
+      nextsunset:
+        entity_id: sun.sun
+        friendly_name: 'zon onder'
+        value_template: >
+          {{ as_timestamp(states.sun.sun.attributes.next_setting) | timestamp_custom(' %H:%M ') | replace(" 0", "") }}
+        icon_template: mdi:weather-sunset-down               
+#===============================================================================
+
