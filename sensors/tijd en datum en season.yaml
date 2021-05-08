@@ -1,0 +1,7 @@
+# tijd en datum & season
+  - platform: time_date
+    display_options:
+      - 'time'
+      - 'time_utc'
+  - platform: season
+  - platform: moon

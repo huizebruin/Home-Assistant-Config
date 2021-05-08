@@ -1,0 +1,33 @@
+# Afvalbeheer & afvalinfo 
+  - platform: afvalbeheer
+    wastecollector: Omrin            
+    resources:                       
+      - sortibak
+      - gft
+      - papier
+#     - grofvuil
+    postcode: !secret postcode                 
+    streetnumber: !secret huisnummer                   
+    upcomingsensor: 1                
+    dateformat: '%d-%m'           
+    dateonly: 1                      
+    name: ""                         
+    nameprefix: 1                    
+    builtinicons: 0                  
+    dutch: 1   
+#############
+  - platform: afvalinfo              
+    resources:                       
+    - gft
+    - pbd
+    - papier
+    - restafval
+    - trash_type_today
+    - trash_type_tomorrow
+    location: !secret gemeente              
+    postcode: !secret postcode                  
+    streetnumber: !secret huisnummer                 
+    dateformat: '%d-%m'           
+    locale: 'nl'                     
+    timespanindays: 30 
+    

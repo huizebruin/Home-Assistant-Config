@@ -1,0 +1,7 @@
+# slimme meters
+#===============================================================
+  - platform: dsmr_reader # externe Pi
+#  - platform: dsmr  # intern dus aangesloten op de usbpoort
+#    port: /dev/ttyUSB1
+#    dsmr_version: 5
+#===============================================================

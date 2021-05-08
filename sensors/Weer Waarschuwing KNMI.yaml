@@ -1,0 +1,71 @@
+# Weer Waarschuwing KNMI
+#===============================================================================
+  - platform: scrape
+    resource: https://www.knmi.nl/nederland-nu/weer/waarschuwingen/friesland
+    select: "div.alert__heading"
+    name: knmi_alert_heading
+    scan_interval: 300
+  - platform: scrape
+    resource: https://www.knmi.nl/nederland-nu/weer/waarschuwingen/friesland
+    select: "a.alert__description"
+    name: knmi_alert_description
+    scan_interval: 300
+#===============================================================================
+  - platform: buienradar
+# Force 'Meetstation' to be used:
+    latitude: !secret latitude
+    longitude: !secret longitude
+    monitored_conditions:
+      - barometerfc
+      - barometerfcname
+      - condition
+      - conditiondetailed
+      - conditionexact
+      - symbol
+      - feeltemperature
+      - humidity
+      - temperature
+      - groundtemperature
+      - windspeed
+      - windforce
+      - winddirection
+      - windazimuth
+      - pressure
+      - visibility
+      - windgust
+      - precipitation
+      - irradiance
+      - precipitation_forecast_average
+      - precipitation_forecast_total
+      - rainlast24hour
+      - rainlasthour
+      # conditions for forecasted data:
+      - symbol_1d
+      - temperature_1d
+      - mintemp_1d
+      - rainchance_1d
+      - sunchance_1d
+      - rain_1d
+      - minrain_1d
+      - maxrain_1d
+      - windforce_1d
+      - windspeed_1d
+      - winddirection_1d
+      - windazimuth_1d
+#      - stationname
+#      - conditioncode
+#      - symbol_2d
+#      - symbol_3d
+#      - symbol_4d
+#      - symbol_5d 
+#      - temperature_2d
+#      - temperature_3d
+#      - temperature_4d
+#      - temperature_5d
+#      - rainchance_2d
+#      - sunchance_2d
+#      - windforce_2d
+#      - rain_2d
+#      - windspeed_2d
+#      - winddirection_2d
+#      - windazimuth_2d
