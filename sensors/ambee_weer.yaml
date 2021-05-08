@@ -1,0 +1,110 @@
+#sensor 
+#===============================================================
+# Ambee Weer door Roel R
+# versie 08-05-2021
+# https://api-dashboard.getambee.com/#/signup account aanmaken voor een 100 api calls per dag..
+# vervang LAT, LONG en API-KEY door uw waarden  XX.XXXXXXXX X.XXXXXX
+# in je Secrets.yaml de volgende regels plaatsen: 
+# (zonder hekje ervoor)     ambee-weather-resource: "https://api.ambeedata.com/weather/latest/by-lat-lng?lat=XX.XXXXXX&lng=X.XXXXXX
+# (zonder hekje ervoor)     ambee-api: XXXXXXXXX
+
+
+  - platform: rest
+    scan_interval: 3600
+    resource: !secret ambee-weather-resource
+    name: "weer"
+    value_template: >
+      {{ value_json.version}}
+    headers:
+      content-type: "application/json"
+      x-api-key: !secret ambee-api # tussen aanhalingstekens "xxxxxx"
+    json_attributes_path: "$.data"
+    json_attributes:
+      - time
+      - temperature
+      - apparentTemperature
+      - dewPoint
+      - humidity
+      - pressure
+      - windSpeed
+      - windGust
+      - windBearing
+      - cloudCover
+      - visibility
+      - ozone
+
+
+  - platform: template
+    sensors:
+       weather_actual_time:
+        icon_template: "mdi:clock"
+        friendly_name: "Tijdstip"
+        value_template: "{{ state_attr('sensor.weer', 'time') | timestamp_custom(' %H:%M:%S ') }}"
+
+       weather_actual_temperature:
+        icon_template: "mdi:thermometer"
+        friendly_name: "Temperatuur"
+        unit_of_measurement: "°C"
+        value_template: "{{ ((state_attr('sensor.weer', 'temperature') | float - 32) * 5/9)|round(1) }}"
+
+       weather_actual_apparent_temperature:
+        icon_template: "mdi:thermometer-lines"
+        friendly_name: "Gevoelstemperatuur"
+        unit_of_measurement: "°C"
+        value_template: "{{ ((state_attr('sensor.weer', 'apparentTemperature') | float - 32) * 5/9)|round(1) }}"
+
+       weather_actual_dewpoint:
+        icon_template: "mdi:coolant-temperature"
+        friendly_name: "Dauwpunt"
+        unit_of_measurement: "°C"
+        value_template: "{{ ((state_attr('sensor.weer', 'dewPoint') | float - 32) * 5/9)|round(1) }}"
+
+       weather_actual_humidity:
+        icon_template: "mdi:water"
+        friendly_name: "Luchtvochtigheid"
+        unit_of_measurement: "%"
+        value_template: "{{ (state_attr('sensor.weer', 'humidity') * 100) }}"
+
+       weather_actual_pressure:
+        icon_template: "mdi:cloud-download"
+        friendly_name: "Luchtdruk"
+        unit_of_measurement: "hPa"
+        value_template: "{{ state_attr('sensor.weer', 'pressure') }}"
+
+       weather_actual_windspeed:
+        icon_template: "mdi:weather-windy"
+        friendly_name: "Windsnelheid"
+        unit_of_measurement: "km/h" 
+        value_template: "{{ (state_attr('sensor.weer', 'windSpeed') * 1.609344)|round(1) }}"
+
+       weather_actual_windgust:
+        icon_template: "mdi:weather-windy-variant"
+        friendly_name: "Windvlagen"
+        unit_of_measurement: "km/h" 
+        value_template: "{{ (state_attr('sensor.weer', 'windGust') * 1.609344)|round(1) }}"
+
+       weather_actual_windbearing:
+        icon_template: "mdi:compass"
+        friendly_name: "Windrichting"
+        value_template: >
+            {% set direction = ['N','NNO','NO','ONO','O','OZO','ZO','ZZO','Z','ZZW','ZW','WZW','W','WNW','NW','NNW','N'] %}
+            {% set degree = state_attr('sensor.weer', 'windBearing')|float %}
+            {{ direction[((degree+11.25)/22.5)|int] }}
+
+       weather_actual_cloudcover:
+        icon_template: "mdi:weather-partly-cloudy"
+        friendly_name: "Bewolkingspercentage"
+        unit_of_measurement: "%" 
+        value_template: "{{ state_attr('sensor.weer', 'cloudCover') * 100 }}"
+
+       weather_actual_visibility:
+        icon_template: "mdi:binoculars"
+        friendly_name: "Zichtbaarheid"
+        unit_of_measurement: "km" 
+        value_template: "{{ (state_attr('sensor.weer', 'visibility') * 1.609344)|round(1) }}"
+
+       weather_actual_ozone:
+        icon_template: "mdi:state-machine"
+        friendly_name: "Ozon"
+        unit_of_measurement: "DU" 
+        value_template: "{{ state_attr('sensor.weer', 'ozone') }}"
