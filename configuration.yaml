@@ -1,0 +1,91 @@
+#===============================================================
+## home assistand informatie
+#===============================================================
+homeassistant:
+  name: Huizebruin
+  latitude: !secret latitude 
+  longitude: !secret longitude 
+  elevation: 10
+  unit_system: metric
+  time_zone: Europe/Amsterdam
+  customize: !include customize.yaml
+# Configure a default setup of Home Assistant (frontend, api, etc)
+default_config:
+# external_url: !secret externalurl
+#===============================================================
+## Includes zodat deze lijst overzichtelijker blijft
+#===============================================================
+group:  !include_dir_merge_named groups/
+sensor: !include_dir_merge_list sensors/
+binary_sensor: !include_dir_merge_list binary_sensors/
+automation: !include automations.yaml
+script: !include scripts.yaml
+scene: !include scenes.yaml
+light: !include lights.yaml  
+utility_meter: !include_dir_merge_list utility meter/
+frontend:
+  themes: !include_dir_merge_named themes
+#===============================================================
+#http:
+#  ssl_certificate: /ssl/fullchain.pem
+#  ssl_key: /ssl/privkey.pem
+#===============================================================
+# Text to speech
+tts:
+  - platform: google_translate
+    language: 'nl'
+#===============================================================
+mqtt:
+  discovery: true
+#===============================================================
+# Discover some devices automatically
+discovery:
+  ignore:
+    - apple_tv
+#===============================================================
+## Telegram
+#===============================================================
+telegram_bot:
+  - platform: polling
+    api_key: !secret telegramkey
+    allowed_chat_ids:
+      -  !secret telegram_chatID
+notify:
+    - name: Wobbebot
+      platform: telegram
+      chat_id: !secret telegram_chatID
+#===============================================================
+## influxdb
+#===============================================================
+influxdb:
+    host: localhost
+    port: 8086
+    database: homeassistant
+    username: homeassistant
+    password: !secret influx 
+    max_retries: 3
+    default_measurement: state
+
+recorder:
+  purge_keep_days: 14
+  include:
+    domains:
+      - sensor
+      - switch
+      - binary_sensor
+  exclude:
+    domains:
+      - media_player
+      - automation
+      - updater
+    entities:
+      - sun.sun # Don't record sun data
+      - sensor.last_boot # Comes from 'systemmonitor' sensor platform
+      - sensor.date
+      - sensor.time
+      - binary_sensor.snapshot_stale
+      - binary_sensor.updater
+    entity_globs:
+      - sensor.weather_*
+      - sensor.surh*
+#===============================================================
