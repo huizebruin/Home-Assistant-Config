@@ -1,7 +1,7 @@
 #sensor 
 #===============================================================
 # Ambee Pollen vertaald door huizebruin.nl en Roel R
-# versie 06-05-2021-huizebruin en Roel R
+# versie v01.07 06-05-2021 (alles uitgebreid in je dashboard) door huizebruin en Roel R
 # Bron van deze file https://github.com/huizebruin/Home-Assistant-Config/
 # https://api-dashboard.getambee.com/#/signup account aanmaken voor een 100 api calls per dag..
 # vervang LAT, LONG en API-KEY door uw waarden  XX.XXXXXXXX X.XXXXXX
