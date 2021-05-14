@@ -1,4 +1,13 @@
+[![GitHub stars](https://img.shields.io/github/stars/huizebruin/homeassistant.svg?style=plasticr)](https://github.com/huizebruin/Home-Assistant-Config/stargazers)
+[![GitHub last commit](https://img.shields.io/github/last-commit/geekofweek/homeassistant.svg?style=plasticr)](https://github.com/huizebruin/Home-Assistant-Config/commits/master)
+[![HA Version](https://img.shields.io/badge/Running%20Home%20Assistant-2021.5.3%20-darkblue)](https://github.com/home-assistant/home-assistant/releases/latest)
+
+
 # Home-Assistant-Config
+Gebruik de code uit deze repo voor je eigen Home Assistant-omgeving, houd er rekening mee dat je niet altijd alles regel voor regel kunt kopiëren. 
+Als je vragen hebt, stel ze dan gerust via e-mail of socials! 
+
+
 08/05/2021:
 - update van de pollen (categorie Overige toegevoegd) en het yaml bestand hernoemd naar :ambee-pollen.yaml
 - toevoeging van ambee-weer.yaml
