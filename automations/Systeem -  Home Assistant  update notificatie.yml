@@ -1,0 +1,28 @@
+Systeem :  Home Assistant  is opnieuw opstart
+alias: 'Systeem :  Home Assistant  update notificatie'
+description: ''
+trigger:
+  - platform: state
+    entity_id: sensor.laatste_beschikbare_versie
+condition:
+  - condition: template
+    value_template: |-
+      {{
+                states('sensor.laatste_beschikbare_versie')
+                !=
+                states('sensor.geinstalleerde_versie')
+              }}
+action:
+  - service: notify.mobile_app_cph2065
+    data:
+      title: "\U0001F6A7 Home Assistant update   \U0001F389"
+      message: " {% if is_state('sensor.potential_breaking_changes', '0') %}           Er is een Home Assistant update beschikbaar.  \U0001F389           Versie: {{ states('sensor.laatste_beschikbare_versie') }} .           {% else %}           Er is een Home Assistant update beschikbaar.           Versie: {{ states('sensor.laatste_beschikbare_versie') }} .    {% endif %}"
+  - service: notify.persistent_notification
+    data:
+      data_template:
+        title: "\U0001F6A7 Home Assistant update"
+        message: >-
+          Er is een Home Assistant update voor Hass.io beschikbaar! Versie: {{
+          states('sensor.laatste_beschikbare_versie') }} .
+        notification_id: hassio_upgrade
+mode: single

@@ -1,0 +1,19 @@
+alias: 'Systeem :  Home Assistant hacs update'
+description: ''
+trigger:
+  - platform: state
+    entity_id: sensor.hacs
+condition:
+  - condition: template
+    value_template: '{{ states(trigger.entity_id) != ''unknown''}}'
+  - condition: template
+    value_template: '{{ (states(trigger.entity_id) | float) != 0}}'
+action:
+  - service: notify.mobile_app_cph2065
+    data:
+      title: "\U0001F6A7 HACS update"
+      message: >-
+        {% for repo in state_attr(trigger.entity_id, 'repositories')
+        %}           - {{ repo.display_name }} ({{ repo["available_version"]
+        }})           {% endfor %}
+mode: single

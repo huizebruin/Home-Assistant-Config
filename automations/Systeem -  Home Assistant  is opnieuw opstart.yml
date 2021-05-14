@@ -1,0 +1,12 @@
+alias: 'Systeem :  Home Assistant  is opnieuw opstart'
+description: ''
+trigger:
+  - platform: homeassistant
+    event: start
+condition: []
+action:
+  - service: notify.mobile_app_cph2065
+    data:
+      message: Home assistant is opnieuw opgestart
+      title: "\U0001F6A7 Home Assistant ⚠️  \U0001F389"
+mode: single

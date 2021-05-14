@@ -1,0 +1,25 @@
+alias: Omrin welke kliko wordt Morgen geleegd
+description: ''
+trigger:
+  - platform: time
+    at: '20:00:00'
+condition:
+  - condition: or
+    conditions:
+      - condition: state
+        entity_id: sensor.omrin_morgen
+        state: sortibak
+      - condition: state
+        entity_id: sensor.omrin_morgen
+        state: gft
+      - condition: state
+        entity_id: sensor.omrin_morgen
+        state: papier
+action:
+  - service: telegram_bot.send_message
+    data:
+      message: 'Morgen wordt de {{ states(''sensor.omrin_morgen'') }} kliko geleegd'
+  - service: notify.mobile_app_cph2065
+    data:
+      message: 'Morgen wordt de {{ states(''sensor.omrin_morgen'') }} kliko     geleegd'
+mode: single

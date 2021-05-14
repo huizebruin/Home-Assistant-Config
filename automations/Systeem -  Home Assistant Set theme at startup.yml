@@ -1,0 +1,9 @@
+alias: 'Systeem :  Home Assistant Set theme at startup'
+trigger:
+  - platform: homeassistant
+    event: start
+action:
+  - service: frontend.set_theme
+    data:
+      name: Huizebruin (Dark)
+mode: single
