@@ -116,3 +116,9 @@
         friendly_name: "Gras"
         unit_of_measurement: " /m³"
         value_template: '{{ state_attr("sensor.pollen_data", "Count").grass_pollen }}'
+   
+      pollen_last_updated:
+        icon_template: "mdi:clock"
+        friendly_name: "Laatste update"
+        device_class: timestamp
+        value_template: "{{ state_attr('sensor.pollen', 'updatedAt') }}"
