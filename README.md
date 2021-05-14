@@ -10,6 +10,11 @@ Volg mij op mijn reis om een leuke Home Assistant te maken mis geen update door 
 Gebruik de code uit deze repo voor je eigen Home Assistant-omgeving, houd er rekening mee dat je niet altijd alles regel voor regel kunt kopiëren. 
 Als je vragen hebt, stel ze dan gerust via e-mail of socials! 
 
+14/05/2021:
+  - update ambee pollen naar v01.08 in de sensor map
+  - automations geplaatst
+  - readme update gedaan
+  - utility_meter map bijgewerkt
 
 08/05/2021:
 - update van de pollen (categorie Overige toegevoegd) en het yaml bestand hernoemd naar :ambee-pollen.yaml
