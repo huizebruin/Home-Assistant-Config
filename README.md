@@ -1,8 +1,11 @@
 [![GitHub stars](https://img.shields.io/github/stars/huizebruin/Home-Assistant-Config.svg?style=plasticr)](https://github.com/huizebruin/Home-Assistant-Config/stargazers)
 [![GitHub last commit](https://img.shields.io/github/last-commit/huizebruin/Home-Assistant-Config.svg?style=plasticr)](https://github.com/huizebruin/Home-Assistant-Config/commits/main)
 [![HA Version](https://img.shields.io/badge/Running%20Home%20Assistant-2021.5.3%20-darkblue)](https://github.com/home-assistant/home-assistant/releases/latest)
+![Project Maintenance][maintenance-shield]
+[![License][license-shield]](LICENSE.md)
+![GitHub Forks][forks-shield]
 
-
+Volg mij op mijn reis om een leuke Home Assistant te maken mis geen update door  GitHub :star2: te drukken.
 # Home-Assistant-Config
 Gebruik de code uit deze repo voor je eigen Home Assistant-omgeving, houd er rekening mee dat je niet altijd alles regel voor regel kunt kopiëren. 
 Als je vragen hebt, stel ze dan gerust via e-mail of socials! 
@@ -60,3 +63,7 @@ Nu zal bij elke herstart deze thema geladen worden.
 Liked some of my work? Buy me a coffee (or more likely a beer)
 
 <a href="https://www.buymeacoffee.com/huizebruin" target="_blank"><img src="https://bmc-cdn.nyc3.digitaloceanspaces.com/BMC-button-images/custom_images/orange_img.png" alt="Buy Me A Coffee" style="height: auto !important;width: auto !important;" ></a>
+
+[license-shield]: https://img.shields.io/github/license/huizebruin/home-assistant-config.svg
+[maintenance-shield]: https://img.shields.io/maintenance/yes/2021.svg
+[forks-shield]: https://img.shields.io/github/forks/huizebruin/home-assistant-config.svg?style=social&label=Forks
