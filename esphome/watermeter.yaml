@@ -18,16 +18,18 @@ wifi:
   # Enable fallback hotspot (captive portal) in case wifi connection fails
   ap:
     ssid: "S0-Meter Fallback Hotspot"
-    password: "Water-meter"
+    password: "k5nkOYH6MhHN"
 
 captive_portal:
 
-# Enable logging hoeft niets te staan
+# Enable logging
 logger:
-# Enable Home Assistant API hoeft niets te staan
-api:
-ota:
 
+# Enable Home Assistant API
+api:
+
+ota:
+# Gebruik de tekst hieronder dit ben je allemaal nodig voor de watermeter.
 # Enable time component to reset energy at midnight
 time:
   - platform: sntp
@@ -38,11 +40,17 @@ sensor:
     pin: D2
     name: "Waterverbruik_in_liters"
     id: water_usage
+    icon: "mdi:water"
     update_interval: 5s
     unit_of_measurement: 'L'
     accuracy_decimals: 2
     filters:
-      - multiply: 0.0456666667
+      - multiply: 0.0435
+  
+  - platform: total_daily_energy
+    name: tot_water_day
+    power_id: water_usage
+    unit_of_measurement: 'M3'
     
     
  
