@@ -1,0 +1,11 @@
+#switch:
+# Switch for enabling joining zigbee2mqtt
+
+  - platform: mqtt
+    name: "Zigbee2MQTT Main join"
+    state_topic: "zigbee2mqtt/bridge/info"
+    icon: mdi:zigbee
+    value_template: '{{ value_json.permit_join | lower }}'
+    command_topic: "zigbee2mqtt/bridge/request/permit_join"
+    payload_on: "true"
+    payload_off: "false"
