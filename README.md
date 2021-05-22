@@ -9,6 +9,7 @@ Volg mij op mijn reis om een leuke Home Assistant te maken mis geen update door 
 # Home-Assistant-Config
 Gebruik de code uit deze repo voor je eigen Home Assistant-omgeving, houd er rekening mee dat je niet altijd alles regel voor regel kunt kopiëren. 
 Als je vragen hebt, stel ze dan gerust via e-mail of socials! 
+
 22/05/2021:
  - map schakelaars toegevoegd in config en hoofd map
  
