@@ -18,6 +18,7 @@ default_config:
 group:  !include_dir_merge_named groups/
 sensor: !include_dir_merge_list sensors/
 binary_sensor: !include_dir_merge_list binary_sensors/
+switch: !include_dir_merge_list switch/
 automation: !include automations.yaml
 script: !include scripts.yaml
 scene: !include scenes.yaml
@@ -54,6 +55,13 @@ notify:
     - name: Wobbebot
       platform: telegram
       chat_id: !secret telegram_chatID
+
+    - name: twitter wobbele
+      platform: twitter
+      consumer_key: !secret twitter_API_KEY
+      consumer_secret: !secret twitter_API_SECRET
+      access_token: !secret twitter_ACCESS_TOKEN
+      access_token_secret: !secret twitter_ACCESS_SECRET
 #===============================================================
 ## influxdb
 #===============================================================
