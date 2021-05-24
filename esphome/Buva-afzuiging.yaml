@@ -4,7 +4,7 @@ esphome:
   board: d1_mini
 
 wifi:
-  ssid: !secret ssid
+  ssid: !secret ssid2
   password: !secret password
   manual_ip:
     # Set this to the IP of the ESP
@@ -39,7 +39,5 @@ fan:
   platform: speed
   output: pwm_output
   name: "Ventilation"
-  speed:
-    low: 0.1
-    medium: 0.5
-    high: 1
+  speed_count:
+    5
