@@ -36,12 +36,11 @@ time:
     id: my_time  
 
 sensor:
-  - platform: pulse_counter
+  - platform: pulse_meter
     pin: D2
     name: "Waterverbruik_in_liters"
     id: water_usage
     icon: "mdi:water"
-    update_interval: 5s
     unit_of_measurement: 'L'
     accuracy_decimals: 2
     filters:
@@ -51,6 +50,7 @@ sensor:
     name: tot_water_day
     power_id: water_usage
     unit_of_measurement: 'M3'
+    
     
     
  
