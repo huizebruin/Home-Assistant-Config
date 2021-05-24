@@ -35,11 +35,10 @@ time:
     id: my_time  
 
 sensor:
-  - platform: pulse_counter
+  - platform: pulse_meter
     pin: D5
     name: "opbrengst_zonnepanelen_in_W"
     id: W_opbrengst
-    update_interval: 5s
     accuracy_decimals: 0
     unit_of_measurement: 'W'
     filters:
@@ -52,15 +51,21 @@ sensor:
       filters:
         - multiply: 0.000565
   
-  - platform: pulse_counter
+  - platform: pulse_meter
     pin: D2
     name: "Waterverbruik_in_liters"
     id: water_usage
-    update_interval: 5s
+    icon: "mdi:water"
     unit_of_measurement: 'L'
     accuracy_decimals: 2
     filters:
-      - multiply: 0.0456666667
+#     - multiply: 0.016666667 orgineel
+      - multiply: 0.0435
+
+  - platform: total_daily_energy
+    name: tot_water_day
+    power_id: water_usage
+    unit_of_measurement: 'M3'
     
     
  
