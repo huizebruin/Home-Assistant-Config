@@ -121,4 +121,4 @@
         icon_template: "mdi:clock"
         friendly_name: "Laatste update"
         device_class: timestamp
-        value_template: "{{ state_attr('sensor.pollen', 'updatedAt') }}"
+        value_template: "{{ state_attr('sensor.pollen_data', 'updatedAt') }}"
