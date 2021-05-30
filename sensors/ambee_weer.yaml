@@ -5,8 +5,8 @@
 # https://api-dashboard.getambee.com/#/signup account aanmaken voor een 100 api calls per dag..
 # vervang LAT, LONG en API-KEY door uw waarden  XX.XXXXXXXX X.XXXXXX
 # in je Secrets.yaml de volgende regels plaatsen: 
-# (zonder hekje ervoor)     ambee-weather-resource: "https://api.ambeedata.com/weather/latest/by-lat-lng?lat=XX.XXXXXX&lng=X.XXXXXX
 # (zonder hekje ervoor)     ambee-api: XXXXXXXXX
+
 
   - platform: rest
     scan_interval: 3600
@@ -29,7 +29,6 @@
       - windGust
       - windBearing
       - cloudCover
-      - uvIndex
       - visibility
       - ozone
 
@@ -60,7 +59,7 @@
         value_template: "{{ ((state_attr('sensor.weer', 'dewPoint') | float - 32) * 5/9)|round(1) }}"
 
        weather_actual_humidity:
-        icon_template: "mdi:water-percent"
+        icon_template: "mdi:water"
         friendly_name: "Luchtvochtigheid"
         unit_of_measurement: "%"
         value_template: "{{ (state_attr('sensor.weer', 'humidity') * 100) }}"
@@ -97,11 +96,6 @@
         unit_of_measurement: "%" 
         value_template: "{{ state_attr('sensor.weer', 'cloudCover') * 100 }}"
 
-       weather_actual_uvindex:
-        icon_template: "mdi:sunglasses"
-        friendly_name: "UV Index"
-        value_template: "{{ state_attr('sensor.weer', 'uvIndex') }}"
-
        weather_actual_visibility:
         icon_template: "mdi:binoculars"
         friendly_name: "Zichtbaarheid"
@@ -113,5 +107,3 @@
         friendly_name: "Ozon"
         unit_of_measurement: "DU" 
         value_template: "{{ state_attr('sensor.weer', 'ozone') }}"
-
-

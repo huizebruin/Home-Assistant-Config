@@ -11,26 +11,22 @@
 
 #p2000 installeren via hacs
 #===============================================================
-  - platform: p2000
-    regios: 2
-    disciplines: 1,2,3
-    scan_interval: 60
-    capcodes: !secret capcodes 
-    icon: mdi:fire-truck
+#  - platform: p2000
+#    regios: 2
+#    disciplines: 1,2,3
+#    scan_interval: 60
+#    capcodes: !secret capcodes 
+#    icon: mdi:fire-truck
 
-  - platform: p2000
-    name: 112 meldingen
-    regios: 2
-    disciplines: 1,2,3
-    radius: 10000
-    scan_interval: 60
-    latitude: !secret latitude
-    longitude: !secret longitude
+#  - platform: p2000
+#    name: 112 meldingen
+#    regios: 2
+#    disciplines: 1,2,3
+#    radius: 10000
+#    scan_interval: 60
+#    latitude: !secret latitude
+#    longitude: !secret longitude
 #===============================================================
-
-
- 
-
 
 # template sensoren 
 ##########
