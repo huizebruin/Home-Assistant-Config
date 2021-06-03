@@ -42,30 +42,33 @@ sensor:
     accuracy_decimals: 0
     unit_of_measurement: 'W'
     filters:
-      - multiply: 28
+      - multiply: 30
       
     total:
       unit_of_measurement: 'kWh'
       name: 'zonnepanelen_kwh'
       accuracy_decimals: 2
       filters:
-        - multiply: 0.000565
-  
+        - multiply: 0.0005
+        
   - platform: pulse_meter
     pin: D2
     name: "Waterverbruik_in_liters"
     id: water_usage
     icon: "mdi:water"
-    unit_of_measurement: 'L'
-    accuracy_decimals: 2
+    unit_of_measurement: 'L/min'
+    accuracy_decimals: 1
+    timeout: 2min
     filters:
-#     - multiply: 0.016666667 orgineel
-      - multiply: 0.0435
+     - multiply: 0.016666667 # orgineel
 
-  - platform: total_daily_energy
-    name: tot_water_day
-    power_id: water_usage
-    unit_of_measurement: 'M3'
-    
+    total:
+      id: sensor_pulse_meter_total
+      name: "Water Total verbruik"
+      icon: "mdi:cube-outline"
+      unit_of_measurement: "M3"
+      accuracy_decimals: 3
+      filters:
+        - multiply: 0.001
     
  
