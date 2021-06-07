@@ -2,10 +2,12 @@
 #===============================================================
 # Ambee Weer door Roel R
 # versie 08-05-2021
+# versie 07-06-2021  ambee-weather-resource toegevoegd Huizebruin.nl
 # https://api-dashboard.getambee.com/#/signup account aanmaken voor een 100 api calls per dag..
 # vervang LAT, LONG en API-KEY door uw waarden  XX.XXXXXXXX X.XXXXXX
 # in je Secrets.yaml de volgende regels plaatsen: 
 # (zonder hekje ervoor)     ambee-api: XXXXXXXXX
+# ambee-weather-resource: "https://api.ambeedata.com/weather/latest/by-lat-lng?lat=XX.XXXXX&lng=X.XXXXX"
 
 
   - platform: rest
