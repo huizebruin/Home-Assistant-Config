@@ -1,6 +1,6 @@
 [![GitHub stars](https://img.shields.io/github/stars/huizebruin/Home-Assistant-Config.svg?style=plasticr)](https://github.com/huizebruin/Home-Assistant-Config/stargazers)
 [![GitHub last commit](https://img.shields.io/github/last-commit/huizebruin/Home-Assistant-Config.svg?style=plasticr)](https://github.com/huizebruin/Home-Assistant-Config/commits/main)
-[![HA Version](https://img.shields.io/badge/Running%20Home%20Assistant-2021.6.2%20-darkblue)](https://github.com/home-assistant/home-assistant/releases/latest)
+[![HA Version](https://img.shields.io/badge/Running%20Home%20Assistant-2021.6.4%20-darkblue)](https://github.com/home-assistant/home-assistant/releases/latest)
 ![Project Maintenance][maintenance-shield]
 [![License][license-shield]](LICENSE.md)
 ![GitHub Forks][forks-shield]
@@ -10,6 +10,9 @@ Volg mij op mijn reis om een leuke Home Assistant te maken mis geen update door 
 Gebruik de code uit deze repo voor je eigen Home Assistant-omgeving, houd er rekening mee dat je niet altijd alles regel voor regel kunt kopiëren. 
 Als je vragen hebt, stel ze dan gerust via e-mail of socials! 
 
+
+12/06/2021:
+ - sensor Ambee weer een update gegeven
 22/05/2021:
  - map schakelaars toegevoegd in config en hoofd map
  
