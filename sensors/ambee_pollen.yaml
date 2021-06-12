@@ -9,7 +9,9 @@
 # Al het goed is is de zone voor home al ingesteld in je home assistant.
 # vervang API-KEY door uw waarden  
 # in je Secrets.yaml de volgende regels plaatsen: 
-# (zonder hekje ervoor)     ambee-api: XXXXXXXXX
+# (zonder hekje ervoor) ambee-api: XXXXXXXXX
+# (zonder hekje ervoor) latitude: 53.XXXXXX   # deze hoeft er maar 1 keer in te staan en is voor meerdere applicaties te gebruiken   53.XXXXXX vervangen door je eigen
+# (zonder hekje ervoor) longitude: 6.XXXXXX   # deze hoeft er maar 1 keer in te staan en is voor meerdere applicaties te gebruiken    6.XXXXXX vervangen door je eigen
 # Bron : https://gist.github.com/michilehr/7ce7431f97e82523336a120b50d0ebe2
 
   - platform: rest
