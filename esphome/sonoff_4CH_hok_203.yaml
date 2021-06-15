@@ -1,0 +1,81 @@
+esphome:
+  name: sonoff_4ch_hok_203
+  platform: ESP8266
+  board: esp01_1m
+
+wifi:
+  ssid: !secret ssid2
+  password: !secret password
+  manual_ip:
+    # Set this to the IP of the ESP
+    static_ip: 192.168.178.203
+    # Set this to the IP address of the router. Often ends with .1
+    gateway: 192.168.178.1 
+    # The subnet of the network. 255.255.255.0 works for most home networks.
+    subnet: 255.255.255.0 
+  # Enable fallback hotspot (captive portal) in case wifi connection fails
+  ap:
+    ssid: "Sonoff4ChHok203"
+    password: "y0dOBRT0URv8"
+
+captive_portal:
+# Enable logging
+logger:
+# Enable Home Assistant API
+api:
+ota:
+
+binary_sensor:
+  - platform: gpio
+    pin:
+      number: GPIO0
+      mode: INPUT_PULLUP
+      inverted: True
+    name: "Sonoff 4CH Button 1"
+  - platform: gpio
+    pin:
+      number: GPIO9
+      mode: INPUT_PULLUP
+      inverted: True
+    name: "Sonoff 4CH Button 2"
+  - platform: gpio
+    pin:
+      number: GPIO10
+      mode: INPUT_PULLUP
+      inverted: True
+    name: "Sonoff 4CH Button 3"
+  - platform: gpio
+    pin:
+      number: GPIO14
+      mode: INPUT_PULLUP
+      inverted: True
+    name: "Sonoff 4CH Button 4"
+  - platform: status
+    name: "Sonoff 4CH Status"
+
+switch:
+  - platform: gpio
+    name: "sonoff_4ch_pro2_ledstrip"
+    pin: GPIO12
+  - platform: gpio
+    name: "sonoff_4ch_pro2_lamp_boven_tafel"
+    pin: GPIO5
+  - platform: gpio
+    name: "sonoff_4ch_pro2_kerst_verlichting"
+    pin: GPIO4
+  - platform: gpio
+    name: "sonoff_4ch_pro2_gang_verlichting"
+    pin: GPIO15
+
+output:
+  # Register the blue LED as a dimmable output ....
+  - platform: esp8266_pwm
+    id: blue_led
+    pin: GPIO13
+    inverted: True
+
+light:
+  # ... and then make a light out of it.
+  - platform: monochromatic
+    name: "Sonoff 4CH Blue LED"
+    output: blue_led
