@@ -4,6 +4,7 @@
 ![Project Maintenance][maintenance-shield]
 [![License][license-shield]](LICENSE.md)
 ![GitHub Forks][forks-shield]
+![Discord](https://img.shields.io/discord/723629686093119650)
 
 Volg mij op mijn reis om een leuke Home Assistant te maken mis geen update door  GitHub :star2: te drukken.
 # Home-Assistant-Config
