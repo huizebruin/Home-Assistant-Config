@@ -1,0 +1,69 @@
+esphome:
+  name: ble-esp32-193
+  platform: ESP32
+  board: nodemcu-32s
+
+wifi:
+  ssid: !secret ssid
+  password: !secret password
+  manual_ip:
+    # Set this to the IP of the ESP
+    static_ip: 192.168.178.193
+    # Set this to the IP address of the router. Often ends with .1
+    gateway: 192.168.178.2 
+    # The subnet of the network. 255.255.255.0 works for most home networks.
+    subnet: 255.255.255.0 
+
+  # Enable fallback hotspot (captive portal) in case wifi connection fails
+  ap:
+    ssid: "Esp32-ble Fallback Hotspot"
+    password: "2ELg7otjka9x"
+
+captive_portal:
+
+# Enable logging
+logger:
+
+# Enable Home Assistant API
+api:
+
+ota:
+
+esp32_ble_tracker:
+
+sensor:
+  - platform: atc_mithermometer
+    mac_address: "A4:C1:38:69:1A:5F"
+    temperature:
+      name: "ATC Temperature-5f"
+    humidity:
+      name: "ATC Humidity-5f"
+    battery_level:
+      name: "ATC Battery-Level-5f"
+
+  - platform: atc_mithermometer
+    mac_address: "A4:C1:38:48:D1:5D"
+    temperature:
+      name: "ATC Temperature-5d"
+    humidity:
+      name: "ATC Humidity-5d"
+    battery_level:
+      name: "ATC Battery-Level-5d"
+
+  - platform: atc_mithermometer
+    mac_address: "A4:C1:38:B9:E2:DD"
+    temperature:
+      name: "ATC Temperature-dd"
+    humidity:
+      name: "ATC Humidity-dd"
+    battery_level:
+      name: "ATC Battery-Level-dd"
+      
+  - platform: atc_mithermometer
+    mac_address: "A4:C1:38:47:C1:39"
+    temperature:
+      name: "ATC Temperature-39"
+    humidity:
+      name: "ATC Humidity-39"
+    battery_level:
+      name: "ATC Battery-Level-39"

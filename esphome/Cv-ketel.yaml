@@ -1,0 +1,44 @@
+esphome:
+  name: cv-ketel-199
+  platform: ESP8266
+  board: esp01_1m
+
+wifi:
+  ssid: !secret ssid2
+  password: !secret password
+  manual_ip:
+    # Set this to the IP of the ESP
+    static_ip: 192.168.178.199
+    # Set this to the IP address of the router. Often ends with .1
+    gateway: 192.168.178.2 
+    # The subnet of the network. 255.255.255.0 works for most home networks.
+    subnet: 255.255.255.0 
+  # Enable fallback hotspot (captive portal) in case wifi connection fails
+
+  # Enable fallback hotspot (captive portal) in case wifi connection fails
+  ap:
+    ssid: "Cv-Ketel Fallback Hotspot"
+    password: "nT63fe44xLdc"
+
+captive_portal:
+# Enable logging
+logger:
+# Enable Home Assistant API
+api:
+ota:
+dallas:
+  - pin: GPIO2
+sensor:
+  - platform: dallas
+    address: 0xCA0000070E370228
+    name: "Temperature #1"
+  - platform: dallas
+    address:  0x660000070E477128
+    name: "Temperature #2"
+  - platform: dallas
+    address:  0xD90000070E3AB928
+    name: "Temperature #3"
+  - platform: dallas
+    address:  0x2D0000070E39F328
+    name: "Temperature #4"
+    

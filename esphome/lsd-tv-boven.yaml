@@ -1,0 +1,61 @@
+esphome:
+  name: lsd-stopcontact-197
+  platform: ESP8266
+  board: esp01_1m
+
+wifi:
+  ssid: !secret ssid2
+  password: !secret password
+  manual_ip:
+    # Set this to the IP of the ESP
+    static_ip: 192.168.178.197
+    # Set this to the IP address of the router. Often ends with .1
+    gateway: 192.168.178.2
+    # The subnet of the network. 255.255.255.0 works for most home networks.
+    subnet: 255.255.255.0 
+  # Enable fallback hotspot (captive portal) in case wifi connection fails
+
+api:
+logger:
+ota:
+
+binary_sensor:
+  - platform: status
+    name: "lsd-stopcontact-197 Status"
+  - platform: gpio
+    name: "lsd-stopcontact-197 Button"
+    pin:
+      number: GPIO14
+      mode: INPUT_PULLUP
+      inverted: true
+    internal: true
+    on_press:
+      - switch.toggle: relay
+
+output:
+  - platform: esp8266_pwm
+    id: led
+    pin:
+      number: GPIO4
+      inverted: true
+
+light:
+  - platform: monochromatic
+    id: status_led
+    name: "lsd-stopcontact-197 Light"
+    output: led
+
+switch:
+  - platform: gpio
+    id: relay
+    pin: GPIO12
+  - platform: template
+    name: "lsd-stopcontact-197 Relay"
+    optimistic: true
+    id: relay_and_light
+    turn_on_action:
+      - switch.turn_on: relay
+      - light.turn_on: status_led
+    turn_off_action:
+      - switch.turn_off: relay
+      - light.turn_off: status_led

@@ -1,5 +1,5 @@
 esphome:
-  name: sonof-sv-206
+  name: sonoff_basic_zwembad_pomp-201
   platform: ESP8266
   board: esp01_1m
 
@@ -8,15 +8,17 @@ wifi:
   password: !secret password
   manual_ip:
     # Set this to the IP of the ESP
-    static_ip: 192.168.178.206
+    static_ip: 192.168.178.201
     # Set this to the IP address of the router. Often ends with .1
     gateway: 192.168.178.2 
     # The subnet of the network. 255.255.255.0 works for most home networks.
     subnet: 255.255.255.0 
   # Enable fallback hotspot (captive portal) in case wifi connection fails
+
+  # Enable fallback hotspot (captive portal) in case wifi connection fails
   ap:
-    ssid: "Sonof-Sv Fallback Hotspot"
-    password: "rLeU3XrZPo4V"
+    ssid: "Sonoff Basic Zwembad Pomp"
+    password: "KXQiUqxQgVCZ"
 
 captive_portal:
 
@@ -25,25 +27,24 @@ logger:
 
 # Enable Home Assistant API
 api:
-
 ota:
-
 binary_sensor:
   - platform: gpio
     pin:
-      number: GPIO14
+      number: GPIO0
       mode: INPUT_PULLUP
       inverted: True
-    name: "24 Voeding"
-    device_class: garage_door
-    
+    name: "Sonoff zwembad_pomp Button"
+    on_press:
+      - switch.toggle: relay
+
 switch:
   - platform: gpio
+    name: "Sonoff zwembad_pomp"
     pin: GPIO12
     id: relay
-  - platform: template
-    name: "24v voeding"
-    turn_on_action:
-    - switch.turn_on: relay
-    - delay: 500ms
-    - switch.turn_off: relay
+
+status_led:
+  pin:
+    number: GPIO13
+    inverted: yes

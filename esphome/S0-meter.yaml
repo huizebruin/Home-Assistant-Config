@@ -10,7 +10,7 @@ wifi:
     # Set this to the IP of the ESP
     static_ip: 192.168.178.190
     # Set this to the IP address of the router. Often ends with .1
-    gateway: 192.168.178.1 
+    gateway: 192.168.178.2 
     # The subnet of the network. 255.255.255.0 works for most home networks.
     subnet: 255.255.255.0  
 
@@ -42,7 +42,7 @@ sensor:
     accuracy_decimals: 0
     unit_of_measurement: 'W'
     filters:
-      - multiply: 30
+      - multiply: 31
       
     total:
       unit_of_measurement: 'kWh'

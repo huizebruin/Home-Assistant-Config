@@ -1,0 +1,46 @@
+esphome:
+  name: hok_koelkast_omgeving-202
+  platform: ESP8266
+  board: esp12e
+
+wifi:
+  ssid: !secret ssid2
+  password: !secret password
+  manual_ip:
+    # Set this to the IP of the ESP
+    static_ip: 192.168.178.202
+    # Set this to the IP address of the router. Often ends with .1
+    gateway: 192.168.178.2
+    # The subnet of the network. 255.255.255.0 works for most home networks.
+    subnet: 255.255.255.0 
+  # Enable fallback hotspot (captive portal) in case wifi connection fails
+
+  ap:
+    ssid: "Hok Koelkast Omgeving-202"
+    password: "8jHoCCkjlYQw"
+
+captive_portal:
+
+# Enable logging
+logger:
+
+# Enable Home Assistant API
+api:
+
+ota:
+dallas:
+  - pin: GPIO13 
+  
+sensor:
+  - platform: dallas
+    address:  0x1E00000758ADFE28
+    name: "Hok_koelkast Temperatuur"
+
+  - platform: dht
+    model: DHT11
+    pin: GPIO14
+    temperature:
+      name: "hok Room Temperature"
+    humidity:
+      name: "hok Room Humidity"
+    update_interval: 60s

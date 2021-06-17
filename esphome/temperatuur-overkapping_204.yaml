@@ -1,5 +1,5 @@
 esphome:
-  name: buva-afzuiging-zolder
+  name: temperatuur-overkapping_204
   platform: ESP8266
   board: d1_mini
 
@@ -8,36 +8,36 @@ wifi:
   password: !secret password
   manual_ip:
     # Set this to the IP of the ESP
-    static_ip: 192.168.178.194
+    static_ip: 192.168.178.204
     # Set this to the IP address of the router. Often ends with .1
     gateway: 192.168.178.2 
     # The subnet of the network. 255.255.255.0 works for most home networks.
-    subnet: 255.255.255.0  
-
+    subnet: 255.255.255.0 
   # Enable fallback hotspot (captive portal) in case wifi connection fails
   ap:
-    ssid: "Buva-Afzuiging Fallback Hotspot"
-    password: "sKGWChMpZwzi"
+    ssid: "Temperatuur-Overkapping 204"
+    password: "5jQKEFYdGRhQ"
 
 captive_portal:
 
 # Enable logging
 logger:
-
 # Enable Home Assistant API
 api:
-
 ota:
-
-output:
-  platform: esp8266_pwm
-  pin: D5
-  frequency: 2000 Hz
-  id: pwm_output
-
-fan:
-  platform: speed
-  output: pwm_output
-  name: "Ventilation"
-  speed_count:
-    5
+sensor:
+  - platform: adc
+    pin: A0
+    name: "overkapping Brightness"
+    update_interval: 60s
+    filters:
+      - multiply: 3.3
+    
+  - platform: dht
+    model: DHT11
+    pin: GPIO14
+    temperature:
+      name: "overkapping Temperatuur"
+    humidity:
+      name: "overkapping Humidity"
+    update_interval: 60s

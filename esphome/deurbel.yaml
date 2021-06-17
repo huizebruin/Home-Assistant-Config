@@ -10,7 +10,7 @@ wifi:
     # Set this to the IP of the ESP
     static_ip: 192.168.178.191
     # Set this to the IP address of the router. Often ends with .1
-    gateway: 192.168.178.1 
+    gateway: 192.168.178.2 
     # The subnet of the network. 255.255.255.0 works for most home networks.
     subnet: 255.255.255.0  
 
@@ -29,21 +29,6 @@ api:
 
 ota:
 
-# Enable Web server.
-web_server:
-  port: 80
-
-# Sync time with Home Assistant.
-time:
-  - platform: homeassistant
-    id: homeassistant_time
-
-# Sensors with general information.
-sensor:
-  # Uptime sensor.
-  - platform: uptime
-    name: Doorbell Uptime
-
 # Global to store the on/off state of the chime
 globals:
   - id: chime
@@ -53,10 +38,6 @@ globals:
 
 # Exposed switches.
 switch:
-  # Switch to restart the doorbell.
-  - platform: restart
-    name: Doorbell Restart
-
   # Switch to turn on/off the chime.
   - platform: gpio
     id: relay
