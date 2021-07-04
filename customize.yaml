@@ -77,3 +77,18 @@ sensor.pollen_tree_count:
   unit_of_measurement: ' /m³'
 sensor.pollen_weed_count:
   unit_of_measurement: ' /m³'
+switch.sonoff_4ch_pro2_ledstrip:
+  icon: hass:led-strip
+switch.sonoff_4ch_pro2_kerst_verlichting:
+  icon: hass:string-lights
+switch.sonoff_4ch_pro2_lamp_boven_tafel:
+  icon: hass:fan
+switch.tint_smart_switch:
+  icon: hass:lightbulb
+switch.voordeur_verlichting:
+  icon: hass:outdoor-lamp
+switch.buiten_verlichting_voor:
+  icon: hass:power-socket-eu
+switch.lsd_stopcontact_197_relay:
+  friendly_name: Radio overkapping
+  icon: hass:radio

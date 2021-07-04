@@ -1,0 +1,797 @@
+- id: '1609024439215'
+  alias: voordeur open
+  description: ''
+  trigger:
+  - type: opened
+    platform: device
+    device_id: b93fc1fbef179ee7dc5a6dcbb0ffc11e
+    entity_id: binary_sensor.voordeur_contact
+    domain: binary_sensor
+  condition: []
+  action:
+  - service: notify.mobile_app_cph2065
+    data:
+      message: 🚪De voordeur is open!
+  mode: single
+- id: '1609106987185'
+  alias: stop Volumio
+  description: ''
+  trigger:
+  - platform: time
+    at: '20:00:00'
+  condition:
+  - condition: device
+    device_id: 1c078dce1564c9851eea4ace01837afc
+    domain: media_player
+    entity_id: media_player.volumio
+    type: is_playing
+  action:
+  - service: media_player.media_stop
+    data: {}
+    entity_id: media_player.volumio
+  mode: single
+- id: '1609152921609'
+  alias: start Volumio stream
+  description: ''
+  trigger:
+  - platform: time
+    at: 09:00
+  condition:
+  - condition: time
+    weekday:
+    - sat
+    after: 09:00
+  action:
+  - service: media_player.media_play
+    data: {}
+    entity_id: media_player.volumio
+  mode: single
+- id: '1609268173320'
+  alias: Automatische verlichting tuin aan
+  description: ''
+  trigger:
+  - platform: sun
+    event: sunset
+  condition: []
+  action:
+  - service: switch.turn_on
+    target:
+      entity_id:
+      - switch.sonoff_4ch_pro2_ledstrip
+      - switch.sonoff_4ch_pro2_kerst_verlichting
+      - switch.voordeur_verlichting
+  - service: notify.mobile_app_cph2065
+    data:
+      message: Buiten verlichting achterhuis  AAN om {{now().strftime('%H:%M')}}
+  mode: single
+- id: '1609274755921'
+  alias: Schutting deur open
+  description: ''
+  trigger:
+  - type: opened
+    platform: device
+    device_id: 63f39a4a18aaf623b18121c868ce1523
+    entity_id: binary_sensor.schutting_deur_contact
+    domain: binary_sensor
+  condition: []
+  action:
+  - service: notify.mobile_app_cph2065
+    data:
+      message: 🚪De schuttingdeur is open! {{now().strftime('%H:%M')}}
+  mode: single
+- id: '1609512721466'
+  alias: batterijen raken leeg
+  description: ''
+  trigger:
+  - platform: state
+    entity_id: sensor.tz1800_ejwkn2h2_ty0203_38c534fe_power
+    attribute: battery_voltage
+    to: '10'
+    from: '11'
+  - platform: state
+    entity_id: sensor.tz1800_fcdjzz3s_ty0202_9238c7fe_power
+    attribute: battery_voltage
+    from: '11'
+    to: '10'
+  condition: []
+  action:
+  - service: telegram_bot.send_message
+    data:
+      message: Check de batterijen  van de sensoren ?
+  mode: single
+- id: 12342fef8534408b86c693b70331d435
+  alias: 'Systeem :  Home Assistant Set theme at startup'
+  trigger:
+  - platform: homeassistant
+    event: start
+  action:
+  - service: frontend.set_theme
+    data:
+      name: Huizebruin (Dark)
+  mode: single
+- id: '1609786178940'
+  alias: Omrin Morgen
+  description: ''
+  trigger:
+  - platform: time
+    at: '20:00:00'
+  condition:
+  - condition: or
+    conditions:
+    - condition: state
+      entity_id: sensor.omrin_morgen
+      state: sortibak
+    - condition: state
+      entity_id: sensor.omrin_morgen
+      state: gft
+    - condition: state
+      entity_id: sensor.omrin_morgen
+      state: papier
+  action:
+  - service: telegram_bot.send_message
+    data:
+      message: Morgen wordt de {{ states('sensor.omrin_morgen') }} kliko geleegd
+  - service: notify.mobile_app_cph2065
+    data:
+      message: Morgen wordt de {{ states('sensor.omrin_morgen') }} kliko     geleegd
+  mode: single
+- id: '1610202760429'
+  alias: ' 23:00 verlichting huis UIT werkweek'
+  description: ''
+  trigger:
+  - platform: time
+    at: '23:00'
+  condition:
+  - condition: time
+    weekday:
+    - mon
+    - tue
+    - wed
+    - thu
+    - sun
+  - condition: state
+    entity_id: input_boolean.verlichting_23_00_uit
+    state: 'on'
+  action:
+  - service: switch.turn_off
+    target:
+      area_id:
+      - woonkamer_2
+      - gang_voor
+      entity_id:
+      - switch.sonoff_4ch_pro2_ledstrip
+      - switch.tint_smart_switch
+      device_id:
+      - efb928b79d6c383487b2684a34694df1
+      - 21be62f3bdef9ccde1410adacd885a3d
+      - 6ea4f3ef46fba0b73606f0f0c07b458b
+  - service: light.turn_off
+    target:
+      area_id:
+      - woonkamer_2
+      - gang_voor
+  - service: media_player.media_pause
+    target:
+      device_id: 70d5a470223b9cc7a9e283934a6e2154
+  - service: notify.mobile_app_cph2065
+    data:
+      title: Verlichting
+      message: 'Verlichting Automatische beneden en buiten UIT om '
+      data:
+        '[object Object]':
+  - delay:
+      hours: 0
+      minutes: 5
+      seconds: 0
+      milliseconds: 0
+  - type: turn_off
+    device_id: 48717af0b0345425bfca73ba354d2ddc
+    entity_id: switch.sonoff_4ch_pro2_kerst_verlichting
+    domain: switch
+  mode: single
+- id: '1610967625682'
+  alias: Er staat iemand bij de voordeur (deurbel)
+  description: ''
+  trigger:
+  - type: turned_on
+    platform: device
+    device_id: a78dd3b4affce7417132ed41921e13a4
+    entity_id: binary_sensor.doorbell_button_2
+    domain: binary_sensor
+  condition: []
+  action:
+  - service: notify.mobile_app_cph2065
+    data:
+      message: Ding dong! Er staat iemand bij de voordeur! om {{now().strftime('%H:%M')}}
+  - service: tts.google_translate_say
+    data:
+      entity_id: media_player.huiskamer
+      language: nl
+      message: Ding dong! Er staat iemand bij de voordeur!
+  - delay:
+      hours: 0
+      minutes: 0
+      seconds: 4
+      milliseconds: 0
+  - service: media_player.play_media
+    target:
+      entity_id: media_player.huiskamer
+    data:
+      media_content_id: http://192.168.178.192:8123/local/Ring-Antique-Ding-Dong.ogg
+      media_content_type: music
+  mode: single
+- id: '1611233465557'
+  alias: 'POST: Post_pakket_geleverd'
+  description: ''
+  trigger:
+  - type: opened
+    platform: device
+    device_id: 7365b42459c2ab0f482bcb514c054b0b
+    entity_id: binary_sensor.postbak_contact
+    domain: binary_sensor
+  condition: []
+  action:
+  - service: notify.mobile_app_cph2065
+    data:
+      message: Er ligt een post pakket in de box
+      title: Post in de bak.
+  - service: input_boolean.turn_on
+    data: {}
+    entity_id: input_boolean.postbak_geopend
+  - service: input_datetime.set_datetime
+    data:
+      timestamp: '{{ now().timestamp() }}'
+    target:
+      entity_id: input_datetime.postbak_open
+  - service: notify.mobile_app_sm_a505fn
+    data:
+      message: Er ligt een post pakket in de box
+      title: Post in de bak.
+  - service: tts.google_translate_say
+    data:
+      message: Er ligt post pakket in de postbak
+      language: nl
+      entity_id: media_player.huiskamer
+  mode: single
+- id: '1611234472888'
+  alias: 'systeem : 00:00 reset switch'
+  description: ''
+  trigger:
+  - platform: time
+    at: 00:00:00
+  condition: []
+  action:
+  - service: input_boolean.turn_off
+    data: {}
+    entity_id: input_boolean.postbak_geopend
+  - service: input_boolean.turn_off
+    data: {}
+    target:
+      entity_id: input_boolean.brievenbus_geopend
+  - service: input_boolean.turn_on
+    target:
+      entity_id: input_boolean.verlichting_23_00_uit
+  mode: single
+- id: '1612987483367'
+  alias: 06:50 werkweek aan verlichting
+  description: ''
+  trigger:
+  - platform: time
+    at: 06:50
+  condition:
+  - condition: state
+    entity_id: binary_sensor.workday_sensor
+    state: 'on'
+  - type: is_illuminance
+    condition: device
+    device_id: b4da16def4999e3ab9b9c65afb3efd49
+    entity_id: sensor.bh1750_illuminance
+    domain: sensor
+    below: 100
+  action:
+  - service: switch.turn_on
+    target:
+      device_id:
+      - 9f3851b7671b18aa9bda202eb56a83c0
+      - e8e26877e42e0a6734c8c2d3d6dfc125
+      - cb8163ae12d775c569e507bf241507f9
+      entity_id: switch.sonoff_4ch_pro2_ledstrip
+  - service: notify.mobile_app_cph2065
+    data:
+      message: Werkdag verlichting
+  mode: single
+- id: '1612988029563'
+  alias: 8:15 werkweek verlichting (Uit)
+  description: ''
+  trigger:
+  - platform: time
+    at: 08:15
+  condition:
+  - condition: state
+    entity_id: binary_sensor.workday_sensor
+    state: 'on'
+  - condition: device
+    type: is_on
+    device_id: e8e26877e42e0a6734c8c2d3d6dfc125
+    entity_id: switch.woonkamer_voor_bollen
+    domain: switch
+  action:
+  - service: switch.turn_off
+    target:
+      device_id:
+      - cb8163ae12d775c569e507bf241507f9
+      - 9f3851b7671b18aa9bda202eb56a83c0
+      - e8e26877e42e0a6734c8c2d3d6dfc125
+      entity_id: switch.sonoff_4ch_pro2_ledstrip
+  - service: notify.mobile_app_cph2065
+    data:
+      message: werkdag verlichting
+  mode: single
+- id: '1614366863821'
+  alias: vakantie licht uit
+  description: ''
+  trigger:
+  - platform: time
+    at: '23:10'
+  condition: []
+  action:
+  - service: switch.turn_off
+    target:
+      area_id:
+      - woonkamer_2
+      - gang_voor
+      device_id: 80443959e43e17ad3370ceb3d803d7b0
+  - service: light.turn_off
+    target:
+      area_id:
+      - woonkamer_2
+      - gang_voor
+      - buiten_en_hok
+  - service: notify.mobile_app_cph2065
+    data:
+      message: Verlichting is uit gezet  Vakantie mode  slaap lekker.
+  mode: single
+- id: '1614795180539'
+  alias: 'POST: Post_geleverd '
+  description: ''
+  trigger:
+  - platform: device
+    domain: mqtt
+    device_id: fb6f39e177be2a7366274eed0558427b
+    type: action
+    subtype: vibration
+    discovery_id: 0x00158d00058652ed action_vibration
+  condition: []
+  action:
+  - service: notify.mobile_app_cph2065
+    data:
+      message: Er ligt post in de brievenbus om
+      title: Post in de brievenbus.
+      data:
+        '[object Object]':
+  - service: input_boolean.turn_on
+    data: {}
+    entity_id: input_boolean.brievenbus_geopend
+  - service: input_datetime.set_datetime
+    data:
+      timestamp: '{{ now().timestamp() }}'
+    target:
+      entity_id: input_datetime.brievenbus_laatst_geopend
+  - service: notify.mobile_app_sm_a505fn
+    data:
+      message: 'Er ligt post in de brievenbus om '
+      title: Post in de brievenbus.
+      data:
+        '[object Object]':
+  - service: tts.google_translate_say
+    data:
+      entity_id: media_player.huiskamer
+      message: Er ligt post in de brievenbus
+      language: nl
+  mode: single
+- id: '1616533442241'
+  alias: Slapen schakelaar
+  description: ''
+  trigger:
+  - platform: device
+    domain: mqtt
+    device_id: 72b15f876ae0bc13cef5223d99eac984
+    type: action
+    subtype: single
+    discovery_id: 0x00124b0022fde0a0 action_single
+  condition: []
+  action:
+  - service: light.turn_off
+    target:
+      area_id:
+      - woonkamer_2
+      - gang_voor
+  - service: switch.turn_off
+    target:
+      area_id:
+      - woonkamer_2
+      - gang_voor
+      entity_id:
+      - switch.sonoff_4ch_pro2_ledstrip
+      - switch.sonoff_4ch_pro2_kerst_verlichting
+      device_id:
+      - efb928b79d6c383487b2684a34694df1
+      - 21be62f3bdef9ccde1410adacd885a3d
+  - service: light.turn_on
+    target:
+      device_id: bc1e8e58670400a39cd366e9bebc0ff3
+  - delay:
+      hours: 0
+      minutes: 10
+      seconds: 0
+      milliseconds: 0
+  - service: light.turn_off
+    target:
+      device_id: bc1e8e58670400a39cd366e9bebc0ff3
+  mode: single
+- id: '1618001902798'
+  alias: Verlichting Woonkamer Aan
+  description: ''
+  trigger:
+  - platform: sun
+    event: sunset
+    offset: -01:00
+  - type: illuminance
+    platform: device
+    device_id: b4da16def4999e3ab9b9c65afb3efd49
+    entity_id: sensor.bh1750_illuminance
+    domain: sensor
+    below: 200
+    for:
+      hours: 0
+      minutes: 0
+      seconds: 10
+      milliseconds: 0
+  condition:
+  - condition: time
+    after: input_datetime.start
+    before: input_datetime.stop
+  - condition: device
+    type: is_off
+    device_id: 64282a7d8138ea1f45b756ee5720e92a
+    entity_id: light.led_e27_kleuren
+    domain: light
+  action:
+  - service: switch.turn_on
+    target:
+      area_id:
+      - woonkamer_2
+  - service: light.turn_on
+    target:
+      area_id: woonkamer_2
+  - service: notify.mobile_app_cph2065
+    data:
+      message: Verlichting aan beneden om {{now().strftime('%H:%M')}}
+      title: Verlichting
+  mode: single
+- id: '1618005857381'
+  alias: 'Systeem :  Home Assistant  is opnieuw opstart'
+  description: ''
+  trigger:
+  - platform: homeassistant
+    event: start
+  condition: []
+  action:
+  - service: notify.mobile_app_cph2065
+    data:
+      message: Home assistant is opnieuw opgestart  om {{now().strftime('%H:%M')}}
+      title: 🚧 Home Assistant ⚠️  🎉
+  mode: single
+- id: '1618555237241'
+  alias: motion gang
+  description: ''
+  trigger:
+  - type: motion
+    platform: device
+    device_id: 1295729bc59b00b2e4b13e3bc752095e
+    entity_id: binary_sensor.gang_beweging_sensor_occupancy
+    domain: binary_sensor
+    for:
+      hours: 0
+      minutes: 0
+      seconds: 2
+      milliseconds: 0
+  condition:
+  - type: is_value
+    condition: device
+    device_id: b4da16def4999e3ab9b9c65afb3efd49
+    entity_id: sensor.bh1750_illuminance
+    domain: sensor
+    below: 200
+  action:
+  - service: switch.turn_on
+    target:
+      entity_id: switch.lsd_hal_spot_bij_wc_relay
+  - delay:
+      hours: 0
+      minutes: 4
+      seconds: 0
+      milliseconds: 0
+  - service: switch.turn_off
+    target:
+      entity_id: switch.lsd_hal_spot_bij_wc_relay
+  mode: single
+- id: '1619901786124'
+  alias: voordeur verlichting uit
+  description: ''
+  trigger:
+  - platform: time
+    at: '22:30'
+  condition: []
+  action:
+  - service: switch.turn_off
+    target:
+      device_id: efb928b79d6c383487b2684a34694df1
+  mode: single
+- id: '1620465048307'
+  alias: 'Systeem :  Home Assistant hacs update'
+  description: ''
+  trigger:
+  - platform: state
+    entity_id: sensor.hacs
+  condition:
+  - condition: template
+    value_template: '{{ states(trigger.entity_id) != ''unknown''}}'
+  - condition: template
+    value_template: '{{ (states(trigger.entity_id) | float) != 0}}'
+  action:
+  - service: notify.mobile_app_cph2065
+    data:
+      title: 🚧 HACS update 🎉
+      message: '{% for repo in state_attr(trigger.entity_id, ''repositories'') %}           -
+        {{ repo.display_name }} ({{ repo["available_version"] }})           {% endfor
+        %}'
+  mode: single
+- id: '1620466665810'
+  alias: 'Systeem :  Home Assistant  update notificatie'
+  description: ''
+  trigger:
+  - platform: state
+    entity_id: sensor.laatste_beschikbare_versie
+  condition:
+  - condition: template
+    value_template: "{{\n          states('sensor.laatste_beschikbare_versie')\n \
+      \         !=\n          states('sensor.geinstalleerde_versie')\n        }}"
+  action:
+  - service: notify.mobile_app_cph2065
+    data:
+      title: 🚧 Home Assistant update   🎉
+      message: ' {% if is_state(''sensor.potential_breaking_changes'', ''0'') %}           Er
+        is een Home Assistant update beschikbaar.  🎉           Versie: {{ states(''sensor.laatste_beschikbare_versie'')
+        }} .           {% else %}           Er is een Home Assistant update beschikbaar.           Versie:
+        {{ states(''sensor.laatste_beschikbare_versie'') }} .    {% endif %}'
+  - service: notify.persistent_notification
+    data:
+      data_template:
+        title: 🚧 Home Assistant update
+        message: 'Er is een Home Assistant update voor Hass.io beschikbaar! Versie:
+          {{ states(''sensor.laatste_beschikbare_versie'') }} .'
+        notification_id: hassio_upgrade
+  mode: single
+- id: '1620850706244'
+  alias: KNMI code geel
+  description: ''
+  trigger:
+  - platform: state
+    entity_id: sensor.knmi_weercode
+    to: ' Code geel'
+  condition: []
+  action:
+  - service: notify.all_devices
+    data:
+      message: '{{(states(''sensor.knmi_weer_waarschuwing'') )}}'
+      title: ❗💨 KNMI code geel
+      data:
+        url: https://www.knmi.nl/nederland-nu/weer/waarschuwingen/friesland
+  - service: media_player.volume_set
+    data:
+      volume_level: 0.65
+  - service: tts.google_translate_say
+    data:
+      entity_id: media_player.google_home_hub
+      message: K N M I heeft code geel afgegeven {{(states('sensor.knmi_weer_waarschuwing')
+        )}}
+  mode: single
+- id: '1620850916113'
+  alias: KNMI code oranje
+  description: ''
+  trigger:
+  - platform: state
+    entity_id: sensor.knmi_weercode
+    to: Code oranje
+  condition: []
+  action:
+  - service: notify.all_devices
+    data:
+      message: '{{(states(''sensor.knmi_weer_waarschuwing'') )}}'
+      title: ❗💨 KNMI code oranje
+      data:
+        url: https://www.knmi.nl/nederland-nu/weer/waarschuwingen/friesland
+  - service: media_player.volume_set
+    data:
+      volume_level: 0.65
+  - service: tts.google_translate_say
+    data:
+      entity_id: media_player.google_home_hub
+      message: K N M I heeft code oranje afgegeven
+  mode: single
+- id: '1620851030833'
+  alias: KNMI code rood
+  description: ''
+  trigger:
+  - platform: state
+    entity_id: sensor.knmi_weercode
+    to: Code rood
+  condition: []
+  action:
+  - service: notify.all_devices
+    data:
+      message: '{{(states(''sensor.knmi_weer_waarschuwing'') )}}'
+      title: ❗💨 KNMI code rood
+      data:
+        url: https://www.knmi.nl/nederland-nu/weer/waarschuwingen/friesland
+  - service: media_player.volume_set
+    data:
+      volume_level: 0.65
+  - service: tts.google_translate_say
+    data:
+      entity_id: media_player.google_home_hub
+      message: K N M I heeft code rood afgegeven {{(states('sensor.knmi_weer_waarschuwing')
+        )}}
+  mode: single
+- id: '1620851164580'
+  alias: KNMI code groen
+  description: ''
+  trigger:
+  - platform: state
+    entity_id: sensor.knmi_weercode
+    to: Code groen
+  condition: []
+  action:
+  - service: notify.all_devices
+    data:
+      message: '{{(states(''sensor.knmi_weer_waarschuwing'') )}}'
+      data:
+        url: https://www.knmi.nl/nederland-nu/weer/waarschuwingen/friesland
+      title: ❗💨 KNMI code is weer normaal
+  - service: media_player.volume_set
+    data:
+      volume_level: 0.65
+  - service: tts.google_translate_say
+    data:
+      entity_id: media_player.google_home_hub
+      message: K N M I heeft code is weer normaal {{(states('sensor.knmi_weer_waarschuwing')
+        )}}
+  mode: single
+- id: '1621167845786'
+  alias: Weer tweet surhuisterveen
+  description: ''
+  trigger:
+  - platform: time
+    at: 06:00
+  - platform: time
+    at: '12:00'
+  - platform: time
+    at: '18:00'
+  - platform: time
+    at: 00:00
+  condition: []
+  action:
+  - service: notify.twitter_wobbele
+    data:
+      message: '{{ now().strftime(''%H:%M'') }} Weer & pollen update van #Surhuisterveen
+        | Temp: {{ states(''sensor.temperatuur_voor_temperature'')}} C,  Wind: {{
+        states(''sensor.surhuisterveen_wind_speed'')}} km/u,  Luchtv: {{ states(''sensor.surhuisterveen_humidity'')}}
+        %,  | Bomen pollen {{ states(''sensor.pollen_tree_count'')}}/m3 | Gras pollen
+        {{ states(''sensor.pollen_grass_count'')}}/m3 | Onkruid pollen {{ states(''sensor.pollen_weed_count'')}}/m3
+        | Home assistant weerupdate vanaf #huizebruin @Surhuisterveen #Achtkarspelen'
+  mode: single
+- id: '1621339847986'
+  alias: motion bijkeuken
+  description: ''
+  trigger:
+  - type: motion
+    platform: device
+    device_id: ef0827c97ccae219a775517828a132a6
+    entity_id: binary_sensor.bijkeuken_beweging_sensor_occupancy
+    domain: binary_sensor
+    for:
+      hours: 0
+      minutes: 0
+      seconds: 5
+      milliseconds: 0
+  condition:
+  - type: is_value
+    condition: device
+    device_id: b4da16def4999e3ab9b9c65afb3efd49
+    entity_id: sensor.bh1750_illuminance
+    domain: sensor
+    below: 200
+  action:
+  - service: switch.turn_on
+    target:
+      entity_id: switch.tint_smart_switch
+  - delay:
+      hours: 0
+      minutes: 4
+      seconds: 0
+      milliseconds: 0
+  - service: switch.turn_off
+    target:
+      entity_id: switch.tint_smart_switch
+  mode: single
+- id: '1623089863859'
+  alias: Offline detection for Z2M devices with last_seen
+  description: ''
+  use_blueprint:
+    path: Mr-Groch/offline-notification-for-sensors-with-last_seen.yaml
+    input:
+      actions:
+      - service: notify.mobile_app_cph2065
+        data:
+          message: Offline detection for Z2M devices with last_seen
+          title: Zigbee2mqtt
+      hours: 47
+- id: '1624094563486'
+  alias: Douche afzuiging
+  description: ''
+  trigger:
+  - platform: device
+    domain: mqtt
+    device_id: 3f60fad54dc4a2947413d586138dbcad
+    type: action
+    subtype: single
+    discovery_id: 0x00124b0022ea4030 action_single
+  condition: []
+  action:
+  - type: toggle
+    device_id: 63e587ace1fc2d33121ff15c034295ed
+    entity_id: switch.afzuiging
+    domain: switch
+  - service: notify.mobile_app_cph2065
+    data:
+      message: Afzuiging is aan
+  - delay:
+      hours: 0
+      minutes: 40
+      seconds: 0
+      milliseconds: 0
+  - type: turn_off
+    device_id: 63e587ace1fc2d33121ff15c034295ed
+    entity_id: switch.afzuiging
+    domain: switch
+  - service: notify.mobile_app_cph2065
+    data:
+      message: Afzuiging is uit
+  mode: single
+- id: '1624127265274'
+  alias: afzuiging automatische uitschakeling
+  description: ''
+  trigger:
+  - platform: device
+    type: turned_on
+    device_id: 63e587ace1fc2d33121ff15c034295ed
+    entity_id: switch.afzuiging
+    domain: switch
+    for:
+      hours: 0
+      minutes: 0
+      seconds: 30
+      milliseconds: 0
+  condition: []
+  action:
+  - delay:
+      hours: 0
+      minutes: 30
+      seconds: 0
+      milliseconds: 0
+  - type: turn_off
+    device_id: 63e587ace1fc2d33121ff15c034295ed
+    entity_id: switch.afzuiging
+    domain: switch
+  mode: single

@@ -9,9 +9,11 @@ homeassistant:
   unit_system: metric
   time_zone: Europe/Amsterdam
   customize: !include customize.yaml
+  external_url: !secret externalurl
+  internal_url: "http://homeassistant.local:8123"
 # Configure a default setup of Home Assistant (frontend, api, etc)
 default_config:
-# external_url: !secret externalurl
+  
 #===============================================================
 ## Includes zodat deze lijst overzichtelijker blijft
 #===============================================================
@@ -31,11 +33,16 @@ frontend:
 #http:
 #  ssl_certificate: /ssl/fullchain.pem
 #  ssl_key: /ssl/privkey.pem
+http:
+  use_x_forwarded_for: true
+  trusted_proxies:
+    - 172.30.33.0/24
 #===============================================================
 # Text to speech
 tts:
   - platform: google_translate
     language: 'nl'
+    base_url: http://192.168.178.192:8123 # interne ip adres 
 #===============================================================
 mqtt:
   discovery: true
