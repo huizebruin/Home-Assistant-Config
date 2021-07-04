@@ -8,24 +8,6 @@
     locations:
       - Europaweg, Groningen
       - Hooge Zuidwal, Kollumerwaard
-
-#p2000 installeren via hacs
-#===============================================================
-#  - platform: p2000
-#    regios: 2
-#    disciplines: 1,2,3
-#    scan_interval: 60
-#    capcodes: !secret capcodes 
-#    icon: mdi:fire-truck
-
-#  - platform: p2000
-#    name: 112 meldingen
-#    regios: 2
-#    disciplines: 1,2,3
-#    radius: 10000
-#    scan_interval: 60
-#    latitude: !secret latitude
-#    longitude: !secret longitude
 #===============================================================
 
 # template sensoren 
@@ -70,4 +52,61 @@
           {{ as_timestamp(states.sun.sun.attributes.next_setting) | timestamp_custom(' %H:%M ') | replace(" 0", "") }}
         icon_template: mdi:weather-sunset-down               
 #===============================================================================
+# sensor voor dat iemand staat te douchen
+#  - platform: template
+#    sensors:
+      shower_status:
+        friendly_name: Douchen
+        icon_template: mdi:shower-head
+        value_template: >-
+          {{ states('sensor.douche_humidity') | int > 80 }}
+# sensoren voor HA informatie
+#  - platform: template 
+#    sensors:
+      count_automations:
+        icon_template: mdi:autorenew
+        value_template: "{{ states.automation | count }}"
 
+      count_scripts:
+        icon_template: mdi:script-text-outline
+        value_template: "{{ states.script| count }}"
+
+      count_device_trackers:
+        icon_template: mdi:map-marker
+        value_template: "{{ states.device_tracker | count }}"
+
+      count_binary_sensors:
+        icon_template: mdi:unfold-more-horizontal
+        value_template: "{{ states.binary_sensor| count }}"
+
+      count_sensors:
+        icon_template: mdi:resistor
+        value_template: "{{ states.sensor | count }}"
+
+      count_switches:
+        icon_template: mdi:light-switch
+        value_template: "{{ states.switch | count }}"
+
+      count_zones:
+        icon_template: mdi:map-marker-radius
+        value_template: "{{ states.zone | count }}"
+
+      count_input_booleans:
+        icon_template: mdi:toggle-switch
+        value_template: "{{ states.input_boolean | count }}"
+
+      count_input_numbers:
+        icon_template: mdi:numeric
+        value_template: "{{ states.input_number | count }}"
+
+      count_input_texts:
+        icon_template: mdi:alphabetical
+        value_template: "{{ states.input_text | count }}"
+
+      count_input_selects:
+        icon_template: mdi:view-list
+        value_template: "{{ states.input_select | count }}"
+
+      count_input_datetimes:
+        icon_template: mdi:calendar-clock
+        value_template: "{{ states.input_datetime | count }}"
