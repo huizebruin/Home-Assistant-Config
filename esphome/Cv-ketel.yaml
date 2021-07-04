@@ -1,7 +1,16 @@
+substitutions:
+  time_timezone: "Europe/Amsterdam"
+  version: "1.0"
+  friendly_name: cv_ketel
+  
 esphome:
   name: cv-ketel-199
   platform: ESP8266
   board: esp01_1m
+  
+  project:
+    name: "${friendly_name}.huizebruin"
+    version: "${version}"
 
 wifi:
   ssid: !secret ssid2
@@ -41,4 +50,20 @@ sensor:
   - platform: dallas
     address:  0x2D0000070E39F328
     name: "Temperature #4"
-    
+
+switch:
+  - platform: restart
+    id: switch_restart
+    name: "${friendly_name} Restart"
+        
+text_sensor:
+
+  - platform: version
+    id: text_sensor_version
+    name: "${friendly_name} ESPHome Version"
+  - platform: template
+    id: text_sensor_${friendly_name}_version
+    name: "${friendly_name} Version"
+    update_interval: 5h
+    lambda: |-
+      return {"${version}"};

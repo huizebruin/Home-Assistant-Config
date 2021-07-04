@@ -1,0 +1,46 @@
+esphome:
+  name: ble-esp32-205
+  platform: ESP32
+  board: esp32cam
+
+wifi:
+  ssid: !secret ssid
+  password: !secret password
+  manual_ip:
+    # Set this to the IP of the ESP
+    static_ip: 192.168.178.205
+    # Set this to the IP address of the router. Often ends with .1
+    gateway: 192.168.178.2 
+    # The subnet of the network. 255.255.255.0 works for most home networks.
+    subnet: 255.255.255.0 
+  # Enable fallback hotspot (captive portal) in case wifi connection fails
+
+  # Enable fallback hotspot (captive portal) in case wifi connection fails
+  ap:
+    ssid: "Ble-Esp32-205 Fallback Hotspot"
+    password: "bKLN5x563Gi7"
+
+captive_portal:
+# Enable logging
+logger:
+# Enable Home Assistant API
+api:
+ota:
+esp32_camera:
+  external_clock:
+    pin: GPIO0
+    frequency: 20MHz
+  i2c_pins:
+    sda: GPIO26
+    scl: GPIO27
+  data_pins: [GPIO5, GPIO18, GPIO19, GPIO21, GPIO36, GPIO39, GPIO34, GPIO35]
+  vsync_pin: GPIO25
+  href_pin: GPIO23
+  pixel_clock_pin: GPIO22
+  power_down_pin: GPIO32
+
+  # Image settings
+  name: My Camera
+  resolution: 640x480
+  jpeg_quality: 10
+

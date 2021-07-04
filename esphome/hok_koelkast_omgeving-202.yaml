@@ -1,7 +1,16 @@
+substitutions:
+  time_timezone: "Europe/Amsterdam"
+  version: "1.3"
+  friendly_name: bier_koelkast_hok
+  
 esphome:
   name: hok_koelkast_omgeving-202
   platform: ESP8266
   board: esp12e
+
+  project:
+    name: "${friendly_name}.huizebruin"
+    version: "${version}"
 
 wifi:
   ssid: !secret ssid2
@@ -44,3 +53,20 @@ sensor:
     humidity:
       name: "hok Room Humidity"
     update_interval: 60s
+    
+switch:
+  - platform: restart
+    id: switch_restart
+    name: "${friendly_name} Restart"
+        
+text_sensor:
+
+  - platform: version
+    id: text_sensor_version
+    name: "${friendly_name} ESPHome Version"
+  - platform: template
+    id: text_sensor_hokep_version # wel veranderen kanniet automatiche
+    name: "${friendly_name} Version"
+    update_interval: 5h
+    lambda: |-
+      return {"${version}"};    

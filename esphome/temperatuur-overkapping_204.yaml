@@ -1,7 +1,17 @@
+substitutions:
+  time_timezone: "Europe/Amsterdam"
+  version: "1.0"
+  friendly_name: temp_overkapping
+  
 esphome:
   name: temperatuur-overkapping_204
   platform: ESP8266
   board: d1_mini
+  
+  project:
+    name: "${friendly_name}.huizebruin"
+    version: "${version}"
+
 
 wifi:
   ssid: !secret ssid2
@@ -41,3 +51,20 @@ sensor:
     humidity:
       name: "overkapping Humidity"
     update_interval: 60s
+    
+switch:
+  - platform: restart
+    id: switch_restart
+    name: "${friendly_name} Restart"
+        
+text_sensor:
+
+  - platform: version
+    id: text_sensor_version
+    name: "${friendly_name} ESPHome Version"
+  - platform: template
+    id: text_sensor_overkapping_version # wel veranderen kanniet automatiche
+    name: "${friendly_name} Version"
+    update_interval: 5h
+    lambda: |-
+      return {"${version}"};    

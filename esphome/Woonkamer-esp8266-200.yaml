@@ -1,7 +1,16 @@
+substitutions:
+  time_timezone: "Europe/Amsterdam"
+  version: "1.0"
+  friendly_name: woonkamer_temp_info
+  
 esphome:
   name: woonkamer-esp8266-200
   platform: ESP8266
   board: nodemcu
+  
+  project:
+    name: "${friendly_name}.huizebruin"
+    version: "${version}"
 
 wifi:
   ssid: !secret ssid
@@ -54,3 +63,20 @@ sensor:
     
     measurement_duration: 69
     update_interval: 60s
+    
+switch:
+  - platform: restart
+    id: switch_restart
+    name: "${friendly_name} Restart"
+        
+text_sensor:
+
+  - platform: version
+    id: text_sensor_version
+    name: "${friendly_name} ESPHome Version"
+  - platform: template
+    id: text_sensor_woonkamer_mcu_version # wel veranderen
+    name: "${friendly_name} Version"
+    update_interval: 5h
+    lambda: |-
+      return {"${version}"};    

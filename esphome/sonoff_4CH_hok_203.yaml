@@ -1,7 +1,16 @@
+substitutions:
+  time_timezone: "Europe/Amsterdam"
+  version: "1.3"
+  friendly_name: sonoff_4ch_pro2
+  
 esphome:
   name: sonoff_4ch_hok_203
   platform: ESP8266
   board: esp01_1m
+  
+  project:
+    name: "${friendly_name}.huizebruin"
+    version: "${version}"
 
 wifi:
   ssid: !secret ssid2
@@ -66,6 +75,9 @@ switch:
   - platform: gpio
     name: "sonoff_4ch_pro2_gang_verlichting"
     pin: GPIO15
+  - platform: restart
+    id: switch_restart
+    name: "${friendly_name} Restart"
 
 output:
   # Register the blue LED as a dimmable output ....
@@ -79,3 +91,15 @@ light:
   - platform: monochromatic
     name: "Sonoff 4CH Blue LED"
     output: blue_led
+
+text_sensor:
+
+  - platform: version
+    id: text_sensor_version
+    name: "${friendly_name} ESPHome Version"
+  - platform: template
+    id: text_sensor_sonoff_4ch_pro2_version # wel veranderen kanniet automatiche
+    name: "${friendly_name} Version"
+    update_interval: 5h
+    lambda: |-
+      return {"${version}"};    

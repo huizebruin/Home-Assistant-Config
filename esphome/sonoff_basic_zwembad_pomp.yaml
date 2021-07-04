@@ -1,7 +1,18 @@
+substitutions:
+  time_timezone: "Europe/Amsterdam"
+  version: "1.1"
+  friendly_name: zwembad_pomp
+  
 esphome:
   name: sonoff_basic_zwembad_pomp-201
   platform: ESP8266
   board: esp01_1m
+  
+  project:
+    name: "${friendly_name}.huizebruin"
+    version: "${version}"
+
+
 
 wifi:
   ssid: !secret ssid2
@@ -43,8 +54,25 @@ switch:
     name: "Sonoff zwembad_pomp"
     pin: GPIO12
     id: relay
+    
+  - platform: restart
+    id: switch_restart
+    name: "${friendly_name} Restart"
 
 status_led:
   pin:
     number: GPIO13
     inverted: yes
+
+        
+text_sensor:
+
+  - platform: version
+    id: text_sensor_version
+    name: "${friendly_name} ESPHome Version"
+  - platform: template
+    id: text_sensor_zwembad_pomp_version # wel veranderen
+    name: "${friendly_name} Version"
+    update_interval: 5h
+    lambda: |-
+      return {"${version}"};

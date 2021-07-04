@@ -1,7 +1,18 @@
+substitutions:
+  time_timezone: "Europe/Amsterdam"
+  S0_meterversion: "1.4"
+  friendly_name: S0 meter
+  name: Water Meter  
+  
 esphome:
   name: pulsmeters-190
   platform: ESP8266
   board: d1_mini
+  
+  project:
+    name: huizebruin.S0-meter
+    version: "${S0_meterversion}"
+
 
 wifi:
   ssid: !secret ssid
@@ -39,6 +50,7 @@ sensor:
     pin: D5
     name: "opbrengst_zonnepanelen_in_W"
     id: W_opbrengst
+    icon: "mdi:solar-power"
     accuracy_decimals: 0
     unit_of_measurement: 'W'
     filters:
@@ -47,20 +59,22 @@ sensor:
     total:
       unit_of_measurement: 'kWh'
       name: 'zonnepanelen_kwh'
+      icon: "mdi:solar-power"
       accuracy_decimals: 2
       filters:
         - multiply: 0.0005
         
   - platform: pulse_meter
+    id: sensor_pulse_meter
     pin: D2
     name: "Waterverbruik_in_liters"
-    id: water_usage
+#    id: water_usage
     icon: "mdi:water"
     unit_of_measurement: 'L/min'
     accuracy_decimals: 1
     timeout: 2min
-    filters:
-     - multiply: 0.016666667 # orgineel
+#    filters:
+#     - multiply: 0.016666667 # orgineel
 
     total:
       id: sensor_pulse_meter_total
@@ -70,5 +84,38 @@ sensor:
       accuracy_decimals: 3
       filters:
         - multiply: 0.001
+        
+  - platform: template
+    update_interval: 10min
+    name: "${name} Usage"
+    icon: "mdi:water-pump"
+    id: sensor_pulse_counter    
+    lambda: |-
+      return (id(sensor_pulse_meter).state);
+  - platform: template
+    update_interval: 10min  
+    name: "${name} Usage in m3"
+    icon: "mdi:cube-outline"
+    unit_of_measurement: "M3"    
+    id: sensor_pulse_counter_total
+    lambda: |-
+      return (id(sensor_pulse_meter_total).state);        
+        
+switch:
+  - platform: restart
+    id: switch_restart
+    name: "${friendly_name} Restart"
+        
+text_sensor:
+
+  - platform: version
+    id: text_sensor_version
+    name: "${friendly_name} ESPHome Version"
+  - platform: template
+    id: text_sensor_S0_meterversion
+    name: "${friendly_name} Version"
+    update_interval: 5h
+    lambda: |-
+      return {"${S0_meterversion}"};
     
  
