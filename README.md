@@ -13,6 +13,13 @@ Als je vragen hebt, stel ze dan gerust via e-mail of socials!
 
 https://discord.gg/AskpfnY
 
+06/07/2021
+nieuwe template.
+Het thema welke ik gebruik voor Home assistant /themes/Huizebruin/Huizebruin (Dark).yaml
+![HA-theme](https://user-images.githubusercontent.com/62996429/124656718-d9328600-dea1-11eb-91a4-903f72726234.jpg)
+
+
+
 12/06/2021:
  - sensor Ambee weer een update gegeven
 22/05/2021:
