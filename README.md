@@ -13,6 +13,10 @@ Als je vragen hebt, stel ze dan gerust via e-mail of socials!
 
 https://discord.gg/AskpfnY
 
+06-08-2021
+check ook mijn gist gedeelte voor scripts etc.
+https://gist.github.com/huizebruin
+
 06/07/2021
 nieuwe template.
 Het thema welke ik gebruik voor Home assistant /themes/Huizebruin/Huizebruin (Dark).yaml
