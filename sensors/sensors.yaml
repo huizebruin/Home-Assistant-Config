@@ -77,7 +77,7 @@
 
       count_binary_sensors:
         icon_template: mdi:unfold-more-horizontal
-        value_template: "{{ states.binary_sensor| count }}"
+        value_template: "{{ states.binary_sensor | count }}"
 
       count_sensors:
         icon_template: mdi:resistor
@@ -110,3 +110,32 @@
       count_input_datetimes:
         icon_template: mdi:calendar-clock
         value_template: "{{ states.input_datetime | count }}"
+
+      count_lights:
+        icon_template: mdi:lightbulb-outline
+        value_template: "{{ states.light | count }}"
+
+      count_esphome:
+        icon_template: mdi:chip
+        value_template: "{{ states.sensor.esphome | count }}"
+
+      count_total:
+        icon_template: mdi:home-user
+        value_template: "{{ states.automation, states.script, states.device_tracker, states.binary_sensor, states.sensor, states.switch, states.zone, states.input_boolean, states.input_number, states.input_text, states.input_select, states.input_datetime, states.light, states.esphome | count }}"
+# sensoren voor HA welkom op tijd type
+#  - platform: template 
+#    sensors:
+      time_of_day:
+        value_template: >
+          {% set current_hour = strptime(states('sensor.time'), "%H:%M").hour %}
+          {% if current_hour < 6 %}
+          Goedenacht,
+          {% elif 6 <= current_hour < 12 %}
+          Goedemorgen,
+          {% elif 12 <= current_hour < 18 %}
+          Goedemiddag,
+          {% elif 18 <= current_hour < 23 %}
+          Goedeavond,
+          {% else %}
+          Goedenacht,
+          {% endif %}

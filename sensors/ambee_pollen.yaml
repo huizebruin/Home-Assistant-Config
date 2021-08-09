@@ -39,7 +39,7 @@
         value_template: >-
           {% set state = state_attr("sensor.pollen_data", "Risk").tree_pollen %}
           {% if state == "Low" %} Weinig
-          {% elif state == "Moderate"%} Middelmatig
+          {% elif state == "Moderate"%} Matig
           {% elif state == "High"%} Hoog
           {% elif state == "Very High"%} Zeer hoog
           {% else %}Onbekend{% endif %}
@@ -71,7 +71,7 @@
         value_template: >-
           {% set state = state_attr("sensor.pollen_data", "Risk").grass_pollen %}
           {% if state == "Low" %} Weinig
-          {% elif state == "Moderate"%} Middelmatig
+          {% elif state == "Moderate"%} Matig
           {% elif state == "High"%} Hoog
           {% elif state == "Very High"%} Zeer hoog
           {% else %}Onbekend{% endif %}
@@ -87,7 +87,7 @@
         value_template: >-
           {% set state = state_attr("sensor.pollen_data", "Risk").weed_pollen %}
           {% if state == "Low" %} Weinig
-          {% elif state == "Moderate"%} Middelmatig
+          {% elif state == "Moderate"%} Matig
           {% elif state == "High"%} Hoog
           {% elif state == "Very High"%} Zeer hoog
           {% else %}Onbekend{% endif %}

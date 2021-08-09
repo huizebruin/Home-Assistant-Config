@@ -3,7 +3,7 @@
 # Ambee Weer door Roel R en huizebruin.nl
 # versie 08-05-2021
 # versie 07-06-2021  ambee-weather-resource toegevoegd Huizebruin.nl
-# versie 12-06-2021  Gemakkelijker toe te voegen aan home assistant door huizebruin.nl
+# versie 12-06-2021  gemakkelijker toe te voegen aan home assistant door huizebruin.nl
 # https://api-dashboard.getambee.com/#/signup account aanmaken voor een 100 api calls per dag..
 # in je Secrets.yaml de volgende regels plaatsen: 
 # (zonder hekje ervoor) ambee-api: XXXXXXXXX

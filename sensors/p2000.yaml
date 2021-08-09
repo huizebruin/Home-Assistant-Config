@@ -1,0 +1,17 @@
+#p2000 installeren via hacs
+#===============================================================
+  - platform: p2000
+    name: brandweer
+    regios: 2
+    scan_interval: 20
+    capcodes: 27293, 24533, 303122
+    icon: mdi:fire-truck
+    nolocation: true
+
+  - platform: p2000
+    name: 112 meldingen
+    regios: 2
+    radius: 20000
+    scan_interval: 60
+    latitude: !secret latitude
+    longitude: !secret longitude
