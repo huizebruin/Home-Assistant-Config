@@ -1,7 +1,8 @@
 substitutions:
   time_timezone: "Europe/Amsterdam"
-  version: "1.0"
-  friendly_name: cv_ketel
+  version: "1.3"
+  device_description: temperatuur sensoren op de leidingen bij de cv
+  friendly_name:  cv_ketel
   
 esphome:
   name: cv-ketel-199
@@ -13,7 +14,7 @@ esphome:
     version: "${version}"
 
 wifi:
-  ssid: !secret ssid2
+  ssid: !secret ssid
   password: !secret password
   manual_ip:
     # Set this to the IP of the ESP
@@ -56,14 +57,14 @@ switch:
     id: switch_restart
     name: "${friendly_name} Restart"
         
-text_sensor:
 
+text_sensor:
   - platform: version
-    id: text_sensor_version
-    name: "${friendly_name} ESPHome Version"
+    name: "ESPHome Version - ${friendly_name} "
+    hide_timestamp: true
+
   - platform: template
-    id: text_sensor_${friendly_name}_version
-    name: "${friendly_name} Version"
+    name: "Esphome ${friendly_name} Version"
     update_interval: 5h
     lambda: |-
       return {"${version}"};

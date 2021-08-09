@@ -1,7 +1,8 @@
 substitutions:
   time_timezone: "Europe/Amsterdam"
-  version: "1.1"
-  friendly_name: zwembad_pomp
+  version: "1.3"
+  device_description: sonoff basic voor de zwembad pomp aan en uit te zetten
+  friendly_name:  zwembad_pomp
   
 esphome:
   name: sonoff_basic_zwembad_pomp-201
@@ -15,7 +16,7 @@ esphome:
 
 
 wifi:
-  ssid: !secret ssid2
+  ssid: !secret ssid
   password: !secret password
   manual_ip:
     # Set this to the IP of the ESP
@@ -66,13 +67,12 @@ status_led:
 
         
 text_sensor:
-
   - platform: version
-    id: text_sensor_version
-    name: "${friendly_name} ESPHome Version"
+    name: "ESPHome Version - ${friendly_name} "
+    hide_timestamp: true
+
   - platform: template
-    id: text_sensor_zwembad_pomp_version # wel veranderen
-    name: "${friendly_name} Version"
+    name: "Esphome ${friendly_name} Version"
     update_interval: 5h
     lambda: |-
       return {"${version}"};

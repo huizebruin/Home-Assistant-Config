@@ -1,30 +1,13 @@
 substitutions:
   time_timezone: "Europe/Amsterdam"
   version: "1.3"
-  device_description: sonoff sf voor 24v in het hok te schakelen
-  friendly_name: sonoff sv
+  device_description: ledstrip wit 2m 12v
+  friendly_name:  ledstrip
   
 esphome:
-  name: sonof-sv-206
+  name: led-strip-wit-209
   platform: ESP8266
-  board: esp01_1m
-
-wifi:
-  ssid: !secret ssid
-  password: !secret password
-  manual_ip:
-    # Set this to the IP of the ESP
-    static_ip: 192.168.178.206
-    # Set this to the IP address of the router. Often ends with .1
-    gateway: 192.168.178.2 
-    # The subnet of the network. 255.255.255.0 works for most home networks.
-    subnet: 255.255.255.0 
-  # Enable fallback hotspot (captive portal) in case wifi connection fails
-  ap:
-    ssid: "Sonof-Sv Fallback Hotspot"
-    password: "rLeU3XrZPo4V"
-
-captive_portal:
+  board: esp8285
 
 # Enable logging
 logger:
@@ -33,26 +16,35 @@ logger:
 api:
 
 ota:
+  password: ""
 
-binary_sensor:
-  - platform: gpio
-    pin:
-      number: GPIO14
-      mode: INPUT_PULLUP
-      inverted: True
-    name: "24 Voeding"
-    device_class: garage_door
-    
-switch:
-  - platform: gpio
+wifi:
+  ssid: !secret ssid
+  password: !secret password
+  manual_ip:
+    # Set this to the IP of the ESP
+    static_ip: 192.168.178.209
+    # Set this to the IP address of the router. Often ends with .1
+    gateway: 192.168.178.2 
+    # The subnet of the network. 255.255.255.0 works for most home networks.
+    subnet: 255.255.255.0 
+  # Enable fallback hotspot (captive portal) in case wifi connection fails
+  ap:
+    ssid: "Led-Strip-Wit-209"
+    password: "h08a0BtSJhr2"
+
+captive_portal:
+
+light:
+  - platform: monochromatic
+    name: ledstrip-wit-dimmer
+    output: pwm1
+
+output:
+  - platform: esp8266_pwm
+    id: pwm1
     pin: GPIO12
-    id: relay
-  - platform: template
-    name: "24v voeding"
-    turn_on_action:
-    - switch.turn_on: relay
-    - delay: 500ms
-    - switch.turn_off: relay
+    frequency: 1000 Hz
     
 text_sensor:
   - platform: version
@@ -63,4 +55,4 @@ text_sensor:
     name: "Esphome ${friendly_name} Version"
     update_interval: 5h
     lambda: |-
-      return {"${version}"};
+      return {"${version}"};    

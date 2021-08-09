@@ -1,3 +1,9 @@
+substitutions:
+  time_timezone: "Europe/Amsterdam"
+  version: "1.3"
+  device_description: lsd actionn stekker bij de wc
+  friendly_name: lsd-stekker
+  
 esphome:
   name: lsd-hal-spot-bij-wc-198
   platform: ESP8266
@@ -61,3 +67,14 @@ switch:
     turn_off_action:
       - switch.turn_off: relay
       - light.turn_off: status_led
+      
+text_sensor:
+  - platform: version
+    name: "ESPHome Version - ${friendly_name} "
+    hide_timestamp: true
+
+  - platform: template
+    name: "Esphome ${friendly_name} Version"
+    update_interval: 5h
+    lambda: |-
+      return {"${version}"};  

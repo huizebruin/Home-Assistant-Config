@@ -1,7 +1,8 @@
 substitutions:
   time_timezone: "Europe/Amsterdam"
-  S0_meterversion: "1.4"
-  friendly_name: S0 meter
+  version: "1.33"
+  device_description: s0 kwh meter en watermeter
+  friendly_name:  S0 meter
   name: Water Meter  
   
 esphome:
@@ -106,16 +107,16 @@ switch:
     id: switch_restart
     name: "${friendly_name} Restart"
         
-text_sensor:
 
+
+text_sensor:
   - platform: version
-    id: text_sensor_version
-    name: "${friendly_name} ESPHome Version"
+    name: "ESPHome Version - ${friendly_name} "
+    hide_timestamp: true
+
   - platform: template
-    id: text_sensor_S0_meterversion
-    name: "${friendly_name} Version"
+    name: "Esphome ${friendly_name} Version"
     update_interval: 5h
     lambda: |-
-      return {"${S0_meterversion}"};
-    
+      return {"${version}"};
  

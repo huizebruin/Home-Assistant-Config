@@ -1,7 +1,8 @@
 substitutions:
   time_timezone: "Europe/Amsterdam"
-  version: "1.0"
-  friendly_name: woonkamer_temp_info
+  version: "1.3"
+  device_description: themperatuur lux en humanity meting in de woonkamer
+  friendly_name:  woonkamer_temp_info
   
 esphome:
   name: woonkamer-esp8266-200
@@ -70,13 +71,12 @@ switch:
     name: "${friendly_name} Restart"
         
 text_sensor:
-
   - platform: version
-    id: text_sensor_version
-    name: "${friendly_name} ESPHome Version"
+    name: "ESPHome Version - ${friendly_name} "
+    hide_timestamp: true
+
   - platform: template
-    id: text_sensor_woonkamer_mcu_version # wel veranderen
-    name: "${friendly_name} Version"
+    name: "Esphome ${friendly_name} Version"
     update_interval: 5h
     lambda: |-
-      return {"${version}"};    
+      return {"${version}"};

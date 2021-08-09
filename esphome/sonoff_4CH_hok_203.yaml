@@ -1,7 +1,8 @@
 substitutions:
   time_timezone: "Europe/Amsterdam"
   version: "1.3"
-  friendly_name: sonoff_4ch_pro2
+  device_description: sonoff 4ch tuin verlichting te schakelen
+  friendly_name:  sonoff_4ch_pro2
   
 esphome:
   name: sonoff_4ch_hok_203
@@ -13,7 +14,7 @@ esphome:
     version: "${version}"
 
 wifi:
-  ssid: !secret ssid2
+  ssid: !secret ssid
   password: !secret password
   manual_ip:
     # Set this to the IP of the ESP
@@ -93,13 +94,12 @@ light:
     output: blue_led
 
 text_sensor:
-
   - platform: version
-    id: text_sensor_version
-    name: "${friendly_name} ESPHome Version"
+    name: "ESPHome Version - ${friendly_name} "
+    hide_timestamp: true
+
   - platform: template
-    id: text_sensor_sonoff_4ch_pro2_version # wel veranderen kanniet automatiche
-    name: "${friendly_name} Version"
+    name: "Esphome ${friendly_name} Version"
     update_interval: 5h
     lambda: |-
-      return {"${version}"};    
+      return {"${version}"};  

@@ -1,6 +1,7 @@
 substitutions:
   time_timezone: "Europe/Amsterdam"
   version: "1.3"
+  device_description: afzuiging voor de buva
   friendly_name: buva_afzuiging
   
 esphome:
@@ -58,13 +59,12 @@ switch:
     name: "${friendly_name} Restart"
         
 text_sensor:
-
   - platform: version
-    id: text_sensor_version
-    name: "${friendly_name} ESPHome Version"
+    name: "ESPHome Version - ${friendly_name} "
+    hide_timestamp: true
+
   - platform: template
-    id: text_sensor_buva_afzuiging_version # wel veranderen 
-    name: "${friendly_name} Version"
+    name: "Esphome ${friendly_name} Version"
     update_interval: 5h
     lambda: |-
       return {"${version}"};

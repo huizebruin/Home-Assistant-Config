@@ -1,10 +1,16 @@
+substitutions:
+  time_timezone: "Europe/Amsterdam"
+  version: "1.3"
+  device_description: lsd stekker action radio overkapping
+  friendly_name: lsd stekker
+  
 esphome:
   name: lsd-stopcontact-197
   platform: ESP8266
   board: esp01_1m
 
 wifi:
-  ssid: !secret ssid2
+  ssid: !secret ssid
   password: !secret password
   manual_ip:
     # Set this to the IP of the ESP
@@ -59,3 +65,14 @@ switch:
     turn_off_action:
       - switch.turn_off: relay
       - light.turn_off: status_led
+      
+text_sensor:
+  - platform: version
+    name: "ESPHome Version - ${friendly_name} "
+    hide_timestamp: true
+
+  - platform: template
+    name: "Esphome ${friendly_name} Version"
+    update_interval: 5h
+    lambda: |-
+      return {"${version}"};

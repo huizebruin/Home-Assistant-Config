@@ -1,5 +1,11 @@
+substitutions:
+  time_timezone: "Europe/Amsterdam"
+  version: "1.3"
+  device_description: camera systeem op de esp32
+  friendly_name: esp32 camera
+  
 esphome:
-  name: ble-esp32-205
+  name: ble-esp32-cam--205
   platform: ESP32
   board: esp32cam
 
@@ -44,3 +50,13 @@ esp32_camera:
   resolution: 640x480
   jpeg_quality: 10
 
+text_sensor:
+  - platform: version
+    name: "ESPHome Version - ${friendly_name} "
+    hide_timestamp: true
+
+  - platform: template
+    name: "Esphome ${friendly_name} Version"
+    update_interval: 5h
+    lambda: |-
+      return {"${version}"};
