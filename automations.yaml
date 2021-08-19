@@ -9,9 +9,9 @@
     domain: binary_sensor
   condition: []
   action:
-  - service: notify.mobile_app_cph2065
+  - service: telegram_bot.send_message
     data:
-      message: 🚪De voordeur is open!
+      message: 🚪  De voordeur is open!  {{now().strftime('%H:%M')}}
   mode: single
 - id: '1609106987185'
   alias: stop Volumio
@@ -45,6 +45,11 @@
   - service: media_player.media_play
     data: {}
     entity_id: media_player.volumio
+  - service: media_player.volume_set
+    target:
+      device_id: d5ff764a3d16b17f5c8d1ac7de70768f
+    data:
+      volume_level: 0.25
   mode: single
 - id: '1609268173320'
   alias: Automatische verlichting tuin aan
@@ -77,7 +82,7 @@
   action:
   - service: notify.mobile_app_cph2065
     data:
-      message: 🚪De schuttingdeur is open! {{now().strftime('%H:%M')}}
+      message: 🚪 schuttingdeur is open! {{now().strftime('%H:%M')}}
   mode: single
 - id: '1609512721466'
   alias: batterijen raken leeg
@@ -133,7 +138,7 @@
       message: Morgen wordt de {{ states('sensor.omrin_morgen') }} kliko geleegd
   - service: notify.mobile_app_cph2065
     data:
-      message: Morgen wordt de {{ states('sensor.omrin_morgen') }} kliko     geleegd
+      message: Morgen wordt de {{ states('sensor.omrin_morgen') }} kliko geleegd
   mode: single
 - id: '1610202760429'
   alias: ' 23:00 verlichting huis UIT werkweek'
@@ -152,6 +157,11 @@
   - condition: state
     entity_id: input_boolean.verlichting_23_00_uit
     state: 'on'
+  - condition: and
+    conditions:
+    - condition: state
+      entity_id: light.led_e27_kleuren
+      state: 'on'
   action:
   - service: switch.turn_off
     target:
@@ -172,22 +182,33 @@
       - gang_voor
   - service: media_player.media_pause
     target:
-      device_id: 70d5a470223b9cc7a9e283934a6e2154
+      area_id: woonkamer_2
   - service: notify.mobile_app_cph2065
     data:
       title: Verlichting
       message: 'Verlichting Automatische beneden en buiten UIT om '
       data:
         '[object Object]':
+  - service: light.turn_on
+    target:
+      entity_id: light.w_s_slaapkamer
   - delay:
       hours: 0
       minutes: 5
       seconds: 0
       milliseconds: 0
-  - type: turn_off
-    device_id: 48717af0b0345425bfca73ba354d2ddc
-    entity_id: switch.sonoff_4ch_pro2_kerst_verlichting
-    domain: switch
+  - service: switch.turn_off
+    target:
+      entity_id:
+      - switch.sonoff_4ch_pro2_kerst_verlichting
+  - delay:
+      hours: 0
+      minutes: 5
+      seconds: 0
+      milliseconds: 0
+  - service: light.turn_off
+    target:
+      entity_id: light.w_s_slaapkamer
   mode: single
 - id: '1610967625682'
   alias: Er staat iemand bij de voordeur (deurbel)
@@ -203,6 +224,11 @@
   - service: notify.mobile_app_cph2065
     data:
       message: Ding dong! Er staat iemand bij de voordeur! om {{now().strftime('%H:%M')}}
+  - service: media_player.volume_set
+    data:
+      volume_level: 0.35
+    target:
+      device_id: cc48871f125da927cfbc63af3ed92a37
   - service: tts.google_translate_say
     data:
       entity_id: media_player.huiskamer
@@ -247,6 +273,11 @@
     data:
       message: Er ligt een post pakket in de box
       title: Post in de bak.
+  - service: media_player.volume_set
+    data:
+      volume_level: 0.3
+    target:
+      device_id: cc48871f125da927cfbc63af3ed92a37
   - service: tts.google_translate_say
     data:
       message: Er ligt post pakket in de postbak
@@ -383,6 +414,11 @@
       title: Post in de brievenbus.
       data:
         '[object Object]':
+  - service: media_player.volume_set
+    data:
+      volume_level: 0.3
+    target:
+      device_id: cc48871f125da927cfbc63af3ed92a37
   - service: tts.google_translate_say
     data:
       entity_id: media_player.huiskamer
@@ -685,7 +721,7 @@
   - service: notify.twitter_wobbele
     data:
       message: '{{ now().strftime(''%H:%M'') }} Weer & pollen update van #Surhuisterveen
-        | Temp: {{ states(''sensor.temperatuur_voor_temperature'')}} C,  Wind: {{
+        | Temp: {{ states(''sensor.temperatuur_voor_temperature'')}} °C,  Wind: {{
         states(''sensor.surhuisterveen_wind_speed'')}} km/u,  Luchtv: {{ states(''sensor.surhuisterveen_humidity'')}}
         %,  | Bomen pollen {{ states(''sensor.pollen_tree_count'')}}/m3 | Gras pollen
         {{ states(''sensor.pollen_grass_count'')}}/m3 | Onkruid pollen {{ states(''sensor.pollen_weed_count'')}}/m3
@@ -703,10 +739,10 @@
     for:
       hours: 0
       minutes: 0
-      seconds: 5
+      seconds: 10
       milliseconds: 0
   condition:
-  - type: is_value
+  - type: is_illuminance
     condition: device
     device_id: b4da16def4999e3ab9b9c65afb3efd49
     entity_id: sensor.bh1750_illuminance
@@ -734,9 +770,9 @@
       actions:
       - service: notify.mobile_app_cph2065
         data:
-          message: Offline detection for Z2M devices with last_seen
+          message: 👮‍♂️ 3 day Offline detection for Z2M devices with last_seen
           title: Zigbee2mqtt
-      hours: 47
+      hours: 48
 - id: '1624094563486'
   alias: Douche afzuiging
   description: ''
@@ -781,17 +817,138 @@
     for:
       hours: 0
       minutes: 0
-      seconds: 30
+      seconds: 5
       milliseconds: 0
   condition: []
   action:
   - delay:
       hours: 0
-      minutes: 30
+      minutes: 45
       seconds: 0
       milliseconds: 0
   - type: turn_off
     device_id: 63e587ace1fc2d33121ff15c034295ed
     entity_id: switch.afzuiging
     domain: switch
+  mode: single
+- id: '1625860706052'
+  alias: zwembad pomp
+  description: ''
+  trigger:
+  - platform: time
+    at: input_datetime.zwembad_tijd_1
+  - platform: time
+    at: input_datetime.zwembad_tijd_2
+  - platform: time
+    at: input_datetime.zwembad_tijd_3
+  - platform: time
+    at: input_datetime.zwembad_tijd_4
+  - platform: time
+    at: input_datetime.zwembad_pomp_tijd_5
+  condition:
+  - condition: state
+    entity_id: sensor.season
+    state: summer
+  - condition: state
+    entity_id: input_boolean.zwembad_staat
+    state: 'on'
+  action:
+  - type: turn_on
+    device_id: 2a00d2af2cbb2fe15a7a98aa9a03f552
+    entity_id: switch.sonoff_zwembad_pomp
+    domain: switch
+  - service: telegram_bot.send_message
+    data:
+      message: 🏊‍♂️ zwembad pomp aan
+      title: Zwembad
+  - delay:
+      hours: 0
+      minutes: 45
+      seconds: 0
+      milliseconds: 0
+  - type: turn_off
+    device_id: 2a00d2af2cbb2fe15a7a98aa9a03f552
+    entity_id: switch.sonoff_zwembad_pomp
+    domain: switch
+  - service: telegram_bot.send_message
+    data:
+      message: 🏊‍♂️ zwembad pomp uit
+      title: Zwembad
+  mode: single
+- id: '1627249378777'
+  alias: HA start CS CH command
+  description: ''
+  trigger:
+  - platform: homeassistant
+    event: start
+  condition: []
+  action:
+  - delay:
+      hours: 0
+      minutes: 4
+      seconds: 0
+      milliseconds: 0
+  - service: mqtt.publish
+    data:
+      topic: OTGW/set/otgw-84CCA8A28BA5/command
+      payload_template: CS={{ states("sensor.custom_thermostat_control_setpoint")
+        }}
+  - service: mqtt.publish
+    data:
+      topic: OTGW/set/otgw-84CCA8A28BA5/command
+      payload_template: CH={{ states("sensor.custom_thermostat_ch_command") }}
+  mode: single
+- id: '1627316339080'
+  alias: Update OT for boiler when outside temperature changes
+  description: ''
+  trigger:
+  - platform: state
+    entity_id: sensor.temperatuur_voor_temperature
+    attribute: temperature
+  condition: []
+  action:
+  - service: mqtt.publish
+    data:
+      topic: OTGW/set/otgw-84CCA8A28BA5/command/
+      payload_template: OT={{ states('sensor.temperatuur_voor_temperature') | float
+        }}
+  mode: single
+- id: '1628182227870'
+  alias: afzuiging automation douche
+  description: ''
+  trigger:
+  - platform: numeric_state
+    entity_id: sensor.douche_humidity
+    attribute: humidity
+    above: '85.00'
+  condition:
+  - condition: time
+    after: input_datetime.fan_begin_tijd
+    before: input_datetime.fan_eind_tijd
+  action:
+  - type: turn_on
+    device_id: 63e587ace1fc2d33121ff15c034295ed
+    entity_id: switch.afzuiging
+    domain: switch
+  - service: telegram_bot.send_message
+    data:
+      message: 🚿 Douche afzuiging automation aan
+      title: Douche
+  - delay:
+      hours: 0
+      minutes: 45
+      seconds: 0
+      milliseconds: 0
+  - condition: numeric_state
+    entity_id: sensor.douche_humidity
+    attribute: humidity
+    below: '67'
+  - type: turn_off
+    device_id: 63e587ace1fc2d33121ff15c034295ed
+    entity_id: switch.afzuiging
+    domain: switch
+  - service: telegram_bot.send_message
+    data:
+      message: 🚿 Douche afzuiging automation uit
+      title: Douche
   mode: single

@@ -1,0 +1,34 @@
+radio_source:
+  name: "Select station:"
+  options:
+    - Radio 538
+    - Sublime
+    - Radio 10
+    - Q-Music
+    - Veronica
+    - Sky Radio
+    - Arrow Classic Rock
+    - Sublime Smooth
+    - Radio 1
+    - Radio 2
+    - Radio 3
+    - JUKE Foute Hits
+    - Qmusic foute uur
+    - qmusic non stop
+    - Qmusic summer
+    - radio 10 80's
+    - Radio 10 90's
+    - Radio 10 top 4000
+    - Simone Fm
+    - Tukker Fm
+    - Tynaarlo Lokaal
+  initial: Q-Music
+  icon: mdi:radio
+
+radio_speaker:
+  name: "Select speaker:"
+  options:
+    - Huiskamer
+    - Huiskamer vollumio
+  initial: Huiskamer
+  icon: mdi:speaker-wireless

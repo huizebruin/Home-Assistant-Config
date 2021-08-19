@@ -92,3 +92,6 @@ switch.buiten_verlichting_voor:
 switch.lsd_stopcontact_197_relay:
   friendly_name: Radio overkapping
   icon: hass:radio
+sensor.atc_battery_level_c6_2: {}
+light.lsd_hal_spot_bij_wc_light:
+  icon: hue:wall-spot

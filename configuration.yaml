@@ -7,13 +7,12 @@ homeassistant:
   longitude: !secret longitude 
   elevation: 10
   unit_system: metric
-  time_zone: Europe/Amsterdam
+  time_zone: Europe/Amsterdam #Etc/GMT 
   customize: !include customize.yaml
   external_url: !secret externalurl
-  internal_url: "http://homeassistant.local:8123"
+  internal_url: "http://192.168.178.192:8123"
 # Configure a default setup of Home Assistant (frontend, api, etc)
 default_config:
-  
 #===============================================================
 ## Includes zodat deze lijst overzichtelijker blijft
 #===============================================================
@@ -27,6 +26,7 @@ scene: !include scenes.yaml
 light: !include lights.yaml  
 utility_meter: !include utility_meter/utility.yaml
 camera: !include camera/camera.yaml
+input_select: !include input-select.yaml
 frontend:
   themes: !include_dir_merge_named themes
 #===============================================================
@@ -37,6 +37,15 @@ http:
   use_x_forwarded_for: true
   trusted_proxies:
     - 172.30.33.0/24
+#====================
+#google agenda    
+google:
+  client_id: !secret google_CLIENT_ID
+  client_secret: !secret google_CLIENT_SECRET
+#===============================================================
+media_player:
+  - platform: mpd
+    host: 192.168.178.162
 #===============================================================
 # Text to speech
 tts:
