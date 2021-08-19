@@ -1,0 +1,7 @@
+  - platform: scrape
+    resource: https://www.nu.nl
+    select: ".title.fluid:first-of-type"
+    name: "nu.nl headline"
+    scan_interval: 900
+
+    

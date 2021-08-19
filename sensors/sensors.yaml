@@ -60,6 +60,24 @@
         icon_template: mdi:shower-head
         value_template: >-
           {{ states('sensor.douche_humidity') | int > 80 }}
+######## nachtstand voor grafieken
+#sensor:
+#  - platform: template
+#    sensors:
+      nightstate:
+        friendly_name: Night State
+        value_template: "{% if is_state('sun.sun', 'below_horizon') %}1{% else %}0{% endif %}"
+
+######## themperatuur verschil woonkamer met buiten voor huis
+#sensor:
+#  - platform: template
+#    sensors:
+      delta_temp_huiskamer:
+        value_template: '{{ ((float(states.sensor.atc_temperature_7d.state)) - (float(states.sensor.temperatuur_voor_temperature.state))) | round(2) }} '
+#        nit_of_measurement: '°C'
+        friendly_name: 'Verschil temp binnen-buiten'
+        icon_template: "mdi:thermometer"
+
 # sensoren voor HA informatie
 #  - platform: template 
 #    sensors:
