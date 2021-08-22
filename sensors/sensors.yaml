@@ -157,3 +157,23 @@
           {% else %}
           Goedenacht,
           {% endif %}
+
+# sensoren voor HA welkom afvalinfo welke en datum
+#  - platform: template
+#    sensors:
+      afvalinfo_next_trash_type_and_date:
+        value_template: >
+          {% set ns = namespace(minimum=365) %}
+          {% set list = ['gft', 'kerstboom', 'papier', 'pbd', 'restafval','textiel'] %}
+          {%- for l in list %}
+          {%- set days = state_attr('sensor.afvalinfo_' ~l, 'days_until_collection_date')%}
+          {%- if days != None and days < ns.minimum %}
+          {%- set ns.minimum = days %}
+          {%- endif %}
+          {%- endfor %}
+          {%- for l in list %}
+          {%- set days = state_attr('sensor.afvalinfo_' ~l,  'days_until_collection_date')%}
+          {%- if days == ns.minimum %}
+          {{l}} op {{ states('sensor.afvalinfo_' ~l) }}
+          {%- endif %}
+          {%- endfor %}
