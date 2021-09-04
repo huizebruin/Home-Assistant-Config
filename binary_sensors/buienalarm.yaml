@@ -1,0 +1,15 @@
+############################################################
+## Binary Sensor buienalarm
+############################################################
+binary_sensor:
+  - platform: template
+    sensors:
+      rain_alarm:
+        friendly_name: Buienalarm
+        value_template: >-
+          {{ states('sensor.buienalarm_precipitation_forecast_average')
+            | float > 0 }}
+        icon_template: >-
+          hass:umbrella{% if
+            states('sensor.buienalarm_precipitation_forecast_average')
+            | float == 0 %}-closed{% endif %}

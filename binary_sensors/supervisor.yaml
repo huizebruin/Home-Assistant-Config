@@ -1,0 +1,7 @@
+
+#binary_sensor:
+- platform: template
+  sensors:
+    supervisor_update_available:
+      value_template: >-
+        {{ states('sensor.supervisor_update_available') == "True" }}
