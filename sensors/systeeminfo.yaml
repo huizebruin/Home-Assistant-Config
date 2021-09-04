@@ -26,7 +26,20 @@
       - type: load_1m
       - type: load_5m
       - type: load_15m
-
+################################################
+## Sensor Supervisor Update Available
+################################################
+#sensor:
+  - platform: command_line
+    name: Supervisor Update Available
+    # yamllint disable-line rule:line-length
+    command: 'curl http://supervisor/supervisor/info -H "Authorization: Bearer $(printenv SUPERVISOR_TOKEN)" | jq ''{"update_available":.data.update_available,"latest_version":.data.version_latest,"current_version":.data.version}'''
+    value_template: >-
+      {{ value_json.update_available }}
+    json_attributes:
+      - current_version
+      - latest_version
+    scan_interval: 3600
   
   #====================
   #=== CPU Temperatuur

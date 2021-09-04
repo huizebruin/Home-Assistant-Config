@@ -13,6 +13,7 @@
     name: 112 meldingen
     regios: 2
     scan_interval: 60
-#    radius: 20000
-#    latitude: !secret latitude
-#    longitude: !secret longitude
+    nolocation: true
+    radius: 20000
+    latitude: !secret latitude
+    longitude: !secret longitude

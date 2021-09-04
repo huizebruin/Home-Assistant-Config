@@ -1,0 +1,68 @@
+#sensor:
+#### Bomen
+  - platform: scrape
+    resource: !secret weather_com_allergy_forecast
+    # yamllint disable-line rule:line-length
+    select: ".PollenBreakdown--body--2i7U7 > div:nth-of-type(1) > div:nth-of-type(1) > div:nth-of-type(2) > ul:nth-of-type(1) > li:nth-of-type(1) > strong:nth-of-type(1)"
+    name: Pollen Tree Today
+    scan_interval: 14400  # every 4 hours
+    
+  - platform: scrape
+    resource: !secret weather_com_allergy_forecast
+    # yamllint disable-line rule:line-length
+    select: ".PollenBreakdown--body--2i7U7 > div:nth-of-type(1) > div:nth-of-type(1) > div:nth-of-type(2) > ul:nth-of-type(1) > li:nth-of-type(3) > strong:nth-of-type(1)"
+    name: Pollen Tree Later
+    scan_interval: 14400  # every 4 hours    
+
+  - platform: scrape
+    resource: !secret weather_com_allergy_forecast
+    # yamllint disable-line rule:line-length
+    select: ".PollenBreakdown--body--2i7U7 > div:nth-of-type(1) > div:nth-of-type(1) > div:nth-of-type(2) > ul:nth-of-type(1) > li:nth-of-type(2) > strong:nth-of-type(1)"
+    name: Pollen Tree Tomorrow
+    scan_interval: 14400  # every 4 hours
+    
+### Grassen
+
+  - platform: scrape
+    resource: !secret weather_com_allergy_forecast
+    # yamllint disable-line rule:line-length
+    select: ".PollenBreakdown--body--2i7U7 > div:nth-of-type(2) > div:nth-of-type(1) > div:nth-of-type(2) > ul:nth-of-type(1) > li:nth-of-type(1) > strong:nth-of-type(1)"
+    name: Pollen Grass Today
+    scan_interval: 14400  # every 4 hours
+    
+  - platform: scrape
+    resource: !secret weather_com_allergy_forecast
+    # yamllint disable-line rule:line-length
+    select: ".PollenBreakdown--body--2i7U7 > div:nth-of-type(2) > div:nth-of-type(1) > div:nth-of-type(2) > ul:nth-of-type(1) > li:nth-of-type(2) > strong:nth-of-type(1)"
+    name: Pollen Grass Tomorrow
+    scan_interval: 14400  # every 4 hours    
+    
+  - platform: scrape
+    resource: !secret weather_com_allergy_forecast
+    # yamllint disable-line rule:line-length
+    select: ".PollenBreakdown--body--2i7U7 > div:nth-of-type(2) > div:nth-of-type(1) > div:nth-of-type(2) > ul:nth-of-type(1) > li:nth-of-type(3) > strong:nth-of-type(1)"
+    name: Pollen Grass Later
+    scan_interval: 14400  # every 8 hours
+    
+### onkruid    
+
+  - platform: scrape
+    resource: !secret weather_com_allergy_forecast
+    # yamllint disable-line rule:line-length
+    select: ".PollenBreakdown--body--2i7U7 > div:nth-of-type(3) > div:nth-of-type(1) > div:nth-of-type(2) > ul:nth-of-type(1) > li:nth-of-type(1) > strong:nth-of-type(1)"
+    name: Pollen Ragweed Today
+    scan_interval: 14400  # every 4 hours
+
+  - platform: scrape
+    resource: !secret weather_com_allergy_forecast
+    # yamllint disable-line rule:line-length
+    select: ".PollenBreakdown--body--2i7U7 > div:nth-of-type(3) > div:nth-of-type(1) > div:nth-of-type(2) > ul:nth-of-type(1) > li:nth-of-type(2) > strong:nth-of-type(1)"
+    name: Pollen Ragweed Tomorrow
+    scan_interval: 14400  # every 4 hours
+
+  - platform: scrape
+    resource: !secret weather_com_allergy_forecast
+    # yamllint disable-line rule:line-length
+    select: ".PollenBreakdown--body--2i7U7 > div:nth-of-type(3) > div:nth-of-type(1) > div:nth-of-type(2) > ul:nth-of-type(1) > li:nth-of-type(3) > strong:nth-of-type(1)"
+    name: Pollen Ragweed Later
+    scan_interval: 14400  # every 4 hour
