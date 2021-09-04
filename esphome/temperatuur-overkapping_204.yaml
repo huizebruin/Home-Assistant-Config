@@ -5,7 +5,7 @@ substitutions:
   friendly_name:  temp_overkapping
   
 esphome:
-  name: temperatuur-overkapping_204
+  name: temperatuur-overkapping-204
   platform: ESP8266
   board: d1_mini
   

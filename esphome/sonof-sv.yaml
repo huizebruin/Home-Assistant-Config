@@ -37,22 +37,48 @@ ota:
 binary_sensor:
   - platform: gpio
     pin:
-      number: GPIO14
+      number: GPIO0
       mode: INPUT_PULLUP
       inverted: True
-    name: "24 Voeding"
-    device_class: garage_door
-    
+    name: "Sonoff 3D Printer Button"
+    on_press:
+      - switch.toggle: fakebutton
+  - platform: status
+    name: "Sonoff 3D Printer"
+
 switch:
-  - platform: gpio
-    pin: GPIO12
-    id: relay
   - platform: template
-    name: "24v voeding"
+    name: "sonoff sv Led Relay"
+    optimistic: true
+    id: fakebutton
+    restore_state: True
     turn_on_action:
     - switch.turn_on: relay
-    - delay: 500ms
+#    - light.turn_on: led
+    turn_off_action:
     - switch.turn_off: relay
+#    - light.turn_off: led
+  - platform: gpio
+    id: relay
+    restore_mode: ALWAYS_ON
+    pin: GPIO12
+#    restore_mode: RESTORE_DEFAULT_ON
+  - platform: restart
+    name: "Sonoff 3D Printer Restart"
+
+output:
+  - platform: esp8266_pwm
+    id: basic_green_led
+    pin:
+      number: GPIO13
+      inverted: True
+
+light:
+  - platform: monochromatic
+    name: "Sonoff 3D Printer Green LED"
+    output: basic_green_led
+    id: led
+    restore_mode: ALWAYS_ON
     
 text_sensor:
   - platform: version
