@@ -1,0 +1,13 @@
+##########
+## Sensor ssl
+##########
+#sensor:
+  - platform: filesize
+    file_paths:
+      - !secret filesize_ssl_cert
+
+  - platform: template
+    sensors:
+      cert_pem_last_updated:
+        value_template: "{{ as_timestamp(state_attr('sensor.cert_pem',
+          'last_updated')) | timestamp_custom('%Y-%m-%d') }}"

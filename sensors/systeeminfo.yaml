@@ -40,17 +40,7 @@
       - current_version
       - latest_version
     scan_interval: 3600
-  
-  #====================
-  #=== CPU Temperatuur
-  #====================
-  - platform: command_line
-    name: CPU Temp
-    command: "cat /sys/class/thermal/thermal_zone0/temp"
-    unit_of_measurement: "°C"
-    value_template: '{{ value | multiply(0.001) | round(0) }}'
-    
- # Supervisor & add-ons available updates
+# Supervisor & add-ons available updates
   - platform: command_line
     name: Supervisor updates
     command: 'curl http://supervisor/supervisor/info -H "Authorization: Bearer $(printenv SUPERVISOR_TOKEN)" | jq ''{"newest_version":.data.version_latest,"current_version":.data.version,"addons":[.data.addons[] | select(.version != .version_latest)]}'''
@@ -61,6 +51,15 @@
     - current_version
     - addons
 
+  #====================
+  #=== CPU Temperatuur
+  #====================
+  - platform: command_line
+    name: CPU Temp
+    command: "cat /sys/class/thermal/thermal_zone0/temp"
+    unit_of_measurement: "°C"
+    value_template: '{{ value | multiply(0.001) | round(0) }}'
+    
   #===================
   #=== System Up Time
   #===================
@@ -74,7 +73,7 @@
         friendly_name: HA Uptime
         value_template: >
           {% if states('sensor.uptime') == '0.0' %} 
-             Net opnieuw opgestart...
+            Net opnieuw opgestart...
           {% else %}
             {% macro phrase(value, name) %}
             {%- set value = value | int %}
@@ -117,7 +116,7 @@
       #=========================
       uptime:
         friendly_name: Uptime van wyse dx0d
-        entity_id: sensor.time
+#        entity_id: sensor.time
         value_template: >
           {% set up_time = as_timestamp(now()) - as_timestamp(states('sensor.last_boot')) %}
 
