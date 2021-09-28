@@ -94,9 +94,7 @@ switch.lsd_stopcontact_197_relay:
   icon: hass:radio
 sensor.atc_battery_level_c6_2: {}
 light.lsd_hal_spot_bij_wc_light:
-  icon: hue:wall-spot
-
-# customize:
+  icon: mdi:spotlight-beam
 sensor.pollen_tree_today:
   friendly_name: Pollen Bomen Vandaag
   icon: hass:tree
@@ -106,7 +104,6 @@ sensor.pollen_tree_tomorrow:
 sensor.pollen_tree_later:
   friendly_name: Pollen Bomen Overmorgen
   icon: hass:tree
-
 sensor.pollen_grass_today:
   friendly_name: Pollen Grassen Vandaag
   icon: hass:grass
@@ -116,7 +113,6 @@ sensor.pollen_grass_tomorrow:
 sensor.pollen_grass_later:
   friendly_name: Pollen Grassen Overmorgen
   icon: hass:grass
-
 sensor.pollen_ragweed_today:
   friendly_name: Pollen Ambrosia Vandaag
   icon: hass:flower
@@ -126,10 +122,8 @@ sensor.pollen_ragweed_tomorrow:
 sensor.pollen_ragweed_later:
   friendly_name: Pollen Ambrosia Overmorgen
   icon: hass:flower
-
 sensor.Vlagdag:
-  icon: hass:flag  
-
+  icon: hass:flag
 sensor.cert_pem:
   friendly_name: Grootte SSL-certificaat
 sensor.cert_pem_last_updated:
@@ -138,24 +132,21 @@ sensor.cert_pem_last_updated:
 sensor.ssl_certificate_expiry:
   friendly_name: Geldigheidsduur SSL-certificaat
   unit_of_measurement: dagen
-
 sensor.supervisor_update_available:
   icon: hass:package-up
 binary_sensor.supervisor_update_available:
   device_class: safety
   friendly_name: Supervisor Update Beschikbaar
-
 sensor.buienalarm_precipitation:
   friendly_name: Buienalarm Neerslagintensiteit
   unit_of_measurement: mm/u
-
 sensor.buienalarm_precipitation_forecast_average:
   friendly_name: Buienalarm Neerslagintensiteit verwacht
   unit_of_measurement: mm/u
-
 sensor.buienalarm_next_rain_forecast:
   friendly_name: Buienalarm Neerslag volgende
-  unit_of_measurement: minuten  
-
+  unit_of_measurement: minuten
 sensor.buienalarm_temperature:
   friendly_name: Buienalarm themperatuur
+switch.lsd_hal_spot_bij_wc_relay:
+  icon: mdi:spotlight-beam

@@ -11,6 +11,9 @@ homeassistant:
   customize: !include customize.yaml
   external_url: !secret externalurl
   internal_url: "http://192.168.178.192:8123"
+  allowlist_external_dirs:
+    - "/config/zigbee2mqtt"
+    - "/ssl"
 # Configure a default setup of Home Assistant (frontend, api, etc)
 default_config:
 #===============================================================
@@ -30,6 +33,10 @@ input_select: !include input-select.yaml
 frontend:
   themes: !include_dir_merge_named themes
 #===============================================================
+#samsung tv
+samsungtv_smart:
+  - host: !secret samsungtv_smart
+#====================
 #http:
 #  ssl_certificate: /ssl/fullchain.pem
 #  ssl_key: /ssl/privkey.pem
@@ -82,35 +89,67 @@ notify:
 #===============================================================
 ## influxdb
 #===============================================================
-influxdb:
-    host: localhost
-    port: 8086
-    database: homeassistant
-    username: homeassistant
-    password: !secret influx 
-    max_retries: 3
-    default_measurement: state
+#influxdb:
+#    host: localhost
+#    port: 8086
+#    database: homeassistant
+#    username: homeassistant
+#    password: !secret influx 
+#    max_retries: 3
+#    default_measurement: state
+
 
 recorder:
+  db_url: !secret mariadb
+  commit_interval: 30
+  auto_purge: true
   purge_keep_days: 14
   include:
     domains:
       - sensor
       - switch
       - binary_sensor
+      - automation
+      - climate
+    entity_globs:
+      - sensor.weather_*
+      - sensor.surh*
+      - binary_sensor.*
+      - sensor.dsmr_*   
+      - sensor.hourly_*  
+      - sensor.daily_*
+      - sensor.weekly_*        
+      - sensor.monthly_*  
+      - sensor.yesterday_* 
+      - sensor.last_*
+      - sensor.average_*
   exclude:
     domains:
       - media_player
-      - automation
       - updater
     entities:
       - sun.sun # Don't record sun data
       - sensor.last_boot # Comes from 'systemmonitor' sensor platform
       - sensor.date
       - sensor.time
+      - sensor.date_time
+      - sensor.time_date
+      - sensor.date_time_iso
+      - sensor.date_time_utc
+      - sensor.time_utc
+      - sensor.internet_time
       - binary_sensor.snapshot_stale
       - binary_sensor.updater
-    entity_globs:
-      - sensor.weather_*
-      - sensor.surh*
+
+logbook:
+  exclude:
+    entities:
+      - sensor.date
+      - sensor.time
+      - sensor.date_time
+      - sensor.time_date
+      - sensor.date_time_iso
+      - sensor.date_time_utc
+      - sensor.time_utc
+      - sensor.internet_time
 #===============================================================

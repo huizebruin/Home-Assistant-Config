@@ -1,1 +1,42 @@
-{}
+  radio_content_player:
+    alias: Start Playing
+    icon: mdi:play
+    sequence:
+      - service: media_player.volume_set
+        data_template:
+          entity_id: >
+            {% if is_state("input_select.radio_speaker", "Huiskamer") %} media_player.huiskamer
+            {% elif is_state("input_select.radio_speaker", "Huiskamer vollumio") %} media_player.mpd
+            {% endif %}
+          volume_level: '{{ states("input_number.radio_volume") }}'
+      - service: media_player.play_media
+        data_template:
+          entity_id: >
+            {% if is_state("input_select.radio_speaker", "Huiskamer") %} media_player.huiskamer
+            {% elif is_state("input_select.radio_speaker", "Huiskamer vollumio") %} media_player.mpd
+            {% endif %}
+          media_content_id: >
+            {% if is_state("input_select.radio_source", "Radio 538") %} http://playerservices.streamtheworld.com/api/livestream-redirect/RADIO538
+            {% elif is_state("input_select.radio_source","Sublime") %} https://playerservices.streamtheworld.com/api/livestream-redirect/SUBLIME.mp3
+            {% elif is_state("input_select.radio_source","Radio 10") %} http://stream.radio10.nl/radio10
+            {% elif is_state("input_select.radio_source","Q-Music") %} https://stream.qmusic.nl/qmusic/aachigh
+            {% elif is_state("input_select.radio_source","Veronica") %} http://playerservices.streamtheworld.com/api/livestream-redirect/VERONICA.mp3
+            {% elif is_state("input_select.radio_source","Sky Radio") %} http://20043.live.streamtheworld.com:80/SKYRADIOAAC.aac
+            {% elif is_state("input_select.radio_source","Arrow Classic Rock") %} http://stream.player.arrow.nl/arrowcr
+            {% elif is_state("input_select.radio_source","Sublime Smooth") %} https://stream.gal.io/arrow
+            {% elif is_state("input_select.radio_source","Radio 1") %} https://icecast.omroep.nl/radio1-bb-aac
+            {% elif is_state("input_select.radio_source","Radio 2") %} https://icecast.omroep.nl/radio2-bb-aac
+            {% elif is_state("input_select.radio_source","Radio 3") %} https://icecast.omroep.nl/3fm-bb-aac
+            {% elif is_state("input_select.radio_source","JUKE Foute Hits") %} http://21223.live.streamtheworld.com/TLPNET10AAC.aac
+            {% elif is_state("input_select.radio_source","Qmusic foute uur") %} https://stream.qmusic.nl/fouteuur/mp3
+            {% elif is_state("input_select.radio_source","qmusic non stop") %} https://stream.qmusic.nl/nonstop/mp3
+            {% elif is_state("input_select.radio_source","Qmusic summer") %} https://stream.qmusic.nl/thema/mp3
+            {% elif is_state("input_select.radio_source","radio 10 80's") %} http://20103.live.streamtheworld.com/TLPSTR20.mp3
+            {% elif is_state("input_select.radio_source","Radio 10 90's") %} https://20863.live.streamtheworld.com/TLPSTR22.mp3
+            {% elif is_state("input_select.radio_source","Radio 10 top 4000") %} http://20853.live.streamtheworld.com/TLPSTR24.mp3
+            {% elif is_state("input_select.radio_source","Simone Fm") %} http://stream.stream.delivery/simonefm
+            {% elif is_state("input_select.radio_source","Tukker Fm") %} https://stream.tukkerfm.nl/tukkerfm
+            {% elif is_state("input_select.radio_source","Tynaarlo Lokaal") %} https://ice.cr2.streamzilla.xlcdn.com:8000/sz=tynaarlolokaal=radiostream
+            {% elif is_state("input_select.radio_source","radio release") %} http://mscp3.live-streams.nl:8140/live
+            {% endif %}
+          media_content_type: 'music'

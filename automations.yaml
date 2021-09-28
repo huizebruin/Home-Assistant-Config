@@ -112,7 +112,7 @@
   action:
   - service: frontend.set_theme
     data:
-      name: Huizebruin (Dark)
+      name: huizebruin-theme
   mode: single
 - id: '1609786178940'
   alias: Omrin Morgen
@@ -141,11 +141,11 @@
       message: Morgen wordt de {{ states('sensor.omrin_morgen') }} kliko geleegd
   mode: single
 - id: '1610202760429'
-  alias: ' 23:00 verlichting huis UIT werkweek'
+  alias: ' 22:40 verlichting huis UIT werkweek'
   description: ''
   trigger:
   - platform: time
-    at: '23:00'
+    at: '22:40'
   condition:
   - condition: time
     weekday:
@@ -203,7 +203,7 @@
       - switch.sonoff_4ch_pro2_kerst_verlichting
   - delay:
       hours: 0
-      minutes: 5
+      minutes: 8
       seconds: 0
       milliseconds: 0
   - service: light.turn_off
@@ -327,9 +327,6 @@
       - e8e26877e42e0a6734c8c2d3d6dfc125
       - cb8163ae12d775c569e507bf241507f9
       entity_id: switch.sonoff_4ch_pro2_ledstrip
-  - service: notify.mobile_app_cph2065
-    data:
-      message: Werkdag verlichting
   mode: single
 - id: '1612988029563'
   alias: 8:15 werkweek verlichting (Uit)
@@ -354,9 +351,6 @@
       - 9f3851b7671b18aa9bda202eb56a83c0
       - e8e26877e42e0a6734c8c2d3d6dfc125
       entity_id: switch.sonoff_4ch_pro2_ledstrip
-  - service: notify.mobile_app_cph2065
-    data:
-      message: werkdag verlichting
   mode: single
 - id: '1614366863821'
   alias: vakantie licht uit
@@ -471,7 +465,7 @@
   trigger:
   - platform: sun
     event: sunset
-    offset: -01:00
+    offset: -00:45
   - type: illuminance
     platform: device
     device_id: b4da16def4999e3ab9b9c65afb3efd49
@@ -557,7 +551,7 @@
   description: ''
   trigger:
   - platform: time
-    at: '22:30'
+    at: '21:30'
   condition: []
   action:
   - service: switch.turn_off
@@ -626,7 +620,9 @@
         url: https://www.knmi.nl/nederland-nu/weer/waarschuwingen/friesland
   - service: media_player.volume_set
     data:
-      volume_level: 0.65
+      volume_level: 0.21
+    target:
+      entity_id: media_player.huiskamer
   - service: tts.google_translate_say
     data:
       entity_id: media_player.google_home_hub
@@ -720,12 +716,10 @@
   action:
   - service: notify.twitter_wobbele
     data:
-      message: '{{ now().strftime(''%H:%M'') }} Weer & pollen update van #Surhuisterveen
-        | Temp: {{ states(''sensor.temperatuur_voor_temperature'')}} °C,  Wind: {{
-        states(''sensor.surhuisterveen_wind_speed'')}} km/u,  Luchtv: {{ states(''sensor.surhuisterveen_humidity'')}}
-        %,  | Bomen pollen {{ states(''sensor.pollen_tree_count'')}}/m3 | Gras pollen
-        {{ states(''sensor.pollen_grass_count'')}}/m3 | Onkruid pollen {{ states(''sensor.pollen_weed_count'')}}/m3
-        | Home assistant weerupdate vanaf #huizebruin @Surhuisterveen #Achtkarspelen'
+      message: '{{ now().strftime(''%H:%M'') }} Weer update van #Surhuisterveen |
+        Temp: {{ states(''sensor.temperatuur_voor_temperature'')}} °C,  Wind: {{ states(''sensor.surhuisterveen_wind_speed'')}}
+        km/u,  Luchtv: {{ states(''sensor.surhuisterveen_humidity'')}} %, | Home assistant
+        weerupdate vanaf #huizebruin @Surhuisterveen #Achtkarspelen'
   mode: single
 - id: '1621339847986'
   alias: motion bijkeuken
@@ -819,7 +813,11 @@
       minutes: 0
       seconds: 5
       milliseconds: 0
-  condition: []
+  condition:
+  - condition: numeric_state
+    entity_id: sensor.douche_humidity
+    attribute: humidity
+    below: '65'
   action:
   - delay:
       hours: 0
@@ -875,44 +873,6 @@
       message: 🏊‍♂️ zwembad pomp uit
       title: Zwembad
   mode: single
-- id: '1627249378777'
-  alias: HA start CS CH command
-  description: ''
-  trigger:
-  - platform: homeassistant
-    event: start
-  condition: []
-  action:
-  - delay:
-      hours: 0
-      minutes: 4
-      seconds: 0
-      milliseconds: 0
-  - service: mqtt.publish
-    data:
-      topic: OTGW/set/otgw-84CCA8A28BA5/command
-      payload_template: CS={{ states("sensor.custom_thermostat_control_setpoint")
-        }}
-  - service: mqtt.publish
-    data:
-      topic: OTGW/set/otgw-84CCA8A28BA5/command
-      payload_template: CH={{ states("sensor.custom_thermostat_ch_command") }}
-  mode: single
-- id: '1627316339080'
-  alias: Update OT for boiler when outside temperature changes
-  description: ''
-  trigger:
-  - platform: state
-    entity_id: sensor.temperatuur_voor_temperature
-    attribute: temperature
-  condition: []
-  action:
-  - service: mqtt.publish
-    data:
-      topic: OTGW/set/otgw-84CCA8A28BA5/command/
-      payload_template: OT={{ states('sensor.temperatuur_voor_temperature') | float
-        }}
-  mode: single
 - id: '1628182227870'
   alias: afzuiging automation douche
   description: ''
@@ -942,7 +902,7 @@
   - condition: numeric_state
     entity_id: sensor.douche_humidity
     attribute: humidity
-    below: '67'
+    below: '74'
   - type: turn_off
     device_id: 63e587ace1fc2d33121ff15c034295ed
     entity_id: switch.afzuiging
@@ -951,4 +911,345 @@
     data:
       message: 🚿 Douche afzuiging automation uit
       title: Douche
+  mode: single
+- id: '1629649161629'
+  alias: Weer tweet surhuisterveen (Dupliceren)
+  description: ''
+  trigger:
+  - platform: time
+    at: 06:00
+  - platform: time
+    at: '12:00'
+  - platform: time
+    at: '18:00'
+  - platform: time
+    at: 00:00
+  condition: []
+  action:
+  - service: notify.twitter_wobbele
+    data:
+      message: '{{ now().strftime(''%H:%M'') }} Weer & pollen update van #Surhuisterveen
+        | Temp: {{ states(''sensor.temperatuur_voor_temperature'')}} °C,  Wind: {{
+        states(''sensor.surhuisterveen_wind_speed'')}} km/u,  Luchtv: {{ states(''sensor.surhuisterveen_humidity'')}}
+        %,  | Bomen pollen {{ states(''sensor.pollen_tree_count'')}}/m3 | Gras pollen
+        {{ states(''sensor.pollen_grass_count'')}}/m3 | Onkruid pollen {{ states(''sensor.pollen_weed_count'')}}/m3
+        | Home assistant weerupdate vanaf #huizebruin @Surhuisterveen #Achtkarspelen'
+  mode: single
+- id: '1630351170950'
+  alias: Afval - Bericht voor morgen
+  description: Dit is een automatisch bericht, waarin je te zien krijgt welke afvalbak
+    er morgen wordt geleegd.
+  trigger:
+  - platform: time_pattern
+    minutes: /5
+  condition:
+  - condition: and
+    conditions:
+    - condition: state
+      entity_id: input_boolean.waste_moved
+      state: 'off'
+    - condition: state
+      entity_id: input_boolean.waste_reminder
+      state: 'on'
+    - condition: time
+      after: '17:00:00'
+      before: '23:00:00'
+    - condition: template
+      value_template: '{{ states(''sensor.omrin_morgen'') != ''Geen'' }}'
+  action:
+  - service: notify.notify
+    data:
+      title: Afval
+      message: 'Het is vandaag {{ now().strftime("%d-%m-%Y") }}. Afvaltype(n): {{
+
+        states.sensor.omrin_morgen.state }} wordt morgen opgehaald.'
+      data:
+        color: red
+        actions:
+        - action: Afvalbakbuiten
+          title: Afvalbak staat aan straat.
+  - event: mobile_app_notification_action
+    event_data:
+      actionName: Afvalbakbuiten
+  - service: input_boolean.turn_on
+    target:
+      entity_id: input_boolean.waste_moved
+  mode: single
+- id: '1630445216039'
+  alias: Watermeter stand updaten
+  description: ''
+  trigger:
+  - platform: state
+    entity_id: sensor.water_meter_usage_in_m3
+  condition:
+  - condition: not
+    conditions:
+    - condition: or
+      conditions:
+      - condition: state
+        entity_id: sensor.water_meter_usage_in_m3
+        state: '0.00'
+    - condition: state
+      entity_id: sensor.water_meter_usage_in_m3
+      state: unavailable
+  action:
+  - service: counter.increment
+    target:
+      entity_id: counter.waterverbruik_m3
+  mode: single
+- id: '1630748486553'
+  alias: 'Systeem :  Supervisor Update Notification'
+  trigger:
+  - platform: homeassistant
+    event: start
+  - platform: state
+    entity_id: sensor.supervisor_update
+  condition:
+  - condition: state
+    entity_id: sensor.supervisor_update
+    state: 'True'
+  action:
+  - service: notify.mobile_app_cph2065
+    data:
+      message: 'There is an updates to Home Assistant Supervisor: * {{ state_attr("sensor.supervisor_update",
+        "current_version") }} -> {{ state_attr("sensor.supervisor_update", "newest_version")
+        }}
+
+        '
+      title: Supervisor Update Available
+      data:
+        sticky: 'true'
+        group: updates
+        tag: update_supervisor
+        color: '#ff8c00'
+        clickAction: /hasio/dashboard
+  - service: persistent_notification.create
+    data:
+      title: Supervisor Update Available
+      message: 'There is an updates to Home Assistant Supervisor: * {{ state_attr("sensor.supervisor_update",
+        "current_version") }} -> {{ state_attr("sensor.supervisor_update", "newest_version")
+        }}'
+      notification_id: update_supervisor
+  mode: single
+- id: '1630749036391'
+  alias: 'Systeem : Supervisor Update Notification Dismiss'
+  trigger:
+  - platform: homeassistant
+    event: start
+  - platform: state
+    entity_id: sensor.supervisor
+    to: 'False'
+  action:
+  - service: notify.mobile_app_cph2065
+    data:
+      message: clear_notification
+      data:
+        tag: update_supervisor
+  - service: persistent_notification.dismiss
+    data:
+      notification_id: update_supervisor
+  mode: single
+- id: '1630751528941'
+  alias: Buienalarm melden
+  description: 'Notify for rain alarms
+
+    '
+  trigger:
+  - platform: state
+    entity_id: sensor.buienalarm_precipitation_forecast_level
+  condition:
+  - condition: not
+    conditions:
+    - condition: or
+      conditions:
+      - condition: state
+        entity_id: sensor.buienalarm_precipitation_forecast_level
+        state: '0'
+      - condition: state
+        entity_id: sensor.buienalarm_precipitation_forecast_level
+        state: unavailable
+  action:
+  - service: notify.mobile_app_cph2065
+    data:
+      title: ☔️ Buienalarm
+      message: '{{ state_attr(''sensor.buienalarm_precipitation_forecast_level'',
+        ''label'')}} ({{states(''sensor.buienalarm_precipitation_forecast_average'')}}
+        {{state_attr(''sensor.buienalarm_precipitation_forecast_average'', ''unit_of_measurement'')}})
+        verwacht.
+
+        '
+      data:
+        url: https://www.buienalarm.nl/{{state_attr('zone.home', 'latitude')}}, {{state_attr('zone.home',
+          'longitude')}}
+  - service: notify.twitter_wobbele
+    data:
+      message: '☔️ {{ state_attr(trigger.entity_id,''label'') }} vlakbij verwacht.
+        {{ [ "Vergeet je regenjas 🧥 niet mee te nemen!", "Neem een paraplu 🌂 mee!",
+        "Je bent ⚠️ gewaarschuwd!", "Hou @buienalarm 🌧️ in de gaten!" ] | random  }}
+        https://www.buienalarm.nl/ #buienalarm #huizebruin #surhuisterveen #homeassistant
+        #automation'
+  mode: single
+- id: '1630776395151'
+  alias: Brievenbus geleegd
+  description: ''
+  trigger:
+  - platform: state
+    entity_id: input_boolean.brievenbus_geleegd
+    to: 'on'
+  condition: []
+  action:
+  - service: input_boolean.turn_off
+    data: {}
+    entity_id: input_boolean.postbak_geopend
+  - service: input_boolean.turn_off
+    data: {}
+    target:
+      entity_id: input_boolean.brievenbus_geopend
+  - wait_template: ''
+    timeout: '60'
+  - service: input_boolean.turn_off
+    target:
+      entity_id: input_boolean.brievenbus_geleegd
+  mode: single
+- id: '1630776396443'
+  alias: Brievenbus geleegd
+  description: ''
+  trigger:
+  - platform: state
+    entity_id: input_boolean.brievenbus_geleegd
+    to: 'on'
+  condition: []
+  action:
+  - service: input_boolean.turn_off
+    data: {}
+    entity_id: input_boolean.postbak_geopend
+  - service: input_boolean.turn_off
+    data: {}
+    target:
+      entity_id: input_boolean.brievenbus_geopend
+  - wait_template: ''
+    timeout: '60'
+  - service: input_boolean.turn_off
+    target:
+      entity_id: input_boolean.brievenbus_geleegd
+  mode: single
+- id: '1631046291885'
+  alias: slapen en wakker switch
+  description: ''
+  trigger:
+  - type: plugged_in
+    platform: device
+    device_id: 15052a27fb66d6297a3408b997a42332
+    entity_id: binary_sensor.cph2065_is_aan_het_opladen
+    domain: binary_sensor
+  - type: plugged_in
+    platform: device
+    device_id: 07d4ab9298b0fdc210f6fb9b57fa5e2e
+    entity_id: binary_sensor.sjoukje_mobiel_is_aan_het_opladen
+    domain: binary_sensor
+  - platform: device
+    domain: mqtt
+    device_id: 72b15f876ae0bc13cef5223d99eac984
+    type: action
+    subtype: single
+    discovery_id: 0x00124b0022fde0a0 action_single
+  condition:
+  - condition: time
+    after: '21:00'
+  action:
+  - service: input_boolean.turn_on
+    target:
+      entity_id: input_boolean.slapen
+  - service: input_boolean.turn_off
+    target:
+      entity_id: input_boolean.wakker
+  - repeat:
+      until:
+      - type: is_plugged_in
+        condition: device
+        device_id: 15052a27fb66d6297a3408b997a42332
+        entity_id: binary_sensor.cph2065_is_aan_het_opladen
+        domain: binary_sensor
+      - type: is_plugged_in
+        condition: device
+        device_id: 07d4ab9298b0fdc210f6fb9b57fa5e2e
+        entity_id: binary_sensor.sjoukje_mobiel_is_aan_het_opladen
+        domain: binary_sensor
+      sequence:
+      - service: input_boolean.turn_off
+        target:
+          entity_id: input_boolean.slapen
+      - service: input_boolean.turn_on
+        target:
+          entity_id: input_boolean.wakker
+  mode: single
+- id: '1631370721088'
+  alias: 'Verlichting : Gang naast hok'
+  description: ''
+  trigger:
+  - type: opened
+    platform: device
+    device_id: 63f39a4a18aaf623b18121c868ce1523
+    entity_id: binary_sensor.schutting_deur_contact
+    domain: binary_sensor
+  condition:
+  - condition: time
+    after: '18:00'
+    before: 08:00
+  action:
+  - service: light.turn_on
+    target:
+      entity_id: light.hal_verlichting_dimmer
+    data:
+      brightness_pct: 30
+  - delay:
+      hours: 0
+      minutes: 5
+      seconds: 0
+      milliseconds: 0
+  - type: turn_off
+    device_id: ae0c09f6cd7fabde29e8755ce2a4a5a2
+    entity_id: light.hal_verlichting_dimmer
+    domain: light
+  mode: single
+- id: '1631390077791'
+  alias: 'systeem clear TTS '
+  description: ''
+  trigger:
+  - platform: time
+    at: '16:45'
+  condition:
+  - condition: time
+    after: '16:45'
+  action:
+  - service: tts.clear_cache
+  mode: single
+- id: '1631908610759'
+  alias: systeem recorder repack
+  description: Repack recorder database
+  trigger:
+  - platform: time
+    at: 05:55
+  condition:
+  - condition: time
+    weekday:
+    - sun
+  action:
+  - service: recorder.purge
+    data:
+      repack: true
+  mode: single
+- id: '1632561330198'
+  alias: pollen update
+  description: ''
+  trigger:
+  - platform: time
+    at: '12:00'
+  - platform: time
+    at: '18:00'
+  condition: []
+  action:
+  - service: input_boolean.turn_on
+    target:
+      entity_id: input_boolean.get_allergies_data
   mode: single
