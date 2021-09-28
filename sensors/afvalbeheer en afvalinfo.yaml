@@ -6,8 +6,8 @@
       - gft
       - papier
 #     - grofvuil
-    postcode: !secret postcode                 
-    streetnumber: !secret huisnummer                   
+    postcode: !secret postcode
+    streetnumber: !secret huisnummer
     upcomingsensor: 1                
     dateformat: '%d-%m'           
     dateonly: 1                      
@@ -24,9 +24,9 @@
     - restafval
     - trash_type_today
     - trash_type_tomorrow
-    location: !secret gemeente              
-    postcode: !secret postcode                  
-    streetnumber: !secret huisnummer                 
+    location: !secret gemeente
+    postcode: !secret postcode
+    streetnumber: !secret huisnummer
     dateformat: '%d-%m'           
     locale: 'nl'                     
     timespanindays: 30 

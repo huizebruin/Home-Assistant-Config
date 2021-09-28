@@ -1,0 +1,10 @@
+################################################
+## Entities / Binary Sensors / Donker binnen
+################################################
+binary_sensor:
+  - platform: template
+    sensors:
+      donker_binnen:
+      friendly_name: "Donker binnen"
+      value_template: >-
+        {{ states('sensor.bh1750_illuminance')|float < 200 }}

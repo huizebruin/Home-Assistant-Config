@@ -1,9 +1,14 @@
 #==================================================================================================================================
-  #=== Geïnstalleerde hass.io versie
-  #==============================
+#=== Geïnstalleerde hass.io versie
+#==============================
   - platform: version
     name: Geïnstalleerde versie
     source: local
+#=== Geïnstalleerde core versie
+#==============================
+  - platform: version
+    source: supervisor
+    name: Core version installed
 
   #================================
   #=== Laatste beschikbare versie
@@ -143,3 +148,11 @@
           
           {{ text }}        
 #===============================================================
+#=== Geïnstalleerde supervisor version
+#==============================
+  - platform: template
+    sensors:
+      supervisor_version_installed:
+        friendly_name: "supervisor version installed"
+        value_template: >
+          {{state_attr('sensor.core_version_installed','supervisor')}}

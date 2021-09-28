@@ -1,0 +1,31 @@
+##########################################################
+## Network Devices
+##########################################################
+
+- platform: ping
+  host: !secret laptop
+  name: laptop
+
+- platform: ping
+  host: !secret camera1
+  name: camera keuken
+
+- platform: ping
+  host: !secret camera2
+  name: camera voor
+
+- platform: ping
+  host: !secret tplink-mesh-1
+  name: tplink-mesh-1
+
+- platform: ping
+  host: !secret tplink-mesh-2
+  name: tplink-mesh-2
+
+- platform: ping
+  host: !secret tplink-mesh-3
+  name: tplink-mesh-3
+
+- platform: ping
+  host: !secret printer
+  name: printer
