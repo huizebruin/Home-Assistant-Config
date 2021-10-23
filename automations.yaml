@@ -18,17 +18,15 @@
   description: ''
   trigger:
   - platform: time
-    at: '20:00:00'
-  condition:
-  - condition: device
-    device_id: 1c078dce1564c9851eea4ace01837afc
-    domain: media_player
-    entity_id: media_player.volumio
-    type: is_playing
+    at: '20:00'
+  condition: []
   action:
   - service: media_player.media_stop
     data: {}
-    entity_id: media_player.volumio
+    target:
+      entity_id:
+      - media_player.volumio
+      - media_player.mpd
   mode: single
 - id: '1609152921609'
   alias: start Volumio stream
@@ -44,15 +42,17 @@
   action:
   - service: media_player.media_play
     data: {}
-    entity_id: media_player.volumio
-  - service: media_player.volume_set
     target:
-      device_id: d5ff764a3d16b17f5c8d1ac7de70768f
+      entity_id: media_player.mpd
+  - service: script.radio_content_player
+  - service: media_player.volume_set
     data:
-      volume_level: 0.25
+      volume_level: 0.18
+    target:
+      entity_id: media_player.mpd
   mode: single
 - id: '1609268173320'
-  alias: Automatische verlichting tuin aan
+  alias: 'verlichting: Tuin verlichting aan'
   description: ''
   trigger:
   - platform: sun
@@ -82,7 +82,12 @@
   action:
   - service: notify.mobile_app_cph2065
     data:
+      title: Schutting deur.
       message: 🚪 schuttingdeur is open! {{now().strftime('%H:%M')}}
+  - service: tts.google_translate_say
+    data:
+      message: ' schuttingdeur is open!'
+      entity_id: media_player.huiskamer
   mode: single
 - id: '1609512721466'
   alias: batterijen raken leeg
@@ -223,6 +228,11 @@
   action:
   - service: notify.mobile_app_cph2065
     data:
+      title: Deurbel voorhuis.
+      message: Ding dong! Er staat iemand bij de voordeur! om {{now().strftime('%H:%M')}}
+  - service: notify.mobile_app_sm_a505fn
+    data:
+      title: Deurbel voorhuis.
       message: Ding dong! Er staat iemand bij de voordeur! om {{now().strftime('%H:%M')}}
   - service: media_player.volume_set
     data:
@@ -447,6 +457,10 @@
       device_id:
       - efb928b79d6c383487b2684a34694df1
       - 21be62f3bdef9ccde1410adacd885a3d
+      - 964bdd3dd4acbd9d1fc231e863538b9a
+  - service: media_player.media_stop
+    target:
+      entity_id: media_player.mpd
   - service: light.turn_on
     target:
       device_id: bc1e8e58670400a39cd366e9bebc0ff3
@@ -457,7 +471,9 @@
       milliseconds: 0
   - service: light.turn_off
     target:
-      device_id: bc1e8e58670400a39cd366e9bebc0ff3
+      device_id:
+      - bc1e8e58670400a39cd366e9bebc0ff3
+      - 9b302d929ce7d26784eef7ce17508f33
   mode: single
 - id: '1618001902798'
   alias: Verlichting Woonkamer Aan
@@ -524,15 +540,23 @@
     for:
       hours: 0
       minutes: 0
-      seconds: 2
+      seconds: 0
       milliseconds: 0
   condition:
-  - type: is_value
+  - type: is_illuminance
     condition: device
     device_id: b4da16def4999e3ab9b9c65afb3efd49
     entity_id: sensor.bh1750_illuminance
     domain: sensor
-    below: 200
+    below: 100
+  - condition: state
+    entity_id: light.lsd_hal_spot_bij_wc_light
+    state: 'off'
+    for:
+      hours: 0
+      minutes: 0
+      seconds: 10
+      milliseconds: 0
   action:
   - service: switch.turn_on
     target:
@@ -595,6 +619,11 @@
         is een Home Assistant update beschikbaar.  🎉           Versie: {{ states(''sensor.laatste_beschikbare_versie'')
         }} .           {% else %}           Er is een Home Assistant update beschikbaar.           Versie:
         {{ states(''sensor.laatste_beschikbare_versie'') }} .    {% endif %}'
+  - service: notify.twitter_wobbele
+    data:
+      title: 🚧 Home Assistant update   🎉
+      message: 'Er is een Home Assistant update beschikbaar.  🎉   Versie: {{ states(''sensor.laatste_beschikbare_versie'')
+        }} @huizebruin #huizebruin #homeassistant @home_assistant.'
   - service: notify.persistent_notification
     data:
       data_template:
@@ -716,10 +745,11 @@
   action:
   - service: notify.twitter_wobbele
     data:
-      message: '{{ now().strftime(''%H:%M'') }} Weer update van #Surhuisterveen |
-        Temp: {{ states(''sensor.temperatuur_voor_temperature'')}} °C,  Wind: {{ states(''sensor.surhuisterveen_wind_speed'')}}
-        km/u,  Luchtv: {{ states(''sensor.surhuisterveen_humidity'')}} %, | Home assistant
-        weerupdate vanaf #huizebruin @Surhuisterveen #Achtkarspelen'
+      message: '{{ now().strftime(''%H:%M'') }}Vandaag komt de zon op om {{ as_timestamp(state_attr(''sun.sun'',
+        ''next_rising''))  | timestamp_custom("%H:%M") }}.  Weer update van #Surhuisterveen
+        | Temp: {{ states(''sensor.temperatuur_voor_temperature'')}} °C,  Wind: {{
+        states(''sensor.surhuisterveen_wind_speed'')}} km/u,  Luchtv: {{ states(''sensor.surhuisterveen_humidity'')}}
+        %, | Home assistant weerupdate vanaf #huizebruin @Surhuisterveen #Achtkarspelen'
   mode: single
 - id: '1621339847986'
   alias: motion bijkeuken
@@ -733,7 +763,7 @@
     for:
       hours: 0
       minutes: 0
-      seconds: 10
+      seconds: 0
       milliseconds: 0
   condition:
   - type: is_illuminance
@@ -741,7 +771,15 @@
     device_id: b4da16def4999e3ab9b9c65afb3efd49
     entity_id: sensor.bh1750_illuminance
     domain: sensor
-    below: 200
+    below: 100
+  - condition: state
+    entity_id: switch.tint_smart_switch
+    state: 'off'
+    for:
+      hours: 0
+      minutes: 0
+      seconds: 30
+      milliseconds: 0
   action:
   - service: switch.turn_on
     target:
@@ -980,18 +1018,18 @@
   description: ''
   trigger:
   - platform: state
-    entity_id: sensor.water_meter_usage_in_m3
+    entity_id: sensor.watermeter_current_usage
   condition:
   - condition: not
     conditions:
     - condition: or
       conditions:
       - condition: state
-        entity_id: sensor.water_meter_usage_in_m3
         state: '0.00'
+        entity_id: sensor.watermeter_current_usage
     - condition: state
-      entity_id: sensor.water_meter_usage_in_m3
       state: unavailable
+      entity_id: sensor.watermeter_current_usage
   action:
   - service: counter.increment
     target:
@@ -1088,6 +1126,11 @@
         "Je bent ⚠️ gewaarschuwd!", "Hou @buienalarm 🌧️ in de gaten!" ] | random  }}
         https://www.buienalarm.nl/ #buienalarm #huizebruin #surhuisterveen #homeassistant
         #automation'
+  - delay:
+      hours: 0
+      minutes: 10
+      seconds: 0
+      milliseconds: 0
   mode: single
 - id: '1630776395151'
   alias: Brievenbus geleegd
@@ -1252,4 +1295,170 @@
   - service: input_boolean.turn_on
     target:
       entity_id: input_boolean.get_allergies_data
+  mode: single
+- id: '1633374373907'
+  alias: temperatuur
+  description: ''
+  trigger:
+  - platform: numeric_state
+    entity_id: sensor.atc_temperature_dd
+    below: '25'
+  condition: []
+  action:
+  - service: notify.mobile_app_cph2065
+    data:
+      data: '{{''sensor.atc_temperature_dd'' , ''temperature'' }}'
+  mode: single
+- id: '1633635106475'
+  alias: Temperatuur onder <14 graden
+  description: ''
+  trigger:
+  - platform: numeric_state
+    entity_id: sensor.atc_temperature_5f
+    attribute: unit_of_measurement
+    below: '15'
+  - platform: numeric_state
+    entity_id: sensor.atc_temperature_5d
+    below: '15'
+    attribute: unit_of_measurement
+  - platform: numeric_state
+    entity_id: sensor.atc_temperature_dd
+    below: '15'
+    attribute: unit_of_measurement
+  condition:
+  - condition: time
+    after: 07:00
+    before: '22:00'
+  action:
+  - choose:
+    - conditions:
+      - condition: numeric_state
+        entity_id: sensor.atc_temperature_5f
+        below: '14'
+        attribute: unit_of_measurement
+      sequence:
+      - device_id: 15052a27fb66d6297a3408b997a42332
+        domain: mobile_app
+        type: notify
+        title: Rudy slaapkamer
+        message: Het is nu {{ states('sensor.atc_temperature_5f') }}°C in rudy zijn
+          slaapkamer doe het raam dicht!
+    default:
+    - service: telegram_bot.send_message
+      data:
+        title: Temperatuur update boven
+        message: Het is nu {{ states('sensor.atc_temperature_dd') }}°C in W & S hun
+          slaapkamer en het is nu {{ states('sensor.atc_temperature_5d') }}°C in aise
+          zij slaapkamer en het is nu {{ states('sensor.atc_temperature_5f') }}°C
+          in rudy zijn slaapkamer.
+  - choose:
+    - conditions:
+      - condition: numeric_state
+        entity_id: sensor.atc_temperature_5d
+        below: '14'
+        attribute: unit_of_measurement
+      sequence:
+      - device_id: 15052a27fb66d6297a3408b997a42332
+        domain: mobile_app
+        type: notify
+        title: Aise slaapkamer
+        message: Het is nu {{ states('sensor.atc_temperature_5d') }}°C in aise zij
+          slaapkamer doe het raam dicht!
+    default: []
+  - choose:
+    - conditions:
+      - condition: numeric_state
+        entity_id: sensor.atc_temperature_dd
+        below: '14'
+        attribute: unit_of_measurement
+      sequence:
+      - device_id: 15052a27fb66d6297a3408b997a42332
+        domain: mobile_app
+        type: notify
+        title: W & S slaapkamer
+        message: Het is nu {{ states('sensor.atc_temperature_dd') }}°C in W & S hun
+          slaapkamer doe het raam dicht!
+    default: []
+  mode: single
+- id: '1634471484651'
+  alias: 'Volume: Set Google Home Volume tts'
+  trigger:
+  - platform: time
+    id: time
+    at:
+    - 07:00:00
+    - 08:30:00
+    - '19:30:00'
+    - '20:30:00'
+  - platform: homeassistant
+    event: start
+    id: ha_start
+  - platform: event
+    event_type: automation_reloaded
+    id: automation_reload
+  action:
+  - alias: Check if this is triggered by HA restart
+    choose:
+    - conditions:
+      - condition: trigger
+        id: ha_start
+      sequence:
+      - delay:
+          minutes: 1
+  - alias: Checking what time it is...
+    choose:
+    - alias: It's between 7hrs and 08:30
+      conditions:
+      - condition: time
+        after: 06:59:59
+        before: 08:30
+      sequence:
+      - service: media_player.volume_set
+        data:
+          volume_level: 0.6
+        target:
+          device_id: cc48871f125da927cfbc63af3ed92a37
+    - alias: It's between 08:30 and 19hrs
+      conditions:
+      - condition: time
+        after: 08:29:59
+        before: '19:00'
+      sequence:
+      - service: media_player.volume_set
+        data:
+          volume_level: 0.6
+        target:
+          device_id: cc48871f125da927cfbc63af3ed92a37
+    - alias: It's between 19hrs and 20:30
+      conditions:
+      - condition: time
+        after: '18:59:59'
+        before: '20:30'
+      sequence:
+      - service: media_player.volume_set
+        data:
+          volume_level: 0.4
+        target:
+          device_id: cc48871f125da927cfbc63af3ed92a37
+    - alias: It's between 20:30 and 7hrs
+      conditions:
+      - condition: time
+        after: '20:29:59'
+        before: 07:00
+      sequence:
+      - service: media_player.volume_set
+        data:
+          volume_level: 0.2
+        target:
+          device_id: cc48871f125da927cfbc63af3ed92a37
+- id: '1634976960962'
+  alias: 'Temp: boven te koud'
+  description: ''
+  trigger:
+  - platform: numeric_state
+    entity_id: sensor.atc_temperature_5d
+    below: '18'
+  condition: []
+  action:
+  - service: notify.mobile_app_cph2065
   mode: single
