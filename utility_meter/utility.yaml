@@ -48,45 +48,45 @@
     cycle: monthly
 ### watermeter  S0 meter
   waterverbruik_kwartier:
-    source: sensor.waterverbruik_in_liters
+    source: sensor.watermeter_totaal
     cycle: quarter-hourly
   waterverbruik_per_uur:
-    source: sensor.waterverbruik_in_liters
+    source: sensor.watermeter_totaal
     cycle: hourly
   waterverbruik_per_dag:
-    source: sensor.waterverbruik_in_liters
+    source: sensor.watermeter_totaal
     cycle: daily    
   waterverbruik_per_week:
-    source: sensor.waterverbruik_in_liters
+    source: sensor.watermeter_totaal
     cycle: weekly
   waterverbruik_per_maand:
-    source: sensor.waterverbruik_in_liters
+    source: sensor.watermeter_totaal
     cycle: monthly
   waterverbruik_per_kwartaal:
-    source: sensor.waterverbruik_in_liters
+    source: sensor.watermeter_totaal
     cycle: quarterly
   waterverbruik_per_jaar:
-    source: sensor.waterverbruik_in_liters
+    source: sensor.watermeter_totaal
     cycle: yearly   
 ### zonnepanelen S0 meter
   zonnepanelen_kwartier:
-    source: sensor.zonnepanelen_kwh
+    source: sensor.kwh_meter_current_usage_in_kwh
     cycle: quarter-hourly
   zonnepanelen_per_uur:
-    source: sensor.zonnepanelen_kwh
+    source: sensor.kwh_meter_current_usage_in_kwh
     cycle: hourly
   zonnepanelen_per_dag:
-    source: sensor.zonnepanelen_kwh
+    source: sensor.kwh_meter_current_usage_in_kwh
     cycle: daily
   zonnepanelen_per_week:
-    source: sensor.zonnepanelen_kwh
+    source: sensor.kwh_meter_current_usage_in_kwh
     cycle: weekly
   zonnepanelen_per_maand:
-    source: sensor.zonnepanelen_kwh
+    source: sensor.kwh_meter_current_usage_in_kwh
     cycle: monthly 
   zonnepanelen_per_kwartaal:
-    source: sensor.zonnepanelen_kwh
+    source: sensor.kwh_meter_current_usage_in_kwh
     cycle: quarterly
   zonnepanelen_per_jaar:
-    source: sensor.zonnepanelen_kwh
+    source: sensor.kwh_meter_current_usage_in_kwh
     cycle: yearly   
