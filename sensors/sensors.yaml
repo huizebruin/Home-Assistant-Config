@@ -9,7 +9,10 @@
       - Europaweg, Groningen
       - Hooge Zuidwal, Kollumerwaard
 #===============================================================
-
+#f1
+#sensor:
+  - platform: formulaone_api
+##
 # template sensoren 
 ##########
 # postbak & Brievenbus sensor         

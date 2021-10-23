@@ -31,6 +31,16 @@
       - type: load_1m
       - type: load_5m
       - type: load_15m
+  #=============================================
+  #=== Mariadb groote
+  #=============================================
+  - platform: sql
+    db_url: !secret mariadb
+    queries:
+      - name: 'DataBase size'
+        query: 'SELECT table_schema "database", Round(Sum(data_length + index_length) / 1024 / 1024, 1) "value" FROM information_schema.tables WHERE table_schema="homeassistant" GROUP BY table_schema;'
+        column: 'value'
+        unit_of_measurement: MB  
 ################################################
 ## Sensor Supervisor Update Available
 ################################################
