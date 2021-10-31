@@ -78,10 +78,10 @@ action:
       name: Huizebruin (Dark)
 mode: single
 
-Nu zal bij elke herstart deze thema geladen worden.
+Nu zal bij elke herstart deze thema geladen worden.<br><br>
 
 
-* Vrijwaring
+# Vrijwaring
 Bovenstaande is puur een persoonlijke hobby, omdat eventuele problemen veroorzaakt door het gebruik van bovenstaande methoden, aanvaarden wij geen enkele verantwoordelijkheid.
 
 Sommige foto's zijn van internet, indien er copyright in het spel is, gelieve dit te laten weten om ze te verwijderen.
