@@ -81,7 +81,10 @@ mode: single
 Nu zal bij elke herstart deze thema geladen worden.
 
 
+* Vrijwaring
+Bovenstaande is puur een persoonlijke hobby, omdat eventuele problemen veroorzaakt door het gebruik van bovenstaande methoden, aanvaarden wij geen enkele verantwoordelijkheid.
 
+Sommige foto's zijn van internet, indien er copyright in het spel is, gelieve dit te laten weten om ze te verwijderen.
 
 *************************************************************
 Liked some of my work? Buy me a coffee (or more likely a beer)
