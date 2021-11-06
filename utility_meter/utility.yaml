@@ -70,23 +70,23 @@
     cycle: yearly   
 ### zonnepanelen S0 meter
   zonnepanelen_kwartier:
-    source: sensor.kwh_meter_current_usage_in_kwh
+    source: sensor.actuele_vermogen
     cycle: quarter-hourly
   zonnepanelen_per_uur:
-    source: sensor.kwh_meter_current_usage_in_kwh
+    source: sensor.actuele_vermogen
     cycle: hourly
   zonnepanelen_per_dag:
-    source: sensor.kwh_meter_current_usage_in_kwh
+    source: sensor.actuele_vermogen
     cycle: daily
   zonnepanelen_per_week:
-    source: sensor.kwh_meter_current_usage_in_kwh
+    source: sensor.actuele_vermogen
     cycle: weekly
   zonnepanelen_per_maand:
-    source: sensor.kwh_meter_current_usage_in_kwh
+    source: sensor.actuele_vermogen
     cycle: monthly 
   zonnepanelen_per_kwartaal:
-    source: sensor.kwh_meter_current_usage_in_kwh
+    source: sensor.actuele_vermogen
     cycle: quarterly
   zonnepanelen_per_jaar:
-    source: sensor.kwh_meter_current_usage_in_kwh
+    source: sensor.actuele_vermogen
     cycle: yearly   
