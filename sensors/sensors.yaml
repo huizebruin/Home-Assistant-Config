@@ -9,9 +9,9 @@
       - Europaweg, Groningen
       - Hooge Zuidwal, Kollumerwaard
 #===============================================================
-#f1
+#f1 via haccs  https://github.com/delzear/hass-formulaoneapi
 #sensor:
-  - platform: formulaone_api
+#  - platform: formulaone_api
 ##
 # template sensoren 
 ##########
@@ -163,4 +163,20 @@
           {{l}} op {{ states('sensor.afvalinfo_' ~l) }}
           {%- endif %}
           {%- endfor %}
-#######          
+
+#######   IKEA Vindriktning Color       
+#  - platform: template
+#    sensors:
+      # Air Quality (IKEA)
+      vindriktning_color:
+        friendly_name: 'Vindriktning Color'
+        value_template: >-
+            {% if states('sensor.air_quality_index_vindriktning_pm2_5')|int <= 35 %}
+              green
+            {% elif states('sensor.air_quality_index_vindriktning_pm2_5')|int >= 36 and states('sensor.air_quality_index_vindriktning_pm2_5')|int < 86 %}
+              yellow
+            {% else %}
+              red
+            {% endif %}
+
+######
