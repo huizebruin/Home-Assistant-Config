@@ -1,10 +1,8 @@
-[![GitHub stars](https://img.shields.io/github/stars/huizebruin/Home-Assistant-Config.svg?style=plasticr)](https://github.com/huizebruin/Home-Assistant-Config/stargazers)
-[![GitHub last commit](https://img.shields.io/github/last-commit/huizebruin/Home-Assistant-Config.svg?style=plasticr)](https://github.com/huizebruin/Home-Assistant-Config/commits/main)
-[![HA Version](https://img.shields.io/badge/Running%20Home%20Assistant-2021.10.2%20-darkblue)](https://github.com/home-assistant/home-assistant/releases/latest)
-![Project Maintenance][maintenance-shield]
-[![License][license-shield]](LICENSE.md)
-![GitHub Forks][forks-shield]
-![Discord](https://img.shields.io/discord/723629686093119650)
+| Repository Status | Huizebruin discord Community |
+| :--------- | :--------- |
+| [![last commit time][github-last-commit]][github-master] [![GitHub Activity][commits-shield]][commits]<br>![GitHub Forks][forks-shield] [![GitHub stars](https://img.shields.io/github/stars/huizebruin/Home-Assistant-Config.svg?style=plasticr)](https://github.com/huizebruin/Home-Assistant-Config/stargazers) | [![Discord][discord-shield]][discord]  | 
+| Home assistant versie | info |
+| [![HA Version](https://img.shields.io/badge/Running%20Home%20Assistant-2021.11.1%20-darkblue)](https://github.com/home-assistant/home-assistant/releases/latest)| ![Project Maintenance][maintenance-shield] [![License][license-shield]](LICENSE.md) |
 
 Volg mij op mijn reis om een leuke Home Assistant te maken mis geen update door  GitHub :star2: te drukken.
 # Home-Assistant-Config
@@ -94,3 +92,11 @@ Liked some of my work? Buy me a coffee (or more likely a beer)
 [license-shield]: https://img.shields.io/github/license/huizebruin/home-assistant-config.svg
 [maintenance-shield]: https://img.shields.io/maintenance/yes/2021.svg
 [forks-shield]: https://img.shields.io/github/forks/huizebruin/home-assistant-config.svg?style=social&label=Forks
+
+[commits-shield]: https://img.shields.io/github/commit-activity/m/huizebruin/Home-Assistant-Config.svg
+[commits]: https://github.com/huizebruin/Home-Assistant-Config/commits/main
+[github-last-commit]: https://img.shields.io/github/last-commit/huizebruin/Home-Assistant-Config.svg?style=plasticr
+[github-master]: https://github.com/huizebruin/Home-Assistant-Config/commits/main
+
+[discord-shield]: https://img.shields.io/discord/723629686093119650.svg?logo=discord&color=7289da
+[discord]: https://discord.gg/bN8rC7gEng
