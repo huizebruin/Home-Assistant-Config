@@ -623,7 +623,10 @@
     data:
       title: 🚧 Home Assistant update   🎉
       message: 'Er is een Home Assistant update beschikbaar.  🎉   Versie: {{ states(''sensor.laatste_beschikbare_versie'')
-        }} @huizebruin #huizebruin #homeassistant @home_assistant.'
+        }} "https://github.com/home-assistant/core/releases/tag/{{states(''sensor.laatste_beschikbare_versie'')}}"
+        @huizebruin #huizebruin #homeassistant @home_assistant #homeassistantupdate
+        @home_assistant #smarthome #slimmewoning #energie #update #fixes #bugsfixed
+        @huizebruin #delenmag'
   - service: notify.persistent_notification
     data:
       data_template:
@@ -745,11 +748,13 @@
   action:
   - service: notify.twitter_wobbele
     data:
-      message: '{{ now().strftime(''%H:%M'') }}Vandaag komt de zon op om {{ as_timestamp(state_attr(''sun.sun'',
-        ''next_rising''))  | timestamp_custom("%H:%M") }}.  Weer update van #Surhuisterveen
-        | Temp: {{ states(''sensor.temperatuur_voor_temperature'')}} °C,  Wind: {{
-        states(''sensor.surhuisterveen_wind_speed'')}} km/u,  Luchtv: {{ states(''sensor.surhuisterveen_humidity'')}}
-        %, | Home assistant weerupdate vanaf #huizebruin @Surhuisterveen #Achtkarspelen'
+      message: 'Weer update van #Surhuisterveen om |{{ now().strftime(''%H:%M'') }}
+        | Vandaag komt de zon op om {{as_timestamp(state_attr(''sun.sun'', ''next_rising''))  |
+        timestamp_custom("%H:%M") }} en gaat hij om {{ as_timestamp(state_attr(''sun.sun'',
+        ''next_setting''))  | timestamp_custom("%H:%M") }} onder. Momenteel is het  Temp:
+        {{ states(''sensor.temperatuur_voor_temperature'')}} °C, Wind: {{states(''sensor.surhuisterveen_wind_speed'')}}
+        km/u,  Luchtv: {{ states(''sensor.surhuisterveen_humidity'')}}%| Home assistant
+        weerupdate vanaf #huizebruin @Surhuisterveen #Achtkarspelen'
   mode: single
 - id: '1621339847986'
   alias: motion bijkeuken
@@ -1410,45 +1415,45 @@
     - alias: It's between 7hrs and 08:30
       conditions:
       - condition: time
-        after: 06:59:59
+        after: 06:59
         before: 08:30
       sequence:
       - service: media_player.volume_set
         data:
-          volume_level: 0.6
+          volume_level: 0.24
         target:
           device_id: cc48871f125da927cfbc63af3ed92a37
     - alias: It's between 08:30 and 19hrs
       conditions:
       - condition: time
-        after: 08:29:59
+        after: 08:29
         before: '19:00'
       sequence:
       - service: media_player.volume_set
         data:
-          volume_level: 0.6
+          volume_level: 0.28
         target:
           device_id: cc48871f125da927cfbc63af3ed92a37
     - alias: It's between 19hrs and 20:30
       conditions:
       - condition: time
-        after: '18:59:59'
+        after: '18:59'
         before: '20:30'
       sequence:
       - service: media_player.volume_set
         data:
-          volume_level: 0.4
+          volume_level: 0.15
         target:
           device_id: cc48871f125da927cfbc63af3ed92a37
     - alias: It's between 20:30 and 7hrs
       conditions:
       - condition: time
-        after: '20:29:59'
+        after: '20:29'
         before: 07:00
       sequence:
       - service: media_player.volume_set
         data:
-          volume_level: 0.2
+          volume_level: 0.15
         target:
           device_id: cc48871f125da927cfbc63af3ed92a37
 - id: '1634976960962'
