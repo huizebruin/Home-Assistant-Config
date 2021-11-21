@@ -1,13 +1,18 @@
 substitutions:
   time_timezone: "Europe/Amsterdam"
-  version: "1.3"
+  vdate: "17-11-2021-v1.3"
   device_description: sonoff sf voor 24v in het hok te schakelen
   friendly_name: sonoff sv
+  name: sonoff_sv_24v
   
 esphome:
   name: sonof-sv-206
   platform: ESP8266
   board: esp01_1m
+  comment: '${device_description}'
+  project:
+    name: huizebruin.${name}
+    version: "${vdate}"
 
 wifi:
   ssid: !secret ssid
@@ -80,13 +85,22 @@ light:
     id: led
     restore_mode: ALWAYS_ON
     
+#versie sensor voor in ha
 text_sensor:
-  - platform: version
-    name: "ESPHome Version - ${friendly_name} "
-    hide_timestamp: true
-
   - platform: template
-    name: "Esphome ${friendly_name} Version"
-    update_interval: 5h
+    name: " Versie"
+    icon: "mdi:label-outline"
+    update_interval: 12h
     lambda: |-
-      return {"${version}"};
+      return {"${vdate}"};
+      
+  - platform: wifi_info
+    ip_address:
+      name: IP-adres
+      icon: mdi:ip-network
+    ssid:
+      name: Netwerk
+      icon: mdi:access-point-network
+    mac_address:
+      name: Mac-adres
+      icon: mdi:folder-key-network-outline

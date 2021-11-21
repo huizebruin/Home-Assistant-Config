@@ -1,17 +1,18 @@
 substitutions:
   time_timezone: "Europe/Amsterdam"
-  version: "1.3"
+  vdate: "17-11-2021-v1.5"
   device_description: sonoff basic voor de zwembad pomp aan en uit te zetten
   friendly_name:  zwembad_pomp
+  name: zwembad_pomp
   
 esphome:
   name: sonoff_basic_zwembad_pomp-201
   platform: ESP8266
   board: esp01_1m
-  
+  comment: '${device_description}'
   project:
-    name: "${friendly_name}.huizebruin"
-    version: "${version}"
+    name: huizebruin.${name}
+    version: "${vdate}"
 
 
 
@@ -66,13 +67,22 @@ status_led:
     inverted: yes
 
         
+#versie sensor voor in ha
 text_sensor:
-  - platform: version
-    name: "ESPHome Version - ${friendly_name} "
-    hide_timestamp: true
-
   - platform: template
-    name: "Esphome ${friendly_name} Version"
-    update_interval: 5h
+    name: " Versie"
+    icon: "mdi:label-outline"
+    update_interval: 12h
     lambda: |-
-      return {"${version}"};
+      return {"${vdate}"};
+      
+  - platform: wifi_info
+    ip_address:
+      name: IP-adres
+      icon: mdi:ip-network
+    ssid:
+      name: Netwerk
+      icon: mdi:access-point-network
+    mac_address:
+      name: Mac-adres
+      icon: mdi:folder-key-network-outline
