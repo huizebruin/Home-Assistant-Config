@@ -1,17 +1,18 @@
 substitutions:
   time_timezone: "Europe/Amsterdam"
-  version: "1.3"
+  vdate: "17-11-2021-v1.8"
   device_description: co2-vindriktning-ikea
   friendly_name:  vindriktning-co2
+  name: vindriktning_c02
 
 esphome:
   name: co2-vindriktning-ikea
   platform: ESP8266
   board: d1_mini
-  
+  comment: '${device_description}'
   project:
-    name: "${friendly_name}.huizebruin"
-    version: "${version}"
+    name: huizebruin.${name}
+    version: "${vdate}"
 
 wifi:
   ssid: !secret ssid
@@ -47,23 +48,26 @@ uart:
 sensor:
   - platform: pm1006
     pm_2_5:
-      name: "Livingroom Particulate Matter 2.5µm Concentration"
+      name: "air_quality_index_vindriktning_pm2_5"
       
 
-
-switch:
-  - platform: restart
-    id: switch_restart
-    name: "${friendly_name} Restart"
-        
+#versie sensor voor in ha
 text_sensor:
-  - platform: version
-    name: "ESPHome Version - ${friendly_name} "
-    hide_timestamp: true
-
   - platform: template
-    name: "Esphome ${friendly_name} Version"
-    update_interval: 5h
+    name: " Versie"
+    icon: "mdi:label-outline"
+    update_interval: 12h
     lambda: |-
-      return {"${version}"};
-
+      return {"${vdate}"};
+      
+  - platform: wifi_info
+    ip_address:
+      name: IP-adres
+      icon: mdi:ip-network
+    ssid:
+      name: Netwerk
+      icon: mdi:access-point-network
+    mac_address:
+      name: Mac-adres
+      icon: mdi:folder-key-network-outline
+      

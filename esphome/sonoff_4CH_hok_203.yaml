@@ -1,17 +1,18 @@
 substitutions:
   time_timezone: "Europe/Amsterdam"
-  version: "1.3"
+  vdate: "17-11-2021-v1.4"
   device_description: sonoff 4ch tuin verlichting te schakelen
   friendly_name:  sonoff_4ch_pro2
+  name: sonoff_4ch_pro2
   
 esphome:
   name: sonoff_4ch_hok_203
   platform: ESP8266
   board: esp01_1m
-  
+  comment: '${device_description}'
   project:
-    name: "${friendly_name}.huizebruin"
-    version: "${version}"
+    name: huizebruin.${name}
+    version: "${vdate}"
 
 wifi:
   ssid: !secret ssid
@@ -93,13 +94,22 @@ light:
     name: "Sonoff 4CH Blue LED"
     output: blue_led
 
+#versie sensor voor in ha
 text_sensor:
-  - platform: version
-    name: "ESPHome Version - ${friendly_name} "
-    hide_timestamp: true
-
   - platform: template
-    name: "Esphome ${friendly_name} Version"
-    update_interval: 5h
+    name: " Versie"
+    icon: "mdi:label-outline"
+    update_interval: 12h
     lambda: |-
-      return {"${version}"};  
+      return {"${vdate}"};
+      
+  - platform: wifi_info
+    ip_address:
+      name: IP-adres
+      icon: mdi:ip-network
+    ssid:
+      name: Netwerk
+      icon: mdi:access-point-network
+    mac_address:
+      name: Mac-adres
+      icon: mdi:folder-key-network-outline
