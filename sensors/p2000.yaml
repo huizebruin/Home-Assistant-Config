@@ -1,19 +1,41 @@
 #p2000 installeren via hacs
 # Capcodes http://p2000.brandweer-berkel-enschot.nl/capcodesearch/default.aspx
 #===============================================================
-  - platform: p2000
-    name: brandweer
-    regios: 2
-    scan_interval: 30
-    capcodes: !secret capcodes # capcodes: 2345367,83535462,    Op deze manier plaatsen in secrets.yaml
-    icon: mdi:fire-truck
-    nolocation: true
+#- platform: p2000
+##name: brandweer
+##regios: 2
+##scan_interval: 30
+##capcodes: !secret capcodes # capcodes: 2345367,83535462 Op deze manier plaatsen in secrets.yaml
+##icon: mdi:fire-truck
+##nolocation: true
 
-  - platform: p2000
-    name: 112 meldingen
-    regios: 2
-    scan_interval: 60
-    nolocation: true
-    radius: 20000
-    latitude: !secret latitude
-    longitude: !secret longitude
+#- platform: p2000
+##name: 112 meldingen
+##regios: 2
+##scan_interval: 60
+##nolocation: true
+##radius: 20000
+##latitude: !secret latitude
+#  longitude: !secret longitude
+
+
+#sensor:
+- platform: p2000
+  name: p2000
+  gemeenten:
+    - !secret gemeente
+    - !secret p2000_1
+    - !secret p2000_2
+    - !secret p2000_3
+
+#  capcodes:
+#    - !secret p2000_cap1
+#    - !secret p2000_cap2
+#    - !secret p2000_cap3
+#    - !secret p2000_cap4
+#    - !secret p2000_cap5
+#    - !secret p2000_cap6
+#    - !secret p2000_cap7
+#    - !secret p2000_cap8
+#    - !secret p2000_cap9
+#    - !secret p2000_cap10

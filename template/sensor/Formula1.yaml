@@ -1,0 +1,118 @@
+- name: Formula 1
+  icon: mdi:keyboard-f1
+  state: "{{ as_timestamp(strptime(state_attr('calendar.f1_race', 'start_time'), '%d %h %m')) | timestamp_custom('%W')| float == (now().isocalendar()[1]) }}"
+  attributes:
+    currently_racing: >
+      {% if is_state('calendar.f1_fp1', 'on') or is_state('calendar.f1_fp2', 'on') or is_state('calendar.f1_fp3', 'on') or is_state('calendar.f1_qualification', 'on') or is_state('calendar.f1_sprint_race', 'on') or is_state('calendar.f1_sprint_qualifying', 'on') %}
+        racing
+      {% else %}
+        not racing
+      {% endif %}
+    fp1_day: >
+      {% if state_attr('calendar.f1_fp1', 'start_time') == None or as_timestamp(strptime(state_attr('calendar.f1_fp1', 'start_time'), '%d %h %m')) | timestamp_custom('%W')| float != (now().isocalendar()[1]) %}
+        No 1st free practice this week
+      {% else %}
+        {{ as_timestamp(strptime(state_attr('calendar.f1_fp1', 'start_time'), '%d %h %m')) | timestamp_custom('%A %d %B') | replace("Monday", "maandag") | replace("Tuesday", "dinsdag") | replace("Wednesday", "woensdag") | replace("Thursday", "donderdag") | replace("Friday", "vrijdag") | replace("Saturday", "zaterdag") | replace("Sunday", "zondag") | replace("January", "januari") | replace("February", "februari") | replace("March", "maart") | replace("April", "april") | replace("May", "mei") | replace("June", "juni") | replace("July", "juli") | replace("August", "augustus") | replace("September", "september") | replace("October", "oktober") | replace("November", "november") | replace("December", "december") }} 
+      {% endif %}
+    fp1_time: >
+      {% if state_attr('calendar.f1_fp1', 'start_time') == None  or as_timestamp(strptime(state_attr('calendar.f1_fp1', 'start_time'), '%d %h %m')) | timestamp_custom('%W')| float != (now().isocalendar()[1]) %}
+        No 1st free practice this week
+      {% else %}
+        {{ as_timestamp(strptime(state_attr('calendar.f1_fp1', 'start_time'), '%d %h %m')) | timestamp_custom('%H:%M') }} 
+      {% endif %}
+    fp2_day: >
+      {% if state_attr('calendar.f1_fp2', 'start_time') == None  or as_timestamp(strptime(state_attr('calendar.f1_fp2', 'start_time'), '%d %h %m')) | timestamp_custom('%W')| float != (now().isocalendar()[1]) %}
+        No 2nd free practice this week
+      {% else %}
+        {{ as_timestamp(strptime(state_attr('calendar.f1_fp2', 'start_time'), '%d %h %m')) | timestamp_custom('%A %d %B') | replace("Monday", "maandag") | replace("Tuesday", "dinsdag") | replace("Wednesday", "woensdag") | replace("Thursday", "donderdag") | replace("Friday", "vrijdag") | replace("Saturday", "zaterdag") | replace("Sunday", "zondag") | replace("January", "januari") | replace("February", "februari") | replace("March", "maart") | replace("April", "april") | replace("May", "mei") | replace("June", "juni") | replace("July", "juli") | replace("August", "augustus") | replace("September", "september") | replace("October", "oktober") | replace("November", "november") | replace("December", "december") }} 
+      {% endif %}
+    fp2_time: >
+      {% if state_attr('calendar.f1_fp2', 'start_time') == None  or as_timestamp(strptime(state_attr('calendar.f1_fp2', 'start_time'), '%d %h %m')) | timestamp_custom('%W')| float != (now().isocalendar()[1]) %}
+        No 2nd free practice this week
+      {% else %}
+        {{ as_timestamp(strptime(state_attr('calendar.f1_fp2', 'start_time'), '%d %h %m')) | timestamp_custom('%H:%M') }} 
+      {% endif %}
+    fp3_day: >
+      {% if state_attr('calendar.f1_fp3', 'start_time') == None  or as_timestamp(strptime(state_attr('calendar.f1_fp3', 'start_time'), '%d %h %m')) | timestamp_custom('%W')| float != (now().isocalendar()[1]) %}
+        No 3rd free practice this week
+      {% else %}
+        {{ as_timestamp(strptime(state_attr('calendar.f1_fp3', 'start_time'), '%d %h %m')) | timestamp_custom('%A %d %B') | replace("Monday", "maandag") | replace("Tuesday", "dinsdag") | replace("Wednesday", "woensdag") | replace("Thursday", "donderdag") | replace("Friday", "vrijdag") | replace("Saturday", "zaterdag") | replace("Sunday", "zondag") | replace("January", "januari") | replace("February", "februari") | replace("March", "maart") | replace("April", "april") | replace("May", "mei") | replace("June", "juni") | replace("July", "juli") | replace("August", "augustus") | replace("September", "september") | replace("October", "oktober") | replace("November", "november") | replace("December", "december")  }} 
+      {% endif %}
+    fp3_time: >
+      {% if state_attr('calendar.f1_fp3', 'start_time') == None  or as_timestamp(strptime(state_attr('calendar.f1_fp3', 'start_time'), '%d %h %m')) | timestamp_custom('%W')| float != (now().isocalendar()[1]) %}
+        No 3rd free practice this week
+      {% else %}
+        {{ as_timestamp(strptime(state_attr('calendar.f1_fp3', 'start_time'), '%d %h %m')) | timestamp_custom('%H:%M') }} 
+      {% endif %}
+    sprint_race_day: >
+      {% if state_attr('calendar.f1_sprint_race', 'start_time') == None  or as_timestamp(strptime(state_attr('calendar.f1_sprint_race', 'start_time'), '%d %h %m')) | timestamp_custom('%W')| float != (now().isocalendar()[1]) %}
+        No sprint race this week
+      {% else %}
+        {{ as_timestamp(strptime(state_attr('calendar.f1_sprint_race', 'start_time'), '%d %h %m')) | timestamp_custom('%A %d %B') | replace("Monday", "maandag") | replace("Tuesday", "dinsdag") | replace("Wednesday", "woensdag") | replace("Thursday", "donderdag") | replace("Friday", "vrijdag") | replace("Saturday", "zaterdag") | replace("Sunday", "zondag") | replace("January", "januari") | replace("February", "februari") | replace("March", "maart") | replace("April", "april") | replace("May", "mei") | replace("June", "juni") | replace("July", "juli") | replace("August", "augustus") | replace("September", "september") | replace("October", "oktober") | replace("November", "november") | replace("December", "december")  }} 
+      {% endif %}
+    sprint_race_time: >
+      {% if state_attr('calendar.f1_sprint_race', 'start_time') == None  or as_timestamp(strptime(state_attr('calendar.f1_sprint_race', 'start_time'), '%d %h %m')) | timestamp_custom('%W')| float != (now().isocalendar()[1]) %}
+        No sprint race this week
+      {% else %}
+        {{ as_timestamp(strptime(state_attr('calendar.f1_sprint_race', 'start_time'), '%d %h %m')) | timestamp_custom('%H:%M') }} 
+      {% endif %}
+    sprint_q_day: >
+      {% if state_attr('calendar.f1_sprint_qualifying', 'start_time') == None  or as_timestamp(strptime(state_attr('calendar.f1_sprint_qualifying', 'start_time'), '%d %h %m')) | timestamp_custom('%W')| float != (now().isocalendar()[1]) %}
+        No sprint qualification this week
+      {% else %}
+        {{ as_timestamp(strptime(state_attr('calendar.f1_sprint_qualifying', 'start_time'), '%d %h %m')) | timestamp_custom('%A %d %B') | replace("Monday", "maandag") | replace("Tuesday", "dinsdag") | replace("Wednesday", "woensdag") | replace("Thursday", "donderdag") | replace("Friday", "vrijdag") | replace("Saturday", "zaterdag") | replace("Sunday", "zondag") | replace("January", "januari") | replace("February", "februari") | replace("March", "maart") | replace("April", "april") | replace("May", "mei") | replace("June", "juni") | replace("July", "juli") | replace("August", "augustus") | replace("September", "september") | replace("October", "oktober") | replace("November", "november") | replace("December", "december")  }} 
+      {% endif %}
+    sprint_q_time: >
+      {% if state_attr('calendar.f1_sprint_qualifying', 'start_time') == None  or as_timestamp(strptime(state_attr('calendar.f1_sprint_qualifying', 'start_time'), '%d %h %m')) | timestamp_custom('%W')| float != (now().isocalendar()[1]) %}
+        No sprint qualification this week
+      {% else %}
+        {{ as_timestamp(strptime(state_attr('calendar.f1_sprint_qualifying', 'start_time'), '%d %h %m')) | timestamp_custom('%H:%M') }} 
+      {% endif %}
+    q_day: >
+      {% if state_attr('calendar.f1_qualification', 'start_time') == None  or as_timestamp(strptime(state_attr('calendar.f1_qualification', 'start_time'), '%d %h %m')) | timestamp_custom('%W')| float != (now().isocalendar()[1]) %}
+        No qualification this week
+      {% else %}
+        {{ as_timestamp(strptime(state_attr('calendar.f1_qualification', 'start_time'), '%d %h %m')) | timestamp_custom('%A %d %B') | replace("Monday", "maandag") | replace("Tuesday", "dinsdag") | replace("Wednesday", "woensdag") | replace("Thursday", "donderdag") | replace("Friday", "vrijdag") | replace("Saturday", "zaterdag") | replace("Sunday", "zondag") | replace("January", "januari") | replace("February", "februari") | replace("March", "maart") | replace("April", "april") | replace("May", "mei") | replace("June", "juni") | replace("July", "juli") | replace("August", "augustus") | replace("September", "september") | replace("October", "oktober") | replace("November", "november") | replace("December", "december") }} 
+      {% endif %}
+    q_time: >
+      {% if state_attr('calendar.f1_qualification', 'start_time') == None  or as_timestamp(strptime(state_attr('calendar.f1_qualification', 'start_time'), '%d %h %m')) | timestamp_custom('%W')| float != (now().isocalendar()[1]) %}
+        No qualification this week
+      {% else %}
+        {{ as_timestamp(strptime(state_attr('calendar.f1_qualification', 'start_time'), '%d %h %m')) | timestamp_custom('%H:%M') }} 
+      {% endif %}
+    r_day: >
+      {% if state_attr('calendar.f1_race', 'start_time') == None  or as_timestamp(strptime(state_attr('calendar.f1_race', 'start_time'), '%d %h %m')) | timestamp_custom('%W')| float != (now().isocalendar()[1]) %}
+        No race this week
+      {% elif 'sprint' in state_attr('calendar.f1_race', 'message') %}
+        No race this week
+      {% else %}
+        {{ as_timestamp(strptime(state_attr('calendar.f1_race', 'start_time'), '%d %h %m')) | timestamp_custom('%A %d %B') | replace("Monday", "maandag") | replace("Tuesday", "dinsdag") | replace("Wednesday", "woensdag") | replace("Thursday", "donderdag") | replace("Friday", "vrijdag") | replace("Saturday", "zaterdag") | replace("Sunday", "zondag") | replace("January", "januari") | replace("February", "februari") | replace("March", "maart") | replace("April", "april") | replace("May", "mei") | replace("June", "juni") | replace("July", "juli") | replace("August", "augustus") | replace("September", "september") | replace("October", "oktober") | replace("November", "november") | replace("December", "december") }} 
+      {% endif %}
+    r_time: >
+      {% if state_attr('calendar.f1_race', 'start_time') == None  or as_timestamp(strptime(state_attr('calendar.f1_race', 'start_time'), '%d %h %m')) | timestamp_custom('%W')| float != (now().isocalendar()[1]) %}
+        No race this week
+      {% elif 'sprint' in state_attr('calendar.f1_race', 'message') %}
+        No race this week
+      {% else %}
+        {{ as_timestamp(strptime(state_attr('calendar.f1_race', 'start_time'), '%d %h %m')) | timestamp_custom('%H:%M') }} 
+      {% endif %}
+    track: >
+      {% if state_attr('calendar.f1_race', 'location') == None  or as_timestamp(strptime(state_attr('calendar.f1_race', 'start_time'), '%d %h %m')) | timestamp_custom('%W')| float != (now().isocalendar()[1]) %}
+        No race track this week
+      {% else %}
+        {{ state_attr('calendar.f1_race', 'location') }}
+      {% endif %}
+    gp_name: >
+      {% if state_attr('calendar.f1_race', 'message') == None  or as_timestamp(strptime(state_attr('calendar.f1_race', 'start_time'), '%d %h %m')) | timestamp_custom('%W')| float != (now().isocalendar()[1]) %}
+        No GP this weekend
+      {% else %}
+        {{ state_attr('calendar.f1_race', 'message') |replace ('Race: ','') |replace ('2020 ','') |replace ('2021 ','') |replace ('2022 ','') }}
+      {% endif %}
+- name: F1 (sprint)
+  icon: mdi:keyboard-f1
+  state: >
+    {% if (as_timestamp(strptime(state_attr('calendar.f1_sprint_race', 'start_time'), '%d %h %m')) | timestamp_custom('%W')| float) == (now().isocalendar()[1]) %}
+      on
+    {% else %}
+      off
+    {% endif %}

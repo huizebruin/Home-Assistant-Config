@@ -150,3 +150,27 @@ sensor.buienalarm_temperature:
   friendly_name: Buienalarm themperatuur
 switch.lsd_hal_spot_bij_wc_relay:
   icon: mdi:spotlight-beam
+sensor.omrin_gft:
+  icon: mdi:trash-can
+sensor.omrin_morgen:
+  icon: mdi:trash-can
+sensor.omrin_papier:
+  icon: mdi:trash-can
+sensor.omrin_sortibak:
+  icon: mdi:trash-can
+sensor.omrin_vandaag:
+  icon: mdi:trash-can
+sensor.afvalinfo_gft:
+  icon: mdi:trash-can
+sensor.afvalinfo_papier:
+  icon: mdi:trash-can
+sensor.afvalinfo_pbd:
+  icon: mdi:trash-can
+sensor.afvalinfo_restafval:
+  icon: mdi:trash-can
+sensor.afvalinfo_today:
+  icon: mdi:trash-can
+sensor.afvalinfo_tomorrow:
+  icon: mdi:trash-can
+sensor.afvalinfo_next_trash_type_and_date:
+  icon: mdi:trash-can

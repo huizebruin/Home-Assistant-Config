@@ -156,7 +156,12 @@
             {% set text = text[:last_comma] + ' and' + text[last_comma + 1:] %}
           {% endif %}
           
-          {{ text }}        
+          {{ text }}   
+##########
+ # sensor voor lokatie laatste inlog
+# https://github.com/custom-components/authenticated         
+#sensor:
+  - platform: authenticated
 #===============================================================
 #=== Geïnstalleerde supervisor version
 #==============================

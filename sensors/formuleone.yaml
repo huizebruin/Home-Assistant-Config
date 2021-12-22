@@ -1,0 +1,29 @@
+  # Driver Championship
+  - platform: rest
+    resource: https://ergast.com/api/f1/current/driverStandings.json
+    name: "Formula 1 drivers championship"
+    json_attributes_path: "$.MRData.StandingsTable.StandingsLists[0]"
+    value_template: "ok"
+    scan_interval: 3600
+    json_attributes:
+      - DriverStandings
+
+  # Constructor Championship
+  - platform: rest
+    resource: https://ergast.com/api/f1/current/constructorStandings.json
+    name: "Formula 1 constructors championship"
+    json_attributes_path: "$.MRData.StandingsTable.StandingsLists[0]"
+    value_template: "ok"
+    scan_interval: 3600
+    json_attributes:
+      - ConstructorStandings
+
+  # f1 season
+  - platform: rest
+    resource: https://ergast.com/api/f1/current.json
+    name: "Formula 1 season"
+    json_attributes_path: "$.MRData.RaceTable.Races[0]"
+    value_template: "ok"
+    scan_interval: 3600
+    json_attributes:
+      - Current

@@ -84,6 +84,23 @@
     data:
       title: Schutting deur.
       message: 🚪 schuttingdeur is open! {{now().strftime('%H:%M')}}
+  - choose:
+    - conditions:
+      - condition: time
+        after: 07:30
+        before: '22:00'
+      sequence:
+      - service: media_player.volume_set
+        target:
+          device_id: cc48871f125da927cfbc63af3ed92a37
+        data:
+          volume_level: 0.35
+    default:
+    - service: media_player.volume_set
+      target:
+        device_id: cc48871f125da927cfbc63af3ed92a37
+      data:
+        volume_level: 0.11
   - service: tts.google_translate_say
     data:
       message: ' schuttingdeur is open!'
@@ -146,11 +163,11 @@
       message: Morgen wordt de {{ states('sensor.omrin_morgen') }} kliko geleegd
   mode: single
 - id: '1610202760429'
-  alias: ' 22:40 verlichting huis UIT werkweek'
+  alias: verlichting huis UIT werkweek
   description: ''
   trigger:
   - platform: time
-    at: '22:40'
+    at: input_datetime.verlichting_uit_doordeweeks
   condition:
   - condition: time
     weekday:
@@ -230,15 +247,15 @@
     data:
       title: Deurbel voorhuis.
       message: Ding dong! Er staat iemand bij de voordeur! om {{now().strftime('%H:%M')}}
+  - service: media_player.volume_set
+    data:
+      volume_level: 0.38
+    target:
+      device_id: cc48871f125da927cfbc63af3ed92a37
   - service: notify.mobile_app_sm_a505fn
     data:
       title: Deurbel voorhuis.
       message: Ding dong! Er staat iemand bij de voordeur! om {{now().strftime('%H:%M')}}
-  - service: media_player.volume_set
-    data:
-      volume_level: 0.35
-    target:
-      device_id: cc48871f125da927cfbc63af3ed92a37
   - service: tts.google_translate_say
     data:
       entity_id: media_player.huiskamer
@@ -260,17 +277,19 @@
   alias: 'POST: Post_pakket_geleverd'
   description: ''
   trigger:
-  - type: opened
-    platform: device
-    device_id: 7365b42459c2ab0f482bcb514c054b0b
+  - platform: state
     entity_id: binary_sensor.postbak_contact
-    domain: binary_sensor
+    to: 'on'
+    attribute: contact
+    from: 'off'
   condition: []
   action:
   - service: notify.mobile_app_cph2065
     data:
       message: Er ligt een post pakket in de box
       title: Post in de bak.
+      data:
+        '[object Object]':
   - service: input_boolean.turn_on
     data: {}
     entity_id: input_boolean.postbak_geopend
@@ -283,6 +302,8 @@
     data:
       message: Er ligt een post pakket in de box
       title: Post in de bak.
+      data:
+        '[object Object]':
   - service: media_player.volume_set
     data:
       volume_level: 0.3
@@ -514,6 +535,11 @@
     data:
       message: Verlichting aan beneden om {{now().strftime('%H:%M')}}
       title: Verlichting
+  - service: light.turn_on
+    target:
+      device_id: e7d8f56aadc68b39d40c625b0dd4e267
+    data:
+      brightness_pct: 65
   mode: single
 - id: '1618005857381'
   alias: 'Systeem :  Home Assistant  is opnieuw opstart'
@@ -525,7 +551,7 @@
   action:
   - service: notify.mobile_app_cph2065
     data:
-      message: Home assistant is opnieuw opgestart  om {{now().strftime('%H:%M')}}
+      message: Home assistant is opnieuw opgestart
       title: 🚧 Home Assistant ⚠️  🎉
   mode: single
 - id: '1618555237241'
@@ -622,8 +648,9 @@
   - service: notify.twitter_wobbele
     data:
       title: 🚧 Home Assistant update   🎉
-      message: 'Er is een Home Assistant update beschikbaar.  🎉   Versie: {{ states(''sensor.laatste_beschikbare_versie'')
-        }} "https://github.com/home-assistant/core/releases/tag/{{states(''sensor.laatste_beschikbare_versie'')}}"
+      message: '🚧 Home Assistant update  ⚠️ 🎉 Er is een Home Assistant update beschikbaar.  🎉     ⚠️
+        versie: {{ states(''sensor.laatste_beschikbare_versie'') }}  "https://github.com/home-assistant/core/releases/tag/{{states(''sensor.laatste_beschikbare_versie'')}}"
+
         @huizebruin #huizebruin #homeassistant @home_assistant #homeassistantupdate
         @home_assistant #smarthome #slimmewoning #energie #update #fixes #bugsfixed
         @huizebruin #delenmag'
@@ -751,9 +778,9 @@
       message: 'Weer update van #Surhuisterveen om |{{ now().strftime(''%H:%M'') }}
         | Vandaag komt de zon op om {{as_timestamp(state_attr(''sun.sun'', ''next_rising''))  |
         timestamp_custom("%H:%M") }} en gaat hij om {{ as_timestamp(state_attr(''sun.sun'',
-        ''next_setting''))  | timestamp_custom("%H:%M") }} onder. Momenteel is het  Temp:
-        {{ states(''sensor.temperatuur_voor_temperature'')}} °C, Wind: {{states(''sensor.surhuisterveen_wind_speed'')}}
-        km/u,  Luchtv: {{ states(''sensor.surhuisterveen_humidity'')}}%| Home assistant
+        ''next_setting''))  | timestamp_custom("%H:%M") }} onder. Momenteel is het
+        : {{ states(''sensor.temperatuur_voor_temperature'')}} °C, Wind : {{states(''sensor.surhuisterveen_wind_speed'')}}
+        km/u,  Luchtv : {{ states(''sensor.surhuisterveen_humidity'')}}% | Home assistant
         weerupdate vanaf #huizebruin @Surhuisterveen #Achtkarspelen'
   mode: single
 - id: '1621339847986'
@@ -935,7 +962,7 @@
     domain: switch
   - service: telegram_bot.send_message
     data:
-      message: 🚿 Douche afzuiging automation aan
+      message: 🚿 Badkamer afzuiging automation aan
       title: Douche
   - delay:
       hours: 0
@@ -952,7 +979,7 @@
     domain: switch
   - service: telegram_bot.send_message
     data:
-      message: 🚿 Douche afzuiging automation uit
+      message: 🚿 Badkamer afzuiging automation uit
       title: Douche
   mode: single
 - id: '1629649161629'
@@ -1126,11 +1153,12 @@
           'longitude')}}
   - service: notify.twitter_wobbele
     data:
-      message: '☔️ {{ state_attr(trigger.entity_id,''label'') }} vlakbij verwacht.
-        {{ [ "Vergeet je regenjas 🧥 niet mee te nemen!", "Neem een paraplu 🌂 mee!",
-        "Je bent ⚠️ gewaarschuwd!", "Hou @buienalarm 🌧️ in de gaten!" ] | random  }}
-        https://www.buienalarm.nl/ #buienalarm #huizebruin #surhuisterveen #homeassistant
-        #automation'
+      message: '☔️ {{ state_attr(trigger.entity_id,''label'') }}, ({{states(''sensor.buienalarm_precipitation_forecast_average'')}}
+        {{state_attr(''sensor.buienalarm_precipitation_forecast_average'', ''unit_of_measurement'')}})  vlakbij
+        verwacht in de regio van Surhuisterveen. {{ [ "Vergeet je regenjas 🧥 niet
+        mee te nemen!", "Neem een paraplu 🌂 mee!", "Je bent ⚠️ gewaarschuwd!", "Hou
+        @buienalarm 🌧️ in de gaten!" ] | random  }} https://www.buienalarm.nl/ #buienalarm
+        #huizebruin #surhuisterveen #homeassistant #automation @surhuisterveen'
   - delay:
       hours: 0
       minutes: 10
@@ -1398,9 +1426,6 @@
   - platform: homeassistant
     event: start
     id: ha_start
-  - platform: event
-    event_type: automation_reloaded
-    id: automation_reload
   action:
   - alias: Check if this is triggered by HA restart
     choose:
@@ -1420,7 +1445,7 @@
       sequence:
       - service: media_player.volume_set
         data:
-          volume_level: 0.24
+          volume_level: 0.3
         target:
           device_id: cc48871f125da927cfbc63af3ed92a37
     - alias: It's between 08:30 and 19hrs
@@ -1431,7 +1456,7 @@
       sequence:
       - service: media_player.volume_set
         data:
-          volume_level: 0.28
+          volume_level: 0.38
         target:
           device_id: cc48871f125da927cfbc63af3ed92a37
     - alias: It's between 19hrs and 20:30
@@ -1442,7 +1467,7 @@
       sequence:
       - service: media_player.volume_set
         data:
-          volume_level: 0.15
+          volume_level: 0.3
         target:
           device_id: cc48871f125da927cfbc63af3ed92a37
     - alias: It's between 20:30 and 7hrs
@@ -1456,14 +1481,170 @@
           volume_level: 0.15
         target:
           device_id: cc48871f125da927cfbc63af3ed92a37
-- id: '1634976960962'
-  alias: 'Temp: boven te koud'
+- id: '1636405920266'
+  alias: temperatuur lager dan 6 graden
   description: ''
   trigger:
-  - platform: numeric_state
-    entity_id: sensor.atc_temperature_5d
-    below: '18'
-  condition: []
+  - platform: time
+    at: 06:30
+  condition:
+  - condition: numeric_state
+    entity_id: sensor.temperatuur_voor_temperature
+    attribute: temperature
+    below: '6'
   action:
   - service: notify.mobile_app_cph2065
+    data:
+      title: Temperatuur ❄️
+      message: let op de temperatuur is momenteel {{ states('sensor.temperatuur_voor_temperature')}}°C
+        en waarschijnlijk mag je krabben
+  - service: telegram_bot.send_message
+    data:
+      message: let op de temperatuur is momenteel {{     states('sensor.temperatuur_voor_temperature')}}°C
+        en waarschijnlijk mag je krabben
+  mode: single
+- id: '1636904001422'
+  alias: verlichting woonkamer knop aan
+  description: ''
+  trigger:
+  - platform: device
+    domain: mqtt
+    device_id: 60893c8141e6ace16d8860683206e945
+    type: action
+    subtype: 'on'
+    discovery_id: 0xb4e3f9fffe652ca0 action_on
+  condition: []
+  action:
+  - service: automation.turn_on
+    target:
+      entity_id: automation.verlichting_woonkamer_aan
+  mode: single
+- id: '1638139999674'
+  alias: notifications stil
+  description: ''
+  trigger:
+  - platform: time
+    at: input_datetime.quiet_time_from
+  - platform: time
+    at: input_datetime.quiet_time_to
+  condition:
+  - condition: time
+    after: input_datetime.quiet_time_from
+    before: input_datetime.quiet_time_to
+  action:
+  - service: input_boolean.toggle
+    target:
+      entity_id: input_boolean.quiet_hours
+  - choose:
+    - conditions:
+      - condition: time
+        after: input_datetime.quiet_time_from
+      sequence:
+      - service: input_boolean.turn_on
+        target:
+          entity_id: input_boolean.quiet_hours
+    - conditions:
+      - condition: time
+        after: input_datetime.quiet_time_to
+      sequence:
+      - service: input_boolean.turn_off
+        target:
+          entity_id: input_boolean.quiet_hours
+    default: []
+  mode: single
+- id: '1638368734261'
+  alias: p2000 notificatie
+  description: ''
+  trigger:
+  - platform: state
+    entity_id: sensor.p2000
+  condition: []
+  action:
+  - service: telegram_bot.send_message
+    data:
+      title: '"P2000 Melding"'
+      message: "Datum : {{ state_attr('sensor.p2000', 'datum' ) }}   Tijd: {{ state_attr('sensor.p2000',\
+        \ 'tijd') }}\n\"{{ states.sensor.p2000.attributes.melding}}   \n {{states.sensor.p2000.attributes.capstring\
+        \ }}   \n Id nr : {{ state_attr('sensor.p2000', 'id') }}\""
+  - service: telegram_bot.send_location
+    data:
+      latitude: '{{ states.sensor.p2000.attributes.latitude }}'
+      longitude: '{{ states.sensor.p2000.attributes.longitude }}'
+  mode: single
+- id: '1638568734945'
+  alias: Reload Speedtest
+  description: ''
+  trigger:
+  - platform: state
+    to: unavailable
+    entity_id: sensor.speedtest_download
+  condition: []
+  action:
+  - service: homeassistant.reload_config_entry
+    target:
+      device_id:
+      - 6abc527d318955a2e9168c9be159666c
+  mode: single
+- id: '1639499181168'
+  alias: tv pauze
+  description: ''
+  trigger:
+  - platform: device
+    device_id: 236e56b7e385e084d18c427f912e819a
+    domain: media_player
+    entity_id: media_player.tv_samsung_7_series_55
+    type: paused
+    id: '1'
+  - platform: device
+    device_id: 236e56b7e385e084d18c427f912e819a
+    domain: media_player
+    entity_id: media_player.tv_samsung_7_series_55
+    type: playing
+    id: '2'
+  condition:
+  - condition: state
+    entity_id: switch.woonkamer_voor
+    state: 'on'
+  action:
+  - choose:
+    - conditions:
+      - condition: trigger
+        id: '2'
+      sequence:
+      - device_id: e7d8f56aadc68b39d40c625b0dd4e267
+        domain: light
+        entity_id: light.lamp_boven_tv
+        type: brightness_decrease
+    - conditions:
+      - condition: trigger
+        id: '1'
+      sequence:
+      - device_id: e7d8f56aadc68b39d40c625b0dd4e267
+        domain: light
+        entity_id: light.lamp_boven_tv
+        type: brightness_increase
+    default: []
+  mode: single
+- id: '1639902347256'
+  alias: kerstverlichting
+  description: ''
+  trigger:
+  - platform: time
+    at: 09:00
+  condition:
+  - condition: time
+    weekday:
+    - mon
+    - tue
+    - fri
+    - sat
+    - sun
+  - condition: state
+    entity_id: input_boolean.kerst
+    state: 'on'
+  action:
+  - type: turn_on
+    device_id: 7213776329e988789185fb2fc545bfcd
+    entity_id: switch.kerstboom
+    domain: switch
   mode: single

@@ -21,6 +21,8 @@ default_config:
 #===============================================================
 group:  !include_dir_merge_named groups/
 sensor: !include_dir_merge_list sensors/
+template:
+  - sensor: !include_dir_merge_list template/sensor/
 binary_sensor: !include_dir_merge_list binary_sensors/
 switch: !include_dir_merge_list switch/
 automation: !include automations.yaml
@@ -32,10 +34,12 @@ camera: !include camera/camera.yaml
 input_select: !include input-select.yaml
 frontend:
   themes: !include_dir_merge_named themes
+  extra_module_url:
+    - /hacsfiles/lovelace-card-mod/card-mod.js
 #===============================================================
 #samsung tv
-samsungtv_smart:
-  - host: !secret samsungtv_smart
+#samsungtv_smart:
+#  - host: !secret samsungtv_smart
 #====================
 #http:
 #  ssl_certificate: /ssl/fullchain.pem
@@ -44,6 +48,8 @@ http:
   use_x_forwarded_for: true
   trusted_proxies:
     - 172.30.33.0/24
+  ip_ban_enabled: true
+  login_attempts_threshold: 5
 #====================
 #google agenda    
 google:
@@ -68,6 +74,7 @@ discovery:
   ignore:
     - apple_tv
 #===============================================================
+
 ## Telegram
 #===============================================================
 telegram_bot:
@@ -109,11 +116,8 @@ recorder:
       - sensor
       - switch
       - binary_sensor
-      - automation
       - climate
     entity_globs:
-      - sensor.weather_*
-      - sensor.surh*
       - binary_sensor.*
       - sensor.dsmr_*   
       - sensor.hourly_*  
@@ -127,6 +131,18 @@ recorder:
     domains:
       - media_player
       - updater
+      - automation
+      - weather
+      - zone
+      - script
+    entity_globs:
+      - sensor.surh*
+      - sensor.*_linkquality
+      - sensor.*_battery
+      - sensor.*_voltage
+      - sensor.*_version
+      - sensor.openweathermap_*
+
     entities:
       - sun.sun # Don't record sun data
       - sensor.last_boot # Comes from 'systemmonitor' sensor platform
@@ -140,6 +156,19 @@ recorder:
       - sensor.internet_time
       - binary_sensor.snapshot_stale
       - binary_sensor.updater
+      - sensor.24v_puls_voeding_hok_linkquality
+      - sensor.afzuiging_linkquality
+      - sensor.bijkeuken_beweging_sensor_linkquality
+      - sensor.brievenbus_linkquality
+      - sensor.buiten_verlichting_voor_linkquality
+      - sensor.cc2530_router_linkquality
+      - sensor.douche_linkquality
+      - sensor.gang_beweging_sensor_linkquality
+      - sensor.hok_beweging_sensor_linkquality
+      - sensor.keuken_linkquality
+      - sensor.laptop_stekker_linkquality
+      
+
 
 logbook:
   exclude:
@@ -153,3 +182,4 @@ logbook:
       - sensor.time_utc
       - sensor.internet_time
 #===============================================================
+
