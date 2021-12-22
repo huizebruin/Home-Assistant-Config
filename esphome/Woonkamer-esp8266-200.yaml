@@ -1,6 +1,6 @@
 substitutions:
   time_timezone: "Europe/Amsterdam"
-  vdate: "17-11-2021-v1.7"
+  vdate: "17-11-2021-v1.8"
   device_description: themperatuur lux en humanity meting in de woonkamer
   friendly_name:  woonkamer_temp_info
   name: woonkamer_temp_lux_info
@@ -47,22 +47,34 @@ sensor:
   - platform: htu21d
     temperature:
       name: "Living Room Temperature-htu21d"
+      device_class: "temperature"
+      state_class: "measurement"
+    
     humidity:
       name: "Living Room Humidity-htu21d"
+      device_class: "humidity"
+      state_class: "measurement"  
     update_interval: 60s
     address: 0x40
+    
     
   - platform: bmp085
     temperature:
       name: "Living Room Temperature-bmp180"
+      device_class: "temperature"
+      state_class: "measurement"
+    
     pressure:
       name: "Living Room Pressure-bmp180"
+      device_class: "pressure"
+      state_class: "measurement"  
     update_interval: 60s
     address: 0x77
-  
+
   - platform: bh1750
     name: "BH1750 Illuminance"
-    
+    unit_of_measurement: lx
+    state_class: "measurement"
     measurement_duration: 69
     update_interval: 60s
     

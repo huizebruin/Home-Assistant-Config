@@ -48,7 +48,7 @@ binary_sensor:
     id: button
     name: Doorbell Button
     pin:
-      # Connected to GPIO on the ESP-01S.
+      # Connected to GPIO.
       number: D5
     filters:
       # Small filter, to debounce the button press.
@@ -56,6 +56,15 @@ binary_sensor:
       - delayed_off: 25ms
     
       # Only turn on the chime when it is active.
+switch:
+  - platform: gpio
+    id: deurbel_knop
+    name: Doorbell sound
+    inverted: false
+    pin: D5
+    on_turn_on:
+    - delay: 500ms
+    - switch.turn_off: deurbel_knop
       
 #versie sensor voor in ha
 text_sensor:

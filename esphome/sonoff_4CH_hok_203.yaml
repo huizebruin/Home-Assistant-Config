@@ -6,7 +6,7 @@ substitutions:
   name: sonoff_4ch_pro2
   
 esphome:
-  name: sonoff_4ch_hok_203
+  name: sonoff-4ch-hok-203
   platform: ESP8266
   board: esp01_1m
   comment: '${device_description}'

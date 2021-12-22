@@ -1,54 +1,47 @@
 substitutions:
   time_timezone: "Europe/Amsterdam"
-  version: "v1.6"
-  vdate: "08-11-2021"
+  vdate: "22/12/2021_v2.0.5"
   device_description: s0 kwh meter en watermeter
-  friendly_name_water: Watermeter
-  friendly_name_s0: kwh_meter
+  impulslengte: "50ms" #30ms of 50ms zie datasheet van het type meter
   name: S0 & Water Meter
-  
+
 esphome:
   name: pulsmeters
   platform: ESP8266
   board: d1_mini
+#  esp8266_restore_from_flash: true
   comment: '${device_description}'
+  name_add_mac_suffix: true
   project:
     name: huizebruin.${name}
     version: "${vdate}"
-
+  
 dashboard_import:
-  package_import_url: github://huizebruin/s0tool/esphome/pulscounter.yaml
+  package_import_url: github://huizebruin/s0tool/esphome/pulscounter.yaml@main
 
+improv_serial:
+  
 wifi:
-  networks: []
-# Hieronder kan je je eigen gegeven invullen voor je wifi netwerk en ip-adres 
-# dit zijn de hekjes voor de regels 27,28,31,33,35. En plaatst een # voor regel 23
+#  networks: []  # Nadat je je eigen ssid etc. hebt ingevuld haal je deze regel weg.
+# secrets rechts boven binnen esphome
+#  ssid: "wifissid"
+#  password: "wifiwachtwoord"
 
-#  ssid: !secret ssid
-#  password: !secret password
-#  manual_ip:
-    # Set this to the IP of the ESP
-#    static_ip: 192.168.178.123
-    # Set this to the IP address of the router. Often ends with .1
-#    gateway: 192.168.178.2 
-    # The subnet of the network. 255.255.255.0 works for most home networks.
-#    subnet: 255.255.255.0  
-
-# Enable fallback hotspot (captive portal) in case wifi connection fails
+# ⬇ Hieronder niets veranderen tenzij je het overal goed aanpast ⬇ #
+# ⬇ Schakel fallback-hotspot (captive portal) in voor het geval de wifi-verbinding mislukt ⬇ #
   ap:
-    ssid: "S0-Meter Fallback Hotspot"
+    ssid: "${name}"
     password: "s0watermeter"
-    
+
 web_server:
   port: 80
   
 captive_portal:
-
-# Enable logging
+# ⬇ Enable logging ⬇ # 
 logger:
   level: INFO
   
-# Enable Home Assistant API
+#  # ⬇ Enable Home Assistant API ⬇ # 
 api:
   services:
     - service: set_water_usage
@@ -57,7 +50,9 @@ api:
       then:
         - globals.set:
             id: totalWaterUsage
-            value: !lambda "return meter_value;"
+#            value: !lambda "return meter_value;"
+            value: !lambda "return ( meter_value - id(sensor_pulse_meter_total).state ) ;"
+
 
     - service: set_kwh_usage
       variables:
@@ -65,116 +60,165 @@ api:
       then:
         - globals.set:
             id: totalkwhUsage
-            value: !lambda "return meter_value;"
+#            value: !lambda "return meter_value;"
+            value: !lambda "return ( meter_value - id(W_opbrengst_totaal).state );"
+
 
 globals:
   - id: totalWaterUsage
     type: float
-    restore_value: yes       # When updating below value, change this to no for 1 run.
-    initial_value: '245.111' # begin stand
+# ⬇ Bij het updaten onder de waarde, verander dit in no voor 1 run  ⬇ # 
+    restore_value: yes      
+# ⬇ Bij het flashen,pas dit aan! ⬇ #        
+    initial_value: '200' 
     
   - id: totalkwhUsage
     type: float
-    restore_value: yes       # When updating below value, change this to no for 1 run.
-    initial_value: '1000.001' # begin stand
+# ⬇ Bij het updaten onder de waarde, verander dit in nee voor 1 run  ⬇ # 
+    restore_value: yes
+# ⬇ Bij het flashen,pas dit aan! ⬇ #        
+    initial_value: '14957' 
+    
 
 ota:
-
-# Enable time component to reset energy at midnight
+  safe_mode: true
+  reboot_timeout: 10min
+  num_attempts: 5
+#  ⬇ Enable time component voor reset elke nacht ⬇ #
 time:
   - platform: homeassistant
     id: time_homeassistant
     timezone: "${time_timezone}"
+    on_time_sync:
+      - component.update: sensor_uptime_timestamp
 
   - platform: sntp
     id: time_sntp
     timezone: "${time_timezone}"
 
 select:
+  # ⬇ imp/kWh rate ⬇ #
   - platform: template
-    name: "multiply kWh meter"
-    id: Select_multiply
+    name: "pulse_rate kWh meter"
+    id: Select_pulse_rate
     optimistic: true
     options:
-      - "33"
-      - "32" #2000 puls
-      - "31"
-      - "17"
-      - "16" #1000 puls
-      - "15"
-      - "9"
-      - "8" #500 puls
-      - "7"
-      - "6"
-    initial_option: "32"
+      - "2000"
+      - "1500" 
+      - "1000"
+      - "500" 
+      - "100"
+    initial_option: "2000"
     on_value:
       then:
         - logger.log:
             format: "Chosen option: %s "
             args: ["x.c_str()"]
+
+########################## Kwh meter ###############################################################
 sensor:
-#kwh meter s0
+# ⬇ kwh meter s0 ⬇ #
   - platform: pulse_meter
     pin: D5
     name:  "Actuele energie "
     id: W_opbrengst
     icon: "mdi:flash"
+    internal_filter: ${impulslengte} 
     accuracy_decimals: 0
     unit_of_measurement: 'W'
+    state_class: measurement
+    device_class: power
+#    timeout: 1 min
     filters:
-      - lambda: return x * atoi(id(Select_multiply).state.c_str());
+      - lambda: return x * ((60.0 / atoi(id(Select_pulse_rate).state.c_str())) * 1000.0);
 
+# ⬇ Totaal opgebracht ⬇ #    
     total:
       unit_of_measurement: 'kWh'
       name: "Totaal opgebracht "
       id: W_opbrengst_totaal
+      state_class: total_increasing
+      device_class: energy
       icon: "mdi:flash"
       accuracy_decimals: 2
       filters:
-        - multiply: 0.0005
+        - lambda: return x * (1.0 / 1000.0); # atoi(id(Select_pulse_rate).state.c_str()));
+        
+## deze sensor blijft behouden ook na flashen (updaten)  7-12-2021
+  - platform: total_daily_energy
+    name: "Total Daily Energy"
+    power_id: W_opbrengst
+    state_class: total_increasing
+    device_class: energy
+    unit_of_measurement: 'kWh' 
+    filters:
+        - lambda: return x * (1.0 / 1000.0);
+#        # Multiplication factor from W to kW is 0.001
+#        - multiply: 0.001
 
+
+#7-12-2021 test met oude multiply
+#  - platform: integration
+#    name: "Total Energy"
+#    sensor: W_opbrengst
+#    unit_of_measurement: 'kWh'
+#    time_unit: h
+#    state_class: total_increasing
+#    device_class: energy
+#    icon: "mdi:flash"
+#    accuracy_decimals: 2
+#    filters:
+#        # Multiplication factor from W to kW is 0.001
+#        - multiply: 0.001
+#    filters:
+#        - lambda: return x * (1.0 / 1000.0);
+#        - lambda: return x * (1.0 / atoi(id(Select_pulse_rate).state.c_str()));
+
+# ⬇ Kwh meterstand ⬇ #        
   - platform: template
     id: kwh_total
-    name: Actuele meterstand
+    name: "Actuele meterstand"
+    state_class: "total_increasing"
     icon: "mdi:flash"
     update_interval: 1s
-    unit_of_measurement: kWh
+    unit_of_measurement: 'kWh'
     accuracy_decimals: 2
-    lambda: |-
+    lambda: 
       return id(W_opbrengst_totaal).state + id(totalkwhUsage);
-        
-#watermeter 
+      
+########################## Watermeter ###############################################################
+# ⬇ watermeter ⬇ #
   - platform: pulse_counter
     pin: D2
     id: watermeter_pulse
-    name: ${friendly_name_water} pulse
+    name: "watermeter pulse"
+    state_class: measurement
     update_interval: 1s
     unit_of_measurement: L
     accuracy_decimals: 1
     filters:
-      - multiply: 0.016666667
-      
-  - platform: pulse_counter
-    name: "watermeter Flow rate"
-    id: "watermeter_flow"
-    pin: D2
-    update_interval: 60s
-    filters:
-    - lambda: return (x / 27.0) * 60.0;
-    unit_of_measurement: "L/hr" 
-      
+      lambda: return x * ((60.0 / 1000.0) * 1000.0);
+      # 60 min in 1 hr (update interval is by default 1 min), 1000 pulses/m³ and 1000 L in 1 m³.     
+#    filters:
+#      - multiply: 0.016666667
+
+
+# ⬇ Totaal watermeter ⬇ #      
     total:
       id: sensor_pulse_meter_total
-      name: "${friendly_name_water} Totaal"
+      name: "watermeter Totaal"
       icon: "mdi:cube-outline"
-      unit_of_measurement: "M3"
+      state_class: "total_increasing"
+      unit_of_measurement: "m³"
       accuracy_decimals: 3
       filters:
       - multiply: 0.001
-
+      
+# ⬇ Watermeter stand bij benadering ⬇ #
   - platform: template
     id: watermeter_total
-    name: "${friendly_name_water} stand"
+    name: "watermeter stand"
+    state_class: "total_increasing"
     icon: mdi:water
     update_interval: 1s
     unit_of_measurement: m³
@@ -184,9 +228,24 @@ sensor:
         id(totalWaterUsage) += 0.001;
       }
       return id(totalWaterUsage);
+##########################  sensoren ###############################################################
 
+  - platform: uptime
+    id: sensor_uptime
     
-#versie sensor voor in ha
+  - platform: template
+    id: sensor_uptime_timestamp
+    name: "Uptime"
+    device_class: "timestamp"
+    accuracy_decimals: 0
+    update_interval: never
+    lambda: |-
+      static float timestamp = (
+        id(time_homeassistant).utcnow().timestamp - id(sensor_uptime).state
+      );
+      return timestamp;  
+      
+# ⬇ versie verbinding informatie sensoren voor in ha ⬇ #
 text_sensor:
   - platform: template
     name: " Versie"
@@ -194,7 +253,7 @@ text_sensor:
     update_interval: 12h
     lambda: |-
       return {"${vdate}"};
-      
+
   - platform: wifi_info
     ip_address:
       name: IP-adres

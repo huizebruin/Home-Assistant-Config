@@ -1,6 +1,6 @@
 substitutions:
   time_timezone: "Europe/Amsterdam"
-  version: "1.3"
+  vdate: "12-12-2021-1.4"
   device_description: lsd stekker action radio overkapping
   friendly_name: lsd stekker
   
