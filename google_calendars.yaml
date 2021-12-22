@@ -1,0 +1,105 @@
+
+- cal_id: nl.christian#holiday@group.v.calendar.google.com
+  entities:
+  - device_id: christelijke_feestdagen
+    ignore_availability: true
+    name: Christelijke feestdagen
+    track: true
+
+- cal_id: nl.dutch#holiday@group.v.calendar.google.com
+  entities:
+  - device_id: feestdagen_in_nederland
+    ignore_availability: true
+    name: Feestdagen in Nederland
+    track: true
+
+- cal_id: addressbook#contacts@group.v.calendar.google.com
+  entities:
+  - device_id: verjaardagen
+    ignore_availability: true
+    name: Verjaardagen
+    track: false
+
+- cal_id: wobbe.y.debruin@gmail.com
+  entities:
+  - device_id: wobbe_en_sjoukje
+    ignore_availability: true
+    name: wobbe en sjoukje
+    track: true
+
+- cal_id: ekqk1nbdusr1baon1ic42oeeik@group.calendar.google.com
+  entities:
+  - device_id: f1-fp1
+    search: 'FP1'
+    ignore_availability: true
+    name: F1 - Free Practice 1
+    track: true
+  - device_id: f1-fp2
+    search: 'FP2'
+    ignore_availability: true
+    name: F1 - Free Practice 2
+    track: true
+  - device_id: f1-fp3
+    search: 'FP3'
+    ignore_availability: true
+    name: F1 - Free Practice 3
+    track: true
+  - device_id: f1-qualification
+    search: 'QUALIFYING'
+    ignore_availability: true
+    name: F1 - Qualification
+    track: true
+  - device_id: f1-race
+    search: "RACE:"
+    ignore_availability: true
+    name: F1 - Race
+    track: true
+  - device_id: f1-sprint-race
+    search: "SPRINT"
+    ignore_availability: true
+    name: F1 - Sprint Race
+    track: true
+  - device_id: f1-sprint-qualifying
+    search: "Q:"
+    ignore_availability: true
+    name: F1 - Sprint Qualifying
+    track: true
+
+- cal_id: p07n98go11onamd08d0kmq6jhs@group.calendar.google.com
+  entities:
+  - device_id: Home Assistant Core Beta Release
+    search: 'beta'
+    ignore_availability: true
+    name: Home Assistant Core Beta Release
+    track: true
+  - device_id: Home Assistant Core Release
+    search: 'Core Release'
+    ignore_availability: true
+    name: Home Assistant Core Release
+    track: true
+  - device_id: Hass.io birthday
+    search: 'Hass.io birthday'
+    ignore_availability: true
+    name: Hass.io birthday
+    track: true
+  - device_id: Home Assistant birthday
+    search: 'Home Assistant birthday'
+    ignore_availability: true
+    name: Home Assistant birthday
+    track: true    
+
+
+
+- cal_id: p#weather@group.v.calendar.google.com
+  entities:
+  - device_id: weersverwachting
+    ignore_availability: true
+    name: Weersverwachting
+    track: false
+
+- cal_id: p#weeknum@group.v.calendar.google.com
+  entities:
+  - device_id: weeknummers
+    ignore_availability: true
+    name: Weeknummers
+    track: false

@@ -2,6 +2,7 @@ radio_source:
   name: "Select station:"
   options:
     - Radio 538
+    - radio release
     - Sublime
     - Radio 10
     - Q-Music
@@ -22,6 +23,7 @@ radio_source:
     - Simone Fm
     - Tukker Fm
     - Tynaarlo Lokaal
+    - De vrolijke strijders
   initial: Q-Music
   icon: mdi:radio
 
@@ -30,5 +32,5 @@ radio_speaker:
   options:
     - Huiskamer
     - Huiskamer vollumio
-  initial: Huiskamer
+  initial: Huiskamer vollumio
   icon: mdi:speaker-wireless
