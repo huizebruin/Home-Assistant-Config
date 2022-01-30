@@ -2,7 +2,8 @@
     "config": {
         "abort": {
             "already_configured": "This Samsung TV is already configured.",
-            "already_in_progress": "Samsung TV configuration is already in progress."
+            "already_in_progress": "Samsung TV configuration is already in progress.",
+            "unsupported_version": "This integration require at least HomeAssistant version {req_ver}, you are running version {run_ver}."
         },
         "error": {
             "auth_missing": "Home Assistant is not authorized to connect to this Samsung TV. Please check your TV's settings to authorize Home Assistant.",
@@ -54,22 +55,24 @@
                     "use_st_status_info": "Use SmartThings TV Status information",
                     "use_st_channel_info": "Use SmartThings TV Channels information",
                     "show_channel_number": "Use SmartThings TV Channels number information",
-                    "power_on_method_opt": "Method used to turn on TV",
-                    "logo_option_opt": "Display a logo for known sources, apps and channels",
-                    "sync_turn_off": "List of entity to Power OFF with TV (comma separated)",
-                    "sync_turn_on": "List of entity to power ON with TV (comma separated)",
+                    "power_on_method": "Method used to turn on TV",
+                    "logo_option": "Display a logo for known sources, apps and channels",
+                    "sync_turn_off": "List of entity to Power OFF with TV",
+                    "sync_turn_on": "List of entity to power ON with TV",
                     "show_adv_opt": "Show advanced options"
                 }
             },
             "adv_opt": {
                 "title": "Advanced options",
                 "data": {
-                    "app_load_method_opt": "Applications list load mode at startup",
-                    "app_launch_method_opt": "Applications launch method used",
+                    "app_load_method": "Applications list load mode at startup",
+                    "app_launch_method": "Applications launch method used",
                     "dump_apps": "Dump apps list on log file at startup (when possible)",
                     "use_mute_check": "Use volume mute status to detect fake power ON",
                     "wol_repeat": "Number of time WOL packet is sent to turn on TV",
-                    "power_on_delay": "Seconds to delay power ON status"
+                    "power_on_delay": "Seconds to delay power ON status",
+                    "ping_port": "TCP port used to check power status (0 for ICMP)",
+                    "ext_power_entity": "Binary sensor to help detect power status"
                 }
             }
         }

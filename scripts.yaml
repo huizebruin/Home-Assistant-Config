@@ -40,11 +40,12 @@ radio_content_player:
         {% elif is_state("input_select.radio_source","Tukker Fm") %} https://stream.tukkerfm.nl/tukkerfm
         {% elif is_state("input_select.radio_source","Tynaarlo Lokaal") %} https://ice.cr2.streamzilla.xlcdn.com:8000/sz=tynaarlolokaal=radiostream
         {% elif is_state("input_select.radio_source","radio release") %} http://mscp3.live-streams.nl:8140/live
-        {% elif is_state("input_select.radio_source","De vrolijke strijders") %} https://tunein.com/embed/player/s282442/
+        {% elif is_state("input_select.radio_source","De vrolijke strijders") %} http://tun.in/sfuzA
         {% endif %}
 
         '
       media_content_type: music
+  mode: single
 '1636695244480':
   alias: Stop Playing
   icon: mdi:stop
@@ -61,3 +62,272 @@ radio_content_player:
       entity_id: input_select.radio_station
       option: Stopped
   mode: single
+woonkamer_tv_play:
+  alias: Play
+  icon: mdi:play
+  sequence:
+  - service: media_player.play_media
+    data:
+      entity_id: media_player.samsung_7_series_55
+      media_content_type: send_key
+      media_content_id: KEY_PLAY
+woonkamer_tv_channel_down:
+  alias: Channel down
+  sequence:
+  - service: media_player.play_media
+    data:
+      entity_id: media_player.samsung_7_series_55
+      media_content_type: send_key
+      media_content_id: KEY_CHDOWN
+woonkamer_tv_key_1:
+  alias: Key1
+  sequence:
+  - service: media_player.play_media
+    data:
+      entity_id: media_player.samsung_7_series_55
+      media_content_type: send_key
+      media_content_id: KEY_1
+woonkamer_tv_key_2:
+  alias: Key2
+  sequence:
+  - service: media_player.play_media
+    data:
+      entity_id: media_player.samsung_7_series_55
+      media_content_type: send_key
+      media_content_id: KEY_2
+woonkamer_tv_key_3:
+  alias: Key3
+  sequence:
+  - service: media_player.play_media
+    data:
+      entity_id: media_player.samsung_7_series_55
+      media_content_type: send_key
+      media_content_id: KEY_3
+woonkamer_tv_key_4:
+  alias: Key4
+  sequence:
+  - service: media_player.play_media
+    data:
+      entity_id: media_player.samsung_7_series_55
+      media_content_type: send_key
+      media_content_id: KEY_4
+woonkamer_tv_key_5:
+  alias: Key5
+  sequence:
+  - service: media_player.play_media
+    data:
+      entity_id: media_player.samsung_7_series_55
+      media_content_type: send_key
+      media_content_id: KEY_5
+woonkamer_tv_key_6:
+  alias: Key6
+  sequence:
+  - service: media_player.play_media
+    data:
+      entity_id: media_player.samsung_7_series_55
+      media_content_type: send_key
+      media_content_id: KEY_6
+woonkamer_tv_key_7:
+  alias: Key7
+  sequence:
+  - service: media_player.play_media
+    data:
+      entity_id: media_player.samsung_7_series_55
+      media_content_type: send_key
+      media_content_id: KEY_7
+woonkamer_tv_key_8:
+  alias: Key8
+  sequence:
+  - service: media_player.play_media
+    data:
+      entity_id: media_player.samsung_7_series_55
+      media_content_type: send_key
+      media_content_id: KEY_8
+woonkamer_tv_key_9:
+  alias: Key9
+  sequence:
+  - service: media_player.play_media
+    data:
+      entity_id: media_player.samsung_7_series_55
+      media_content_type: send_key
+      media_content_id: KEY_9
+woonkamer_tv_key_0:
+  alias: Key0
+  sequence:
+  - service: media_player.play_media
+    data:
+      entity_id: media_player.samsung_7_series_55
+      media_content_type: send_key
+      media_content_id: KEY_0
+woonkamer_tv_key_up:
+  alias: NavigationUp
+  sequence:
+  - service: media_player.play_media
+    data:
+      entity_id: media_player.samsung_7_series_55
+      media_content_type: send_key
+      media_content_id: KEY_UP
+woonkamer_tv_key_down:
+  alias: NavigationDown
+  sequence:
+  - service: media_player.play_media
+    data:
+      entity_id: media_player.samsung_7_series_55
+      media_content_type: send_key
+      media_content_id: KEY_DOWN
+woonkamer_tv_key_left:
+  alias: NavigationLeft
+  sequence:
+  - service: media_player.play_media
+    data:
+      entity_id: media_player.samsung_7_series_55
+      media_content_type: send_key
+      media_content_id: KEY_LEFT
+woonkamer_tv_key_right:
+  alias: NavigationRight
+  sequence:
+  - service: media_player.play_media
+    data:
+      entity_id: media_player.samsung_7_series_55
+      media_content_type: send_key
+      media_content_id: KEY_RIGHT
+woonkamer_tv_key_return:
+  alias: NavigationReturn/Back
+  sequence:
+  - service: media_player.play_media
+    data:
+      entity_id: media_player.samsung_7_series_55
+      media_content_type: send_key
+      media_content_id: KEY_RETURN
+woonkamer_tv_key_enter:
+  alias: NavigationEnter
+  sequence:
+  - service: media_player.play_media
+    data:
+      entity_id: media_player.samsung_7_series_55
+      media_content_type: send_key
+      media_content_id: KEY_ENTER
+woonkamer_tv_rewind:
+  alias: rewind
+  sequence:
+  - service: media_player.play_media
+    data:
+      entity_id: media_player.samsung_7_series_55
+      media_content_type: send_key
+      media_content_id: KEY_REWIND
+woonkamer_tv_fastforward:
+  alias: fastforward
+  sequence:
+  - service: media_player.play_media
+    data:
+      entity_id: media_player.samsung_7_series_55
+      media_content_type: send_key
+      media_content_id: KEY_FF
+woonkamer_tv_stop:
+  alias: stop
+  sequence:
+  - service: media_player.play_media
+    data:
+      entity_id: media_player.samsung_7_series_55
+      media_content_type: send_key
+      media_content_id: KEY_STOP
+woonkamer_tv_pause:
+  alias: pause
+  sequence:
+  - service: media_player.play_media
+    data:
+      entity_id: media_player.samsung_7_series_55
+      media_content_type: send_key
+      media_content_id: KEY_PAUSE
+woonkamer_tv_sleeptimer:
+  alias: sleeptimer
+  sequence:
+  - service: media_player.play_media
+    data:
+      entity_id: media_player.samsung_7_series_55
+      media_content_type: send_key
+      media_content_id: KEY_SLEEP
+woonkamer_tv_tools:
+  alias: tools
+  sequence:
+  - service: media_player.play_media
+    data:
+      entity_id: media_player.samsung_7_series_55
+      media_content_type: send_key
+      media_content_id: KEY_TOOLS
+woonkamer_tv_info:
+  alias: info
+  sequence:
+  - service: media_player.play_media
+    data:
+      entity_id: media_player.samsung_7_series_55
+      media_content_type: send_key
+      media_content_id: KEY_INFO
+woonkamer_tv_mute:
+  alias: mute
+  sequence:
+  - service: media_player.play_media
+    data:
+      entity_id: media_player.samsung_7_series_55
+      media_content_type: send_key
+      media_content_id: KEY_MUTE
+woonkamer_tv_channellist:
+  alias: channellist
+  sequence:
+  - service: media_player.play_media
+    data:
+      entity_id: media_player.samsung_7_series_55
+      media_content_type: send_key
+      media_content_id: KEY_CH_LIST
+woonkamer_tv_guide:
+  alias: guide
+  sequence:
+  - service: media_player.play_media
+    data:
+      entity_id: media_player.samsung_7_series_55
+      media_content_type: send_key
+      media_content_id: KEY_GUIDE
+woonkamer_tv_demo_google_tts:
+  alias: demo google tts
+  sequence:
+  - service: tts.google_say
+    data:
+      entity_id: media_player.samsung_7_series_55
+      message: test test
+      language: en
+  mode: single
+'1643445754568':
+  alias: script.tweet_engine
+  icon: mdi:twitter
+  mode: queued
+  fields:
+    message:
+      name: Message
+      description: The message to tweet
+      required: true
+      selector:
+        text:
+    image:
+      name: Image
+      description: Local path to an image (e.g. /config/www/picture.jpg)
+      selector:
+        text:
+  variables:
+    tags: '#IOT #SmartHome #HomeAssistant'
+  sequence:
+  - choose:
+    - alias: Image not included
+      conditions:
+      - condition: template
+        value_template: '{{ image is undefined }}'
+      sequence:
+      - service: notify.twitter_wobbele
+        data:
+          message: '{{ message }} {{ tags }}'
+    default:
+    - service: notify.twitter_wobbele
+      data:
+        message: '{{ message }} {{ tags }}'
+        data:
+          media: '{{ image }}'
+  max: 10

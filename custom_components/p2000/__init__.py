@@ -1,1 +1,1 @@
-"""The p2000 Component"""
+"""The p2000 sensor integration."""

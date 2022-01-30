@@ -37,7 +37,8 @@ logger:
 api:
 
 ota:
-
+web_server:
+  port: 80
 
 captive_portal:
 

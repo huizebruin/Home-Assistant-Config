@@ -1,7 +1,7 @@
 """
 Sensor component for waste pickup dates from dutch and belgium waste collectors
 Original Author: Pippijn Stortelder
-Current Version: 4.7.33 20211022 - Pippijn Stortelder
+Current Version: 4.9.2 20220118 - Pippijn Stortelder
 20210112 - Updated date format for RD4
 20210114 - Fix error made in commit 9d720ec
 20210120 - Enabled textile for RecycleApp
@@ -31,6 +31,14 @@ Current Version: 4.7.33 20211022 - Pippijn Stortelder
 20211005 - Small bug fix
 20211019 - Add support for housenumber additions on the Circulus Berkel API
 20211022 - Update Mijnafvalwijzer mapping
+20211212 - Replace device_state_attributes with extra_state_attributes
+20211213 - Breaking change: replaced - with _ in Days-until and Sort-date
+20211213 - Add unique ids to all sensors
+20220105 - Changed collector circulus-berkel to circulus
+20220105 - Added support for wastcollector Voorschoten
+20220106 - Added support for Ximmio commercial address (option added customerid)
+20220113 - Added support for wastcollector Lingewaard
+20220118 - Fix Cranendonck mapping
 
 Example config:
 Configuration.yaml:
@@ -101,11 +109,12 @@ CONF_DAY_OF_WEEK_ONLY = 'dayofweekonly'
 CONF_ALWAYS_SHOW_DAY = 'alwaysshowday'
 CONF_PRINT_AVAILABLE_WASTE_TYPES = 'printwastetypes'
 CONF_UPDATE_INTERVAL = 'updateinterval'
+CONF_CUSTOMER_ID = 'customerid'
 
 ATTR_WASTE_COLLECTOR = 'Wastecollector'
 ATTR_HIDDEN = 'Hidden'
-ATTR_SORT_DATE = 'Sort-date'
-ATTR_DAYS_UNTIL = 'Days-until'
+ATTR_SORT_DATE = 'Sort_date'
+ATTR_DAYS_UNTIL = 'Days_until'
 
 NOTIFICATION_ID = "Afvalbeheer"
 
@@ -120,6 +129,7 @@ OPZET_COLLECTOR_URLS = {
     'denhaag': 'https://huisvuilkalender.denhaag.nl',
     'gad': 'https://inzamelkalender.gad.nl',
     'hvc': 'https://inzamelkalender.hvcgroep.nl',
+    'lingewaard': 'https://afvalwijzer.lingewaard.nl',
     'middelburg-vlissingen': 'https://afvalwijzer.middelburgvlissingen.nl',
     'montfoort': 'https://afvalkalender.cyclusnv.nl',
     'peelenmaas': 'https://afvalkalender.peelenmaas.nl',
@@ -131,6 +141,7 @@ OPZET_COLLECTOR_URLS = {
     'sudwestfryslan': 'https://afvalkalender.sudwestfryslan.nl',
     'suez': 'https://inzamelwijzer.prezero.nl',
     'venray': 'https://afvalkalender.venray.nl',
+    'voorschoten': 'https://afvalkalender.voorschoten.nl',
     'waalre': 'https://afvalkalender.waalre.nl',
     'zrd': 'https://afvalkalender.zrd.nl',
 }
@@ -157,6 +168,7 @@ DEPRECATED_AND_NEW_WASTECOLLECTORS = {
     'cure': 'mijnafvalwijzer',
     'area': 'areareiniging',
     'ophaalkalender': 'recycleapp',
+    'circulus-berkel': 'circulus',
 }
 
 WASTE_TYPE_BRANCHES = 'takken'
@@ -255,6 +267,7 @@ PLATFORM_SCHEMA = PLATFORM_SCHEMA.extend({
     vol.Optional(CONF_ALWAYS_SHOW_DAY, default=False): cv.boolean,
     vol.Optional(CONF_PRINT_AVAILABLE_WASTE_TYPES, default=False): cv.boolean,
     vol.Optional(CONF_UPDATE_INTERVAL, default=0): cv.positive_int,
+    vol.Optional(CONF_CUSTOMER_ID, default=''): cv.string,
 })
 
 
@@ -281,6 +294,7 @@ async def async_setup_platform(hass, config, async_add_entities, discovery_info=
     always_show_day = config.get(CONF_ALWAYS_SHOW_DAY)
     print_waste_type = config.get(CONF_PRINT_AVAILABLE_WASTE_TYPES)
     update_interval = config.get(CONF_UPDATE_INTERVAL)
+    customer_id = config.get(CONF_CUSTOMER_ID)
 
     if date_object == True:
         date_only = 1
@@ -290,7 +304,7 @@ async def async_setup_platform(hass, config, async_add_entities, discovery_info=
     if waste_collector in DEPRECATED_AND_NEW_WASTECOLLECTORS:
         persistent_notification.create(
                 hass,
-                "Update your config to use {}! You are still using {} as a wast collector, which is deprecated. Check your automations and lovelace config, as the sensor names may also be changed!".format(
+                "Update your config to use {}! You are still using {} as a waste collector, which is deprecated. Check your automations and lovelace config, as the sensor names may also be changed!".format(
                     DEPRECATED_AND_NEW_WASTECOLLECTORS[waste_collector], 
                     waste_collector),
                 "Afvalbeheer", 
@@ -313,7 +327,7 @@ async def async_setup_platform(hass, config, async_add_entities, discovery_info=
                 "invalid_config")
         return
 
-    data = WasteData(hass, waste_collector, city_name, postcode, street_name, street_number, suffix, address_id, print_waste_type, update_interval)
+    data = WasteData(hass, waste_collector, city_name, postcode, street_name, street_number, suffix, address_id, print_waste_type, update_interval, customer_id)
 
     entities = []
 
@@ -412,7 +426,7 @@ class WasteCollection(object):
 
 class WasteData(object):
 
-    def __init__(self, hass, waste_collector, city_name, postcode, street_name, street_number, suffix, address_id, print_waste_type, update_interval):
+    def __init__(self, hass, waste_collector, city_name, postcode, street_name, street_number, suffix, address_id, print_waste_type, update_interval, customer_id):
         self.hass = hass
         self.waste_collector = waste_collector
         self.city_name = city_name
@@ -424,19 +438,20 @@ class WasteData(object):
         self.print_waste_type = print_waste_type
         self.collector = None
         self.update_interval = update_interval
+        self.customer_id = customer_id
         self.__select_collector()
 
     def __select_collector(self):
         if self.waste_collector in XIMMIO_COLLECTOR_IDS.keys():
-            self.collector = XimmioCollector(self.hass, self.waste_collector, self.postcode, self.street_number, self.suffix, self.address_id)
+            self.collector = XimmioCollector(self.hass, self.waste_collector, self.postcode, self.street_number, self.suffix, self.address_id, self.customer_id)
         elif self.waste_collector in ["mijnafvalwijzer", "afvalstoffendienstkalender"] or self.waste_collector == "rova":
             self.collector = AfvalwijzerCollector(self.hass, self.waste_collector, self.postcode, self.street_number, self.suffix)
         elif self.waste_collector == "afvalalert":
             self.collector = AfvalAlertCollector(self.hass, self.waste_collector, self.postcode, self.street_number, self.suffix)
         elif self.waste_collector == "deafvalapp":
             self.collector = DeAfvalAppCollector(self.hass, self.waste_collector, self.postcode, self.street_number, self.suffix)
-        elif self.waste_collector == "circulus-berkel":
-            self.collector = CirculusBerkelCollector(self.hass, self.waste_collector, self.postcode, self.street_number, self.suffix)
+        elif self.waste_collector == "circulus":
+            self.collector = CirculusCollector(self.hass, self.waste_collector, self.postcode, self.street_number, self.suffix)
         elif self.waste_collector == "limburg.net":
             self.collector = LimburgNetCollector(self.hass, self.waste_collector, self.city_name, self.postcode, self.street_name, self.street_number, self.suffix)
         elif self.waste_collector == "omrin":
@@ -621,7 +636,7 @@ class AfvalwijzerCollector(WasteCollector):
             return False
 
 
-class CirculusBerkelCollector(WasteCollector):
+class CirculusCollector(WasteCollector):
     WASTE_TYPE_MAPPING = {
         # 'BRANCHES': WASTE_TYPE_BRANCHES,
         # 'BULKLITTER': WASTE_TYPE_BULKLITTER,
@@ -639,8 +654,8 @@ class CirculusBerkelCollector(WasteCollector):
     }
 
     def __init__(self, hass, waste_collector, postcode, street_number, suffix):
-        super(CirculusBerkelCollector, self).__init__(hass, waste_collector, postcode, street_number, suffix)
-        self.main_url = "https://mijn.circulus-berkel.nl"
+        super(CirculusCollector, self).__init__(hass, waste_collector, postcode, street_number, suffix)
+        self.main_url = "https://mijn.circulus.nl"
 
     def __get_data(self):
         r = requests.get(self.main_url)
@@ -953,6 +968,7 @@ class OpzetCollector(WasteCollector):
         'gft': WASTE_TYPE_GREEN,
         'chemisch': WASTE_TYPE_KCA,
         'kca': WASTE_TYPE_KCA,
+        'tariefzak restafval': WASTE_TYPE_GREY_BAGS,
         'restafvalzakken': WASTE_TYPE_GREY_BAGS,
         'rest': WASTE_TYPE_GREY,
         'plastic': WASTE_TYPE_PACKAGES,
@@ -1242,7 +1258,7 @@ class XimmioCollector(WasteCollector):
         'westland': "https://wasteprod2api.ximmio.com",
     }
 
-    def __init__(self, hass, waste_collector, postcode, street_number, suffix, address_id):
+    def __init__(self, hass, waste_collector, postcode, street_number, suffix, address_id, customer_id):
         super(XimmioCollector, self).__init__(hass, waste_collector, postcode, street_number, suffix)
         if self.waste_collector in self.XIMMIO_URLS.keys():
             self.main_url = self.XIMMIO_URLS[self.waste_collector]
@@ -1250,6 +1266,7 @@ class XimmioCollector(WasteCollector):
             self.main_url = "https://wasteapi.ximmio.com"
         self.company_code = XIMMIO_COLLECTOR_IDS[self.waste_collector]
         self.community = ""
+        self.customer_id = customer_id
         if address_id:
             self.address_id = address_id
         else:
@@ -1261,6 +1278,10 @@ class XimmioCollector(WasteCollector):
             "houseNumber": self.street_number,
             "companyCode": self.company_code
         }
+
+        if self.customer_id:
+            data["commercialNumber"] = self.customer_id
+
         response = requests.post(
             "{}/api/FetchAdress".format(self.main_url),
             data=data).json()
@@ -1280,8 +1301,12 @@ class XimmioCollector(WasteCollector):
             "startDate": datetime.now().strftime('%Y-%m-%d'),
             "endDate": (datetime.now() + timedelta(days=365)).strftime('%Y-%m-%d'),
             "companyCode": self.company_code,
-            "community": self.community,
+            "community": self.community
         }
+
+        if self.customer_id:
+            data["isCommercial"] = True
+
         response = requests.post(
             "{}/api/GetCalendar".format(self.main_url),
             data=data)
@@ -1331,6 +1356,7 @@ class WasteTypeSensor(Entity):
         self.date_only = date_only
         self.date_object = date_object
         self._name = _format_sensor(name, name_prefix, waste_collector, self.waste_type)
+        self._attr_unique_id = _format_sensor(name, name_prefix, waste_collector, self.waste_type)
         self.built_in_icons = built_in_icons
         self.disable_icons = disable_icons
         self.dutch_days = dutch_days
@@ -1363,7 +1389,7 @@ class WasteTypeSensor(Entity):
         return self._state
 
     @property
-    def device_state_attributes(self):
+    def extra_state_attributes(self):
         return {
             ATTR_WASTE_COLLECTOR: self.waste_collector,
             ATTR_HIDDEN: self._hidden,
@@ -1465,6 +1491,7 @@ class WasteDateSensor(Entity):
         else:
             day = ''
         self._name = _format_sensor(name, name_prefix, waste_collector, day)
+        self._attr_unique_id = _format_sensor(name, name_prefix, waste_collector, day)
         self._unit = ''
         self._hidden = False
         self._state = None
@@ -1478,7 +1505,7 @@ class WasteDateSensor(Entity):
         return self._state
 
     @property
-    def device_state_attributes(self):
+    def extra_state_attributes(self):
         return {
             ATTR_HIDDEN: self._hidden
         }

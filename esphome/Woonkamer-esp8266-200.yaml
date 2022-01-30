@@ -77,7 +77,7 @@ sensor:
     state_class: "measurement"
     measurement_duration: 69
     update_interval: 60s
-    
+    address: 0x23
 
 #versie sensor voor in ha
 text_sensor:

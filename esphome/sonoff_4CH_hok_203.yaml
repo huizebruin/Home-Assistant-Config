@@ -36,6 +36,9 @@ logger:
 api:
 ota:
 
+web_server:
+  port: 80
+  
 binary_sensor:
   - platform: gpio
     pin:

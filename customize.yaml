@@ -88,7 +88,7 @@ switch.tint_smart_switch:
 switch.voordeur_verlichting:
   icon: hass:outdoor-lamp
 switch.buiten_verlichting_voor:
-  icon: hass:power-socket-eu
+  icon: phu:christmas-lights
 switch.lsd_stopcontact_197_relay:
   friendly_name: Radio overkapping
   icon: hass:radio
@@ -174,3 +174,11 @@ sensor.afvalinfo_tomorrow:
   icon: mdi:trash-can
 sensor.afvalinfo_next_trash_type_and_date:
   icon: mdi:trash-can
+
+## s0tool informatie en icons in customize.yaml
+sensor.s0tool_versie_github:
+  friendly_name: Laatste versie github
+  icon: mdi:github
+sensor.s0tool_versie:
+  friendly_name: Huidige versie
+  icon: mdi:label-outline

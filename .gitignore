@@ -1,0 +1,30 @@
+# Example .gitignore file for your config dir.
+# An * ensures that everything will be ignored.
+*
+# You can whitelist files/folders with !, these will not be ignored.
+!*.yaml
+!.gitignore
+!*.md
+
+# Ignore folders
+.cloud
+.storage
+.vscode
+custom_components/*
+
+
+# Ensure these files are ignored, otherwise your secret data/credentials will leak.
+ip_bans.yaml
+secrets.yaml
+known_devices.yaml
+googleassistant_serviceaccount.json
+includes/googleassistant_serviceaccount.json
+.google.token
+.spotify-token-cache
+.sonoff.json
+.ip_authenticated.yaml
+google_calendars.yaml
+notify.yaml
+
+# Ignore Python cache files 
+__pycache__/

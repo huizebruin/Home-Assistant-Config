@@ -1,8 +1,8 @@
 """The samsungtv_smart integration."""
 
 from aiohttp import ClientConnectionError, ClientSession, ClientResponseError
-from async_timeout import timeout
 import asyncio
+import async_timeout
 import logging
 import os
 from shutil import copyfile
@@ -10,8 +10,7 @@ import socket
 import voluptuous as vol
 from websocket import WebSocketException
 
-from .api.samsungws import SamsungTVWS
-from .api.exceptions import ConnectionFailure
+from .api.samsungws import ConnectionFailure, SamsungTVWS
 from .api.smartthings import SmartThingsTV
 
 from homeassistant.components.media_player.const import DOMAIN as MP_DOMAIN
@@ -26,6 +25,9 @@ from homeassistant.const import (
     CONF_NAME,
     CONF_PORT,
     CONF_TIMEOUT,
+    MAJOR_VERSION,
+    MINOR_VERSION,
+    __version__,
 )
 from homeassistant.core import HomeAssistant
 import homeassistant.helpers.config_validation as cv
@@ -43,6 +45,8 @@ from .const import (
     CONF_LOAD_ALL_APPS,
     CONF_SOURCE_LIST,
     CONF_SHOW_CHANNEL_NR,
+    CONF_SYNC_TURN_OFF,
+    CONF_SYNC_TURN_ON,
     CONF_WS_NAME,
     CONF_UPDATE_METHOD,
     CONF_UPDATE_CUSTOM_PING_URL,
@@ -52,6 +56,8 @@ from .const import (
     DEFAULT_TIMEOUT,
     DEFAULT_SOURCE_LIST,
     DOMAIN,
+    MIN_HA_MAJ_VER,
+    MIN_HA_MIN_VER,
     RESULT_NOT_SUCCESSFUL,
     RESULT_NOT_SUPPORTED,
     RESULT_ST_DEVICE_NOT_FOUND,
@@ -59,6 +65,7 @@ from .const import (
     RESULT_WRONG_APIKEY,
     WS_PREFIX,
     AppLoadMethod,
+    __min_ha_version__,
 )
 
 DEVICE_INFO = {
@@ -120,13 +127,31 @@ CONFIG_SCHEMA = vol.Schema(
     extra=vol.ALLOW_EXTRA,
 )
 
-DATA_LISTENER = "listener"
-
 _LOGGER = logging.getLogger(__name__)
 
 
 def tv_url(host: str, address: str = "") -> str:
     return f"http://{host}:8001/api/v2/{address}"
+
+
+def is_valid_ha_version():
+    return (
+        MAJOR_VERSION > MIN_HA_MAJ_VER or
+        (MAJOR_VERSION == MIN_HA_MAJ_VER and MINOR_VERSION >= MIN_HA_MIN_VER)
+    )
+
+
+def _notify_error(hass, notification_id, title, message):
+    """Notify user with persistent notification"""
+    hass.async_create_task(
+        hass.services.async_call(
+            domain='persistent_notification', service='create', service_data={
+                'title': title,
+                'message': message,
+                'notification_id': f"{DOMAIN}.{notification_id}"
+            }
+        )
+    )
 
 
 def token_file_name(hostname: str) -> str:
@@ -193,10 +218,27 @@ def _migrate_token_file(hass: HomeAssistant, hostname: str):
     return
 
 
+def _migrate_options_format(hass: HomeAssistant, entry: ConfigEntry):
+    """Migrate options to new format."""
+    opt_migrated = False
+    new_options = {}
+
+    for key, option in entry.options.items():
+        if key in [CONF_SYNC_TURN_OFF, CONF_SYNC_TURN_ON]:
+            if isinstance(option, str):
+                new_options[key] = option.split(",")
+                opt_migrated = True
+                continue
+        new_options[key] = option
+
+    if opt_migrated:
+        hass.config_entries.async_update_entry(entry, options=new_options)
+
+
 async def get_device_info(hostname: str, session: ClientSession) -> dict:
     """Try retrieve device information"""
     try:
-        with timeout(2):
+        async with async_timeout.timeout(2):
             async with session.get(
                     tv_url(host=hostname),
                     raise_for_status=True
@@ -270,7 +312,7 @@ class SamsungTVInfo:
         """Try to connect to ST device"""
 
         try:
-            with timeout(10):
+            async with async_timeout.timeout(10):
                 _LOGGER.info(
                     "Try connection to SmartThings TV with id [%s]", device_id
                 )
@@ -298,7 +340,7 @@ class SamsungTVInfo:
         """Get list of available ST devices"""
 
         try:
-            with timeout(4):
+            async with async_timeout.timeout(4):
                 devices = await SmartThingsTV.get_devices_list(
                     api_key, session, st_device_label
                 )
@@ -325,6 +367,15 @@ class SamsungTVInfo:
 
 async def async_setup(hass: HomeAssistant, config: ConfigType):
     """Set up the Samsung TV integration."""
+
+    if not is_valid_ha_version():
+        msg = "This integration require at least HomeAssistant version" \
+              f" {__min_ha_version__}, you are running version {__version__}." \
+              " Please upgrade HomeAssistant to continue use this integration."
+        _notify_error(hass, "inv_ha_version", "SamsungTV Smart", msg)
+        _LOGGER.warning(msg)
+        return True
+
     if DOMAIN in config:
         hass.data[DOMAIN] = {}
         entries_list = hass.config_entries.async_entries(DOMAIN)
@@ -353,16 +404,21 @@ async def async_setup(hass: HomeAssistant, config: ConfigType):
 
 async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry):
     """Set up the Samsung TV platform."""
+    if not is_valid_ha_version():
+        return False
 
     # migrate old token file if required
     _migrate_token_file(hass, entry.unique_id)
 
+    # migrate options to new format if required
+    _migrate_options_format(hass, entry)
+
     # setup entry
+    entry.async_on_unload(entry.add_update_listener(_update_listener))
     hass.data.setdefault(DOMAIN, {})
     hass.data[DOMAIN].setdefault(entry.unique_id, {})  # unique_id = host
     hass.data[DOMAIN][entry.entry_id] = {
         DATA_OPTIONS: entry.options.copy(),
-        DATA_LISTENER: entry.add_update_listener(update_listener),
     }
 
     hass.config_entries.async_setup_platforms(entry, [MP_DOMAIN])
@@ -372,13 +428,9 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry):
 
 async def async_unload_entry(hass: HomeAssistant, entry: ConfigEntry):
     """Unload a config entry."""
-    unload_ok = await hass.config_entries.async_unload_platforms(
+    if unload_ok := await hass.config_entries.async_unload_platforms(
         entry, [MP_DOMAIN]
-    )
-
-    if unload_ok:
-        hass.data[DOMAIN][entry.entry_id][DATA_LISTENER]()
-        remove_token_file(hass, entry.unique_id)
+    ):
         hass.data[DOMAIN].pop(entry.entry_id)
         hass.data[DOMAIN].pop(entry.unique_id)
         if not hass.data[DOMAIN]:
@@ -387,7 +439,11 @@ async def async_unload_entry(hass: HomeAssistant, entry: ConfigEntry):
     return unload_ok
 
 
-async def update_listener(hass: HomeAssistant, entry: ConfigEntry):
+async def async_remove_entry(hass: HomeAssistant, entry: ConfigEntry):
+    """Remove a config entry."""
+    remove_token_file(hass, entry.unique_id)
+
+
+async def _update_listener(hass: HomeAssistant, entry: ConfigEntry):
     """Update when config_entry options update."""
-    entry_id = entry.entry_id
-    hass.data[DOMAIN][entry_id][DATA_OPTIONS] = entry.options.copy()
+    hass.data[DOMAIN][entry.entry_id][DATA_OPTIONS] = entry.options.copy()

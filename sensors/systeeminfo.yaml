@@ -1,18 +1,26 @@
-#==================================================================================================================================
+#=============================================
 #=== Geïnstalleerde hass.io versie
-#==============================
+#===========================================
   - platform: version
     name: Geïnstalleerde versie
     source: local
+#=============================================
 #=== Geïnstalleerde core versie
-#==============================
+#===========================================
   - platform: version
     source: supervisor
     name: Core version installed
-
-  #================================
+#=============================================
+#=== Restart time
+#=============================================
+  - platform: command_line
+    name: HA Restart Time
+    command: "/bin/cat /config/home-assistant.log | /bin/grep 'Home Assistant initialized in' | /usr/bin/awk '{print $10}' | /bin/sed 's/[^0-9.]//g'"
+    scan_interval: 60
+    unit_of_measurement: "sec"
+  #=============================================
   #=== Laatste beschikbare versie
-  #================================
+  #=============================================
   - platform: version
     name: Laatste beschikbare versie
     beta: false
@@ -31,6 +39,13 @@
       - type: load_1m
       - type: load_5m
       - type: load_15m
+#=============================================
+  ##### Externe IP
+#============================================= 
+  - platform: rest
+    resource: http://ip.jsontest.com
+    name: External IP
+    value_template: "{{ value_json.ip }}"
   #=============================================
   #=== Mariadb groote
   #=============================================
@@ -41,9 +56,9 @@
         query: 'SELECT table_schema "database", Round(Sum(data_length + index_length) / 1024 / 1024, 1) "value" FROM information_schema.tables WHERE table_schema="homeassistant" GROUP BY table_schema;'
         column: 'value'
         unit_of_measurement: MB  
-################################################
+#=============================================
 ## Sensor Supervisor Update Available
-################################################
+#=============================================
 #sensor:
   - platform: command_line
     name: Supervisor Update Available
@@ -66,24 +81,24 @@
     - current_version
     - addons
 
-  #====================
+  #=============================================
   #=== CPU Temperatuur
-  #====================
+  #=============================================
   - platform: command_line
     name: CPU Temp
     command: "cat /sys/class/thermal/thermal_zone0/temp"
     unit_of_measurement: "°C"
     value_template: '{{ value | multiply(0.001) | round(0) }}'
     
-  #===================
+  #=============================================
   #=== System Up Time
-  #===================
+  #================================
   - platform: uptime
   - platform: template
     sensors:
-      #==========================
+      #=======================================
       #=== Home Assistant uptime
-      #==========================
+      #=======================================
       ha_uptime:
         friendly_name: HA Uptime
         value_template: >
@@ -105,9 +120,9 @@
           {% endif %}
 
 
-      #=========================================
+      #======================================================
       #===  laatste opstartdatum en -tijd
-      #=========================================
+      #======================================================
       last_boot_date_time:
         friendly_name: Laatste keer opstarten
         value_template: >
@@ -126,12 +141,11 @@
           {{ as_timestamp(states('sensor.last_boot')) | timestamp_custom('%H:%M on %a') }} {{ date }} {{ as_timestamp(states('sensor.last_boot')) | timestamp_custom('%b %Y') }}
 
 
-      #=========================
+      #======================================
       #=== Uptime van het systeem
-      #=========================
+      #======================================
       uptime:
         friendly_name: Uptime van wyse dx0d
-#        entity_id: sensor.time
         value_template: >
           {% set up_time = as_timestamp(now()) - as_timestamp(states('sensor.last_boot')) %}
 
@@ -157,14 +171,14 @@
           {% endif %}
           
           {{ text }}   
-##########
+#================================
  # sensor voor lokatie laatste inlog
 # https://github.com/custom-components/authenticated         
 #sensor:
   - platform: authenticated
 #===============================================================
 #=== Geïnstalleerde supervisor version
-#==============================
+#===========================================
   - platform: template
     sensors:
       supervisor_version_installed:

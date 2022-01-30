@@ -38,8 +38,12 @@ frontend:
     - /hacsfiles/lovelace-card-mod/card-mod.js
 #===============================================================
 #samsung tv
-#samsungtv_smart:
-#  - host: !secret samsungtv_smart
+# samsungtv_smart:
+
+samsungtv:
+  - host: !secret samsungtv_smart
+    mac: !secret samsungtv_mac
+
 #====================
 #http:
 #  ssl_certificate: /ssl/fullchain.pem
@@ -59,6 +63,14 @@ google:
 media_player:
   - platform: mpd
     host: 192.168.178.162
+  
+  - platform: samsungtv_tizen
+    host: !secret samsungtv_smart
+    mac: !secret samsungtv_mac
+    show_channel_number: true
+    show_logos: "white-color"
+    app_list: '{"Netflix": "11101200001", "YouTube": "111299001912", "Spotify": "3201606009684", "Prime Video": "3201512006785", "Disney+": "3201901017640", "YouTube Kids": "3201611010983", "Videoland": "3201810017074"}'
+
 #===============================================================
 # Text to speech
 tts:
@@ -110,13 +122,16 @@ recorder:
   db_url: !secret mariadb
   commit_interval: 30
   auto_purge: true
-  purge_keep_days: 14
+  purge_keep_days: 31
   include:
     domains:
       - sensor
       - switch
       - binary_sensor
       - climate
+      - person
+      - alert
+
     entity_globs:
       - binary_sensor.*
       - sensor.dsmr_*   
@@ -131,10 +146,7 @@ recorder:
     domains:
       - media_player
       - updater
-      - automation
       - weather
-      - zone
-      - script
     entity_globs:
       - sensor.surh*
       - sensor.*_linkquality
@@ -168,8 +180,6 @@ recorder:
       - sensor.keuken_linkquality
       - sensor.laptop_stekker_linkquality
       
-
-
 logbook:
   exclude:
     entities:
@@ -181,5 +191,5 @@ logbook:
       - sensor.date_time_utc
       - sensor.time_utc
       - sensor.internet_time
-#===============================================================
 
+#===============================================================

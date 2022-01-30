@@ -5,7 +5,7 @@
       - sortibak
       - gft
       - papier
-#     - grofvuil
+      - grofvuil
     postcode: !secret postcode
     streetnumber: !secret huisnummer
     upcomingsensor: 1                
@@ -13,7 +13,7 @@
     dateonly: 1                      
     name: ""                         
     nameprefix: 1                    
-    builtinicons: 0                  
+    builtinicons: 1                  
     dutch: 1   
 #############
   - platform: afvalinfo              
