@@ -24,7 +24,7 @@
   - platform: version
     name: Laatste beschikbare versie
     beta: false
-    image: intel-nuc
+    image: qemux86-64
     source: hassio
   #=============================================
   #=== Laatste opstarttijd, schijf-, geheugen- en CPU-gebruik
